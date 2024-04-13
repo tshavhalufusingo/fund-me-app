@@ -1,0 +1,15 @@
+form {
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+}
+input {
+  margin-bottom: 2rem;
+  height: 2rem;
+}
+button {
+  height: 3rem;
+}
+#register {
+  width: 30%;
+}
