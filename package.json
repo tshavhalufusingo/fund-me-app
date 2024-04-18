@@ -9,11 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "mssql": "^10.0.2",
+    "next": "14.2.1",
+    "next-auth": "^4.24.7",
     "react": "^18",
-    "react-dom": "^18",
-    "next": "14.2.1"
+    "react-dom": "^18"
   },
   "devDependencies": {
+    "@types/react": "18.2.78",
     "eslint": "^8",
     "eslint-config-next": "14.2.1"
   }
