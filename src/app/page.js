@@ -28,7 +28,8 @@ export default function Home() {
   return (
     <main className={styles.main}>
       <form action={Login}>
-        <input id="useremail" type="email" placeholder="User email"></input>
+        <input id="useremail" type="email" placeholder="User email"
+        required></input>
         <input
           id="password"
           type="password"
