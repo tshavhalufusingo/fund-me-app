@@ -3,7 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 const sql = require("mssql");
 const config = require("../../../database/dbconnection");
 
-export const authOptions = {
+const authOptions = {
   providers: [
     CredentialsProvider({
       // The name to display on the sign in form (e.g. "Sign in with...")
