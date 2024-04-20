@@ -3,7 +3,7 @@ orbs:
   # codecov: codecov/codecov@4.1.0
   node: circleci/node@4.7.0
 jobs:
-  install-node-example:
+  test:
     docker:
       - image: cimg/base:stable
     steps:
@@ -21,5 +21,4 @@ jobs:
 workflows:
   test_my_app:
     jobs:
-      - build
       - test
