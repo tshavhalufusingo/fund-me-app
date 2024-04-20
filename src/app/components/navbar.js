@@ -2,17 +2,24 @@
 import Link from "next/link";
 import "../styles.css";
 import { signOut, useSession } from "next-auth/react";
+
 import { useRouter } from "next/navigation";
 
 export default function Navbar() {
   const { data: session, status } = useSession();
   const router = useRouter();
+  // const LogOut = (e) => {
+  //   e.preventDefault;
+  //   signOut();
+  //   session.destroy();
+  //   router.push("/");
+  // };
   const LogOut = (e) => {
-    e.preventDefault;
-    signOut();
-    session.destroy();
+    e.preventDefault();
+    signOut(); // Use signOut from next-auth/react
     router.push("/");
   };
+  
 
   if (session?.user) {
     return (
