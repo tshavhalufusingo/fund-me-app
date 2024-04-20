@@ -26,9 +26,6 @@ describe('Home Component', () => {
     expect(screen.getByText('Login')).toBeInTheDocument();
   });
 
-  
-  
-  
   // Mock signIn function from next-auth/react
   jest.mock("next-auth/react", () => ({
     signIn: jest.fn(),
@@ -52,33 +49,4 @@ describe('Home Component', () => {
     });
   });
   
-  
-
-//   it('should redirect to /home on successful login', async () => {
-//     signIn.mockReturnValue({});
-
-//     render(<Home />);
-
-//     fireEvent.click(screen.getByText('Login'));
-
-//     expect(useRouter().refresh).toHaveBeenCalled();
-//     expect(useRouter().push).toHaveBeenCalledWith('/home');
-//   });
-
-//   it('should log error on unsuccessful login', async () => {
-//     const error = 'Invalid credentials';
-//     signIn.mockReturnValue({ error });
-
-//     render(<Home />);
-
-//     fireEvent.click(screen.getByText('Login'));
-
-//     expect(console.log).toHaveBeenCalledWith(error);
-//   });
-
-//   it('should navigate to registration page on "Register" button click', () => {
-//     render(<Home />);
-//     fireEvent.click(screen.getByText('Register'));
-//     expect(useRouter().push).toHaveBeenCalledWith('/register');
-//   });
 });
