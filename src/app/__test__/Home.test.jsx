@@ -17,12 +17,6 @@ jest.mock('next/navigation', () => ({
     }),
   }));
 
-describe("test 1",() =>{
-    it("render home log",()=>{
-        render(<Home/>);
-    });
-});
-
 describe('Home Component', () => {
 
   it('should render login form', () => {
@@ -57,38 +51,6 @@ describe('Home Component', () => {
   
     });
   });
-  
-
-
-
-//   it('should call signIn function on form submission with correct data', async () => {
-//     const email = 'test@example.com';
-//     const password = 'testpassword';
-  
-//     // Mock the signIn function
-//     const signIn = jest.fn();
-  
-//     render(<Home signIn={signIn} />); // Pass the mocked signIn function as a prop
-  
-//     fireEvent.change(screen.getByPlaceholderText('User email'), {
-//       target: { value: email },
-//     });
-//     fireEvent.change(screen.getByPlaceholderText('User password'), {
-//       target: { value: password },
-//     });
-  
-//     fireEvent.click(screen.getByText('Login'));
-  
-//     // Debugging: Log the calls made to the signIn function
-//     console.log(signIn.mock.calls);
-  
-//     // Expect signIn to have been called with the correct arguments
-//     expect(signIn).toHaveBeenCalledWith('credentials', {
-//       email,
-//       password,
-//       redirect: false,
-//     });
-//   });
   
   
 
