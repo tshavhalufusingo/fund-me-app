@@ -7,9 +7,10 @@ jobs:
     docker:
       - image: cimg/node:current
     steps:
+      - checkout
       - node/install-packages:
           cache-path: ~/project/node_modules
-          override-ci-command: npm install
+          command: npm install
       - run:
           name: install npm
           command: sudo npm install -g npm@latest
