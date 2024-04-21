@@ -1,17 +1,10 @@
 version: "2.1"
 orbs:
-  node: circleci/node@5.2.0
-jobs:
-  install-node-example:
-    docker:
-      - image: cimg/base:stable
-    steps:
-      - checkout
-      - node/install:
-          install-yarn: true
-          node-version: "16.13"
-      - run: node --version
+  codecov: codecov/codecov@4.1.0
+  node: circleci/node@4.7.0
 workflows:
-  test_my_app:
+  upload-to-codecov:
     jobs:
-      - install-node-example
+      - node/test:
+          post-steps:
+            - codecov/upload
