@@ -4,8 +4,8 @@ orbs:
   node: circleci/node@5.2.0
 jobs:
   test:
-    # docker:
-    #   - image: cimg/node:current
+    docker:
+      - image: cimg/node:current
     steps:
       - node/install-packages:
           cache-path: ~/project/node_modules
