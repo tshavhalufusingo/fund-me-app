@@ -7,9 +7,12 @@ jobs:
     docker:
       - image: cimg/node:current
     steps:
+      - node/install-packages:
+          cache-path: ~/project/node_modules
+          override-ci-command: npm install
       - run:
-          name: install npm
-          command: sudo npm install -g npm@latest
+        name: install npm
+        command: sudo npm install -g npm@latest
       - run:
           name: install jest library
           command: npm install jest
