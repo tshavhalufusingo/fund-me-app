@@ -1,22 +1,18 @@
 version: "2.1"
 orbs:
   codecov: codecov/codecov@4.1.0
-  node: circleci/node@4.7.0
+  node: circleci/node@5.2.0
 jobs:
   test:
-    docker:
-      - image: cimg/node:current
+    # docker:
+    #   - image: cimg/node:current
     steps:
-      # - node/install-packages:
-      #     cache-path: node_modules
-      #     override-ci-command: npm install
-
+      - node/install-packages:
+          cache-path: ~/project/node_modules
+          override-ci-command: npm install
       - run:
           name: install npm
           command: sudo npm install -g npm@latest
-      - run:
-          name: install packages
-          command: npm install
       - run:
           name: install jest library
           command: npm install jest
