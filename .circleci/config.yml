@@ -2,9 +2,22 @@ version: "2.1"
 orbs:
   codecov: codecov/codecov@4.1.0
   node: circleci/node@4.7.0
+jobs:
+  test:
+    docker:
+      - image: cimg/node:current
+    steps:
+      -run:
+        name: install npm
+        command: sudo npm install -g npm@latest
+      - run:
+          name: install jest library
+          command: npm install jest
+      - run:
+          name: unit testing
+          command: npm run test -- --coverage
+
 workflows:
-  upload-to-codecov:
+  test_my_app:
     jobs:
-      - node/test:
-          post-steps:
-            - codecov/upload
+      - test
