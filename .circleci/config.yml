@@ -20,7 +20,7 @@ jobs:
       - run:
           name: unit testing
           command: npm run test -- --coverage
-      - upload/codecov
+      - codecov/upload
 
 workflows:
   test_my_app:
