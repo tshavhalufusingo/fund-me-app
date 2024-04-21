@@ -8,8 +8,8 @@ jobs:
       - image: cimg/node:current
     steps:
       - run:
-        name: install npm
-        command: sudo npm install -g npm@latest
+          name: install npm
+          command: sudo npm install -g npm@latest
       - run:
           name: install jest library
           command: npm install jest
