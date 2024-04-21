@@ -34,7 +34,7 @@ export default function Home() {
           id="password"
           type="password"
           placeholder="User password"
-        ></input>
+        ></input> 
         <button type="submit">Login</button>
       </form>
       <p>If you have no account click register below</p>

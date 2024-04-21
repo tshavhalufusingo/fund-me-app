@@ -10,6 +10,9 @@ select {
 }
 button {
   height: 3rem;
+  border-radius: 0.5rem;
+  
+
 }
 #register {
   width: 30%;
