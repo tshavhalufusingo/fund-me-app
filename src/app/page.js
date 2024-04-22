@@ -4,8 +4,6 @@ import "./styles.css";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-const mysql = require('mysql');
-
 
 export default function Home() {
   const router = useRouter();
@@ -15,42 +13,7 @@ export default function Home() {
     //users
     let useremail = document.getElementById("useremail").value;
     let userpassword = document.getElementById("password").value;
-
-
-    //start
-
-
-
-
-// Create a connection to the MySQL server
-const connection = mysql.createConnection({
-  host: 'your-mysql-server-name.mysql.database.azure.com',
-  port: '3306',
-  user: 'your-username@your-mysql-server-name',
-  password: 'your-password',
-  database: 'your-database-name'
-});
-
-// Connect to the MySQL server
-connection.connect((err) => {
-  if (err) {
-    console.error('Error connecting to MySQL server:', err);
-    return;
-  }
-  console.log('Connected to MySQL server');
-  
-  // Perform database operations here...
-});
-
-// Close the connection when done
-connection.end();
-
-
-
-    //finish
-
-
-
+    
 
     const inputData = { email: useremail, password: userpassword };
     const resp = await signIn("credentials", { ...inputData, redirect: false });
