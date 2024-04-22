@@ -1,6 +1,5 @@
 const sql = require('mssql');
 
-// Configuration for your SQL Server connection
 const config = {
   user: 'fundmeadmin',
   password: 'Admin@123',
@@ -40,34 +39,10 @@ export default function Home(){
   
 
   return (
-    <main className={styles.main}>
-      <form action={Login}>
-
-        <input
-          id="useremail"
-          type="email"
-          placeholder="User email"
-          required
-        ></input>
-
-        <input
-          id="password"
-          type="password"
-          placeholder="User password"
-        ></input>
-
-        <button type="submit">Login</button>
-
-      </form>
-
-      <p>If you have no account click register below</p>
-
-      
-      <button id="register" type="submit">
-        <Link href="/register">Register</Link>
-      </button>
-    </main>
+    <h1>
+      x
+    </h1>
+   
   );
-  
 
 }
