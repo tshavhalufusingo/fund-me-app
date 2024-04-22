@@ -15,8 +15,7 @@ export async function POST(req) {
     const res = await poolConnection
       .request()
       .query(
-      //  `INSERT INTO [dbo].[user] VALUES ('${data.email}','${data.password}','${data.firstname}','${data.lastname}','${data.role}');`
-        'SELECT * FROM [dbo].[user]'
+        `INSERT INTO [dbo].[user] VALUES ('${data.email}','${data.password}','${data.firstname}','${data.lastname}','${data.role}');`
       );
     poolConnection.close();
 
