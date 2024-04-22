@@ -3,17 +3,16 @@ import styles from "./page.module.css";
 import "./styles.css";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/router"; // Changed from next/navigation to next/router
 
 export default function Home() {
   const router = useRouter();
-  const Login = async (e) => {
-    e.preventDefault;
 
-    //users
+  const Login = async (e) => {
+    e.preventDefault(); // Corrected to e.preventDefault();
+
     let useremail = document.getElementById("useremail").value;
     let userpassword = document.getElementById("password").value;
-    
 
     const inputData = { email: useremail, password: userpassword };
     const resp = await signIn("credentials", { ...inputData, redirect: false });
@@ -24,23 +23,28 @@ export default function Home() {
       router.push("/home");
     }
   };
+
   return (
     <main className={styles.main}>
-      <form action={Login}>
+      <form onSubmit={Login}> {}
         <input
           id="useremail"
           type="email"
           placeholder="User email"
           required
-        ></input>
+        />
+
         <input
           id="password"
           type="password"
           placeholder="User password"
-        ></input>
-        <button type="submit">Login</button>
+        />
+
+        <button type="button" onClick={Login}>Login</button> {}
       </form>
+
       <p>If you have no account click register below</p>
+
       <button id="register" type="submit">
         <Link href="/register">Register</Link>
       </button>
