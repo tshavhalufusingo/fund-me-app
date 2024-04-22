@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 const sql = require("mssql");
-const config = require("@/database/dbconnection");
+const config = require("../../../database/dbconnection");
 
 const authOptions = {
   providers: [
