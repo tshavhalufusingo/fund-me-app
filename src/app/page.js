@@ -17,10 +17,7 @@ export default function Home() {
     const inputData = { email: useremail, password: userpassword };
     const resp = await signIn("credentials", { ...inputData, redirect: false });
 
-    if (resp.error) {
-      console.log(resp.error);
-      console.log("Error");
-    } else {
+    if (!resp.error) {
       console.log(resp);
       router.refresh();
       router.push("/home");
@@ -29,21 +26,23 @@ export default function Home() {
   return (
     <main className={styles.main}>
       <form action={Login}>
-        <input id="useremail" type="email" placeholder="User email"
-        required></input>
+        <input
+          id="useremail"
+          type="email"
+          placeholder="User email"
+          required
+        ></input>
         <input
           id="password"
           type="password"
           placeholder="User password"
-        ></input> 
+        ></input>
         <button type="submit">Login</button>
       </form>
       <p>If you have no account click register below</p>
       <button id="register" type="submit">
-  <Link href="/register">Register</Link>
-</button>
-
- 
+        <Link href="/register">Register</Link>
+      </button>
     </main>
   );
 }

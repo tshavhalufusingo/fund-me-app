@@ -8,7 +8,6 @@ export async function GET() {
 
 export async function POST(req) {
   const data = await req.json();
-  console.log(data);
 
   try {
     var poolConnection = await sql.connect(config);
