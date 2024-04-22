@@ -1,0 +1,22 @@
+{
+    "$schema": "https://json.schemastore.org/dab.draft.schema",
+    "data-source": {
+      "database-type": "mysql",
+      "options": {
+        "set-session-context": false
+      },
+      "connection-string": "@env('MYSQL_DATABASE_CONNECTION_STRING')"
+    },
+    "entities": {
+      "User": {
+        "source": "user",
+        "permissions": [
+          {
+            "actions": ["create", "read", "update", "delete"],
+            "role": "anonymous"
+          }
+        ]
+      }
+    }
+  }
+  
