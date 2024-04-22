@@ -39,8 +39,10 @@ export default function Home() {
       </form>
       <p>If you have no account click register below</p>
       <button id="register" type="submit">
-        <Link href="/register">Register</Link>
-      </button>
+  <Link href="/register">Register</Link>
+</button>
+
+ 
     </main>
   );
 }

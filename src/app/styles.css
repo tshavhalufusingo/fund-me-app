@@ -11,11 +11,15 @@ select {
 button {
   height: 3rem;
   border-radius: 0.5rem;
+
   
 
 }
 #register {
   width: 30%;
+}
+#register:hover {
+  opacity: 0.8;
 }
 
 .navbar {
