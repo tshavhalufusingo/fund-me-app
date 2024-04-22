@@ -1,48 +1,55 @@
-const sql = require('mssql');
+"use client";
+import styles from "./page.module.css";
+import "./styles.css";
+import Link from "next/link";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
-const config = {
-  user: 'fundmeadmin',
-  password: 'Admin@123',
-  server: 'fundmeapp.database.windows.net',
-  database: 'fundMeApp',
-  options: {
-    encrypt: true, // If you're connecting to Azure SQL Database, set to true
-    trustServerCertificate: false // If you're connecting to Azure SQL Database, set to false
-  }
-};
+export default function Home() {
+  const router = useRouter();
+  const Login = async (e) => {
+    e.preventDefault;
 
-export default function Home(){
+    let useremail = document.getElementById("useremail").value;
+    let userpassword = document.getElementById("password").value;
+    
 
+    const inputData = { email: useremail, password: userpassword };
+    const resp = await signIn("credentials", { ...inputData, redirect: false });
 
-  async function connectToDatabase() {
-    try {
-      // Create a new connection pool
-      const pool = await sql.connect(config);
-      console.log('Connected to SQL Server');
-  
-      // You can now execute SQL queries using the pool
-  
-      // Example query
-      const result = await pool.request().query('SELECT * FROM users');
-      console.log(result.recordset);
-  
-      // Don't forget to close the connection pool when done
-      await pool.close();
-      console.log('Connection to SQL Server closed');
-    } catch (err) {
-      console.error('Error connecting to SQL Server:', err);
+    if (resp.ok) {
+      console.log(resp);
+      router.refresh();
+      router.push("/home");
     }
-  }
-  
-  // Call the function to connect to the database
-  connectToDatabase();
-  
-
+  };
   return (
-    <h1>
-      x
-    </h1>
-   
-  );
+    <main className={styles.main}>
+      <form action={Login}>
 
+        <input
+          id="useremail"
+          type="email"
+          placeholder="User email"
+          required
+        ></input>
+
+        <input
+          id="password"
+          type="password"
+          placeholder="User password"
+        ></input>
+
+        <button type="submit">Login</button>
+
+      </form>
+
+      <p>If you have no account click register below</p>
+
+      
+      <button id="register" type="submit">
+        <Link href="/register">Register</Link>
+      </button>
+    </main>
+  );
 }
