@@ -11,7 +11,7 @@ export default function Home() {
     e.preventDefault;
 
     let userFirstName = document.getElementById("firstname").value;
-    let userLastName = document.getElementById("password").value;
+    let userLastName = document.getElementById("lastname").value;
     let useremail = document.getElementById("email").value;
     let userRole = document.getElementById("role").value;
     let userpassword = document.getElementById("password").value;
