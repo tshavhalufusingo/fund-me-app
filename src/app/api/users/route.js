@@ -15,9 +15,13 @@ export async function POST(req) {
     const res = await poolConnection
       .request()
       .query(
-        `INSERT INTO [dbo].[user] VALUES ('${data.email}','${data.password}','${data.firstname}','${data.lastname}','${data.role}');`
+      //  `INSERT INTO [dbo].[user] VALUES ('${data.email}','${data.password}','${data.firstname}','${data.lastname}','${data.role}');`
+        'SELECT * FROM [dbo].[user]'
       );
     poolConnection.close();
+
+    console.log("res = ");
+    console.log(res);
     return res;
   } catch (error) {
     console.error("error is: ", error.message);
