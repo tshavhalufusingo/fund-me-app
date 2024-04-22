@@ -24,7 +24,7 @@ export default function Home(){
       // You can now execute SQL queries using the pool
   
       // Example query
-      const result = await pool.request().query('SELECT * FROM YourTable');
+      const result = await pool.request().query('SELECT * FROM users');
       console.log(result.recordset);
   
       // Don't forget to close the connection pool when done
