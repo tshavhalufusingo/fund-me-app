@@ -1,28 +1,44 @@
-"use client";
-import styles from "./page.module.css";
-import "./styles.css";
-import Link from "next/link";
-import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+const sql = require('mssql');
 
-export default function Home() {
-  const router = useRouter();
-  const Login = async (e) => {
-    e.preventDefault;
+// Configuration for your SQL Server connection
+const config = {
+  user: 'fundmeadmin',
+  password: 'Admin@123',
+  server: 'fundmeapp.database.windows.net',
+  database: 'fundMeApp',
+  options: {
+    encrypt: true, // If you're connecting to Azure SQL Database, set to true
+    trustServerCertificate: false // If you're connecting to Azure SQL Database, set to false
+  }
+};
 
-    let useremail = document.getElementById("useremail").value;
-    let userpassword = document.getElementById("password").value;
-    
+export default function Home(){
 
-    const inputData = { email: useremail, password: userpassword };
-    const resp = await signIn("credentials", { ...inputData, redirect: false });
 
-    if (resp.ok) {
-      console.log(resp);
-      router.refresh();
-      router.push("/home");
+  async function connectToDatabase() {
+    try {
+      // Create a new connection pool
+      const pool = await sql.connect(config);
+      console.log('Connected to SQL Server');
+  
+      // You can now execute SQL queries using the pool
+  
+      // Example query
+      const result = await pool.request().query('SELECT * FROM YourTable');
+      console.log(result.recordset);
+  
+      // Don't forget to close the connection pool when done
+      await pool.close();
+      console.log('Connection to SQL Server closed');
+    } catch (err) {
+      console.error('Error connecting to SQL Server:', err);
     }
-  };
+  }
+  
+  // Call the function to connect to the database
+  connectToDatabase();
+  
+
   return (
     <main className={styles.main}>
       <form action={Login}>
@@ -52,4 +68,6 @@ export default function Home() {
       </button>
     </main>
   );
+  
+
 }
