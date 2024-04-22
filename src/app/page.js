@@ -17,7 +17,7 @@ export default function Home() {
     const inputData = { email: useremail, password: userpassword };
     const resp = await signIn("credentials", { ...inputData, redirect: false });
 
-    if (!resp.error) {
+    if (resp.ok) {
       console.log(resp);
       router.refresh();
       router.push("/home");
