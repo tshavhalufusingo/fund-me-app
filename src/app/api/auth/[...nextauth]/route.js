@@ -63,7 +63,7 @@ const authOptions = {
       if (session?.user) {
         session.user.id = token.id;
         session.user.firstName = token.firstName;
-        session.user.firstName = token.firstName;
+        session.user.email = token.email;
         session.user.lastName = token.lastName;
         session.user.role = token.role;
       }
