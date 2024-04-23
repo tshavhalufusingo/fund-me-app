@@ -15,15 +15,23 @@ export default function Home() {
     
 
     const inputData = { email: useremail, password: userpassword };
-    const resp = await signIn("credentials", { ...inputData, redirect: false });
 
-    console.log("running x");
+    try{
+      console.log("running x");
     console.log(resp);
     if (resp.ok) {
       console.log(resp);
       router.refresh();
       router.push("/home");
     }
+
+    }
+    catch(Exception){
+      console.log(Exception);
+    }
+    const resp = await signIn("credentials", { ...inputData, redirect: false });
+
+    
   };
   return (
     <main className={styles.main}>
