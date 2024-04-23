@@ -12,8 +12,6 @@ export default function Navbar() {
   const LogOut = (e) => {
     e.preventDefault();
     signOut(); // Use signOut from next-auth/react
-    router.refresh();
-    router.push("/");
   };
 
   if (session?.user) {
