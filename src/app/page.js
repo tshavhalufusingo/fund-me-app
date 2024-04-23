@@ -17,6 +17,7 @@ export default function Home() {
     const inputData = { email: useremail, password: userpassword };
     const resp = await signIn("credentials", { ...inputData, redirect: false });
 
+    console.log("running x");
     console.log(resp);
     if (resp.ok) {
       console.log(resp);
