@@ -8,18 +8,13 @@ import { useRouter } from "next/navigation";
 export default function Navbar() {
   const { data: session, status } = useSession();
   const router = useRouter();
-  // const LogOut = (e) => {
-  //   e.preventDefault;
-  //   signOut();
-  //   session.destroy();
-  //   router.push("/");
-  // };
+
   const LogOut = (e) => {
     e.preventDefault();
     signOut(); // Use signOut from next-auth/react
+    router.refresh();
     router.push("/");
   };
-  
 
   if (session?.user) {
     return (
