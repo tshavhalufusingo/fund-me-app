@@ -10,53 +10,35 @@ export default function Home() {
   const Login = async (e) => {
     e.preventDefault;
 
+    //users
     let useremail = document.getElementById("useremail").value;
     let userpassword = document.getElementById("password").value;
-    
 
     const inputData = { email: useremail, password: userpassword };
+    const resp = await signIn("credentials", { ...inputData, redirect: false });
 
-    try{
-      console.log("running x");
-    console.log(resp);
-    if (resp.ok) {
-      console.log(resp);
+    if (!resp.error) {
       router.refresh();
       router.push("/home");
     }
-
-    }
-    catch(Exception){
-      console.log(Exception);
-    }
-    const resp = await signIn("credentials", { ...inputData, redirect: false });
-
-    
   };
   return (
     <main className={styles.main}>
       <form action={Login}>
-
         <input
           id="useremail"
           type="email"
           placeholder="User email"
           required
         ></input>
-
         <input
           id="password"
           type="password"
           placeholder="User password"
         ></input>
-
         <button type="submit">Login</button>
-
       </form>
-
       <p>If you have no account click register below</p>
-
-      
       <button id="register" type="submit">
         <Link href="/register">Register</Link>
       </button>
