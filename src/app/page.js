@@ -22,6 +22,11 @@ export default function Home() {
       router.push("/home");
     }
   };
+
+  const goToRegisterPage = async (e) => {
+    e.preventDefault;
+      router.push("/register");
+  };
   return (
     <main className={styles.main}>
       <form action={Login}>
@@ -39,8 +44,8 @@ export default function Home() {
         <button type="submit">Login</button>
       </form>
       <p>If you have no account click register below</p>
-      <button id="register" type="submit">
-        <Link href="/register">Register</Link>
+      <button id="register" onClick={goToRegisterPage} type="submit">
+        Register
       </button>
     </main>
   );

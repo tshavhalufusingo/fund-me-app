@@ -23,9 +23,6 @@ export default function Home() {
       firstname: userFirstName,
       role: userRole,
     };
-
-    console.log(inputData);
-
     const resp = await fetch("api/users", {
       method: "POST",
       headers: {
@@ -37,6 +34,11 @@ export default function Home() {
     if (!resp.error) {
       router.push("/");
     }
+  };
+
+  const goToLoginPage = async (e) => {
+    e.preventDefault;
+      router.push("/register");
   };
   return (
     <main className={styles.main}>
@@ -76,8 +78,8 @@ export default function Home() {
         <button type="submit">Register</button>
       </form>
       <p>If you already have an account click login below</p>
-      <button id="register" type="submit">
-        <Link href="/">Login</Link>
+      <button id="register" onClick={goToLoginPage} type="submit">
+        Login
       </button>
     </main>
   );

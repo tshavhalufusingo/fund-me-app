@@ -1,21 +1,28 @@
 "use client";
 import styles from "../page.module.css";
 import { useSession } from "next-auth/react";
+import AdminHome from "./../components/adminPages/adminHome/page"
+import FundManagerHome from "./../components/fundManagerPages/fundManagerHome/page"
+// import AdminHome from "../../components/adminPages/adminHome";
 
 export default function Page() {
   const { data: session, status } = useSession();
   if (session?.user) {
-    return (
-      <>
-        <main className={styles.main}>
-          <p>
-            I am {session?.user.lastName + " " + session?.user.firstName} with a
-            role of {session?.user?.role}
-          </p>
-        </main>
-        ;
-      </>
-    );
+
+    if(session?.user.role == 'Admin'){
+      return(<>
+      <main className={styles.main}>
+      <AdminHome />
+      </main>
+      </>)
+    }
+    else if(session?.user.role == 'FundManager'){
+      return(<>
+      <main className={styles.main}>
+      <FundManagerHome />
+      </main>
+      </>)
+    }
   }
 
   return (
