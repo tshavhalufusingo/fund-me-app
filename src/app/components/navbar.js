@@ -26,7 +26,7 @@ export default function Navbar() {
 
           <ul>
             <li>
-              <Link href="/register">Profile</Link>
+              <Link href="/profile">Profile</Link>
             </li>
             <li>
               <button onClick={LogOut}> Sing out </button>
