@@ -20,14 +20,17 @@ export default function UserWaintingApproval() {
         </h2>
       </header>
       <table>
+        <thead>
         <tr>
           <th>User id</th>
           <th>First name</th>
           <th>Last name</th>
           <th>Email</th>
+          <th>Role</th>
+          <th>Status</th>
         </tr>
-      </table>
-      <p>
+        </thead>
+        
         {data?.map((userdata) => {
           return (
             <tr key={userdata.userId}>
@@ -35,10 +38,15 @@ export default function UserWaintingApproval() {
               <td>{userdata.firstname}</td>
               <td>{userdata.lastname}</td>
               <td>{userdata.userEmail}</td>
+              <td>{userdata.userRole == 'FundManager' ? 'Fund Manager' : 'Applicant'}</td>
+              <td>{userdata.statusId == 1 ? 'Pending' : userdata.statusId == 2 ? 'Approved' : 'Rejected'}</td>
+              <td><button id={userdata.userId} key={userdata.userId}>Review</button></td>
             </tr>
           );
-        })}{" "}
-      </p>{" "}
+        })}
+
+      </table>
+        
     </div>
   );
 }
