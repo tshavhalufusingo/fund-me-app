@@ -188,6 +188,8 @@
     backdrop-filter: blur(24px);
   }
 
+
+
   .description div {
     align-items: flex-end;
     pointer-events: none;
@@ -227,4 +229,28 @@
   to {
     transform: rotate(0deg);
   }
+}
+
+/* funding manager page code*/
+/* styles.module.css */
+.formContainer {
+  max-width: 500px;
+}
+
+.inputField {
+  margin-bottom: 10px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.textareaField {
+  margin-bottom: 10px;
+  width: 100%;
+  box-sizing: border-box;
+  height: 200px;
+}
+
+
+.reviewPosts {
+  margin-top: 20px;
 }
