@@ -12,11 +12,12 @@
   },
   "dependencies": {
     "mssql": "^10.0.2",
-    "next": "^14.2.1",
+    "next": "^14.2.3",
     "next-auth": "^4.24.7",
     "node": "^18.20.2",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "supertest": "^7.0.0"
   },
   "devDependencies": {
     "@babel/preset-react": "^7.24.1",

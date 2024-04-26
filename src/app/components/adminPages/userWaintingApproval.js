@@ -16,7 +16,7 @@ export default function UserWaintingApproval() {
     <div>
       <header>
         <h2>
-          Users awaitimg approval
+          Users awaiting approval
         </h2>
       </header>
       <table>
