@@ -66,12 +66,14 @@ export default function FundManagerHome() {
         throw new Error('Failed to fetch user posts');
       }
       const postData = await response.json();
-      setUserPosts(postData);
+      // Filter posts based on the current user ID
+      const currentUserPosts = postData.filter(post => post.userId === session?.user.id);
+      setUserPosts(currentUserPosts);
     } catch (error) {
       console.error('Error fetching user posts:', error);
     }
   };
-
+  
   useEffect(() => {
     fetchUserPosts();
   }, [session]);
@@ -122,7 +124,7 @@ export default function FundManagerHome() {
     return (
       <tr key={post.companyName}>
         <td>{post.companyName}</td>
-        <td>{/* You need to provide the number of applications */}</td>
+        <td>{post.numberOfApplications}</td>
       </tr>
     );
   })}
