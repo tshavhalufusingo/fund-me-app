@@ -9,6 +9,9 @@ export default function FundManagerHome() {
     companyName: '',
     postContent: '',
     id: session?.user.id,
+    opportunityType: '',
+    fundingAmount: '',
+    applicationDeadline: '', 
   });
   const [isReviewing, setIsReviewing] = useState(false);
   const [userPosts, setUserPosts] = useState([]);
@@ -88,7 +91,7 @@ export default function FundManagerHome() {
         <>
           <h2>Submit a New Post</h2>
           <form onSubmit={handleSubmit} className={styles.formContainer}>
-            <label htmlFor="companyName">Company Name:</label>
+          <label htmlFor="companyName">Title:</label>
             <input
               type="text"
               id="companyName"
@@ -97,7 +100,23 @@ export default function FundManagerHome() {
               onChange={handleChange}
               className={styles.inputField}
             />
-            <label htmlFor="postContent">Post Content:</label>
+
+
+
+            <label htmlFor="opportunityType">Opportunity Type:</label>
+            <select
+              id="opportunityType"
+              name="opportunityType"
+              value={formData.opportunityType}
+              onChange={handleChange}
+              className={styles.selectField}
+            >
+              <option value="educational">Educational</option>
+              <option value="business">Business</option>
+              <option value="events">Events</option>
+            </select>
+
+            <label htmlFor="postContent">Description:</label>
             <textarea
               id="postContent"
               name="postContent"
@@ -105,8 +124,31 @@ export default function FundManagerHome() {
               onChange={handleChange}
               className={styles.textareaField}
             ></textarea>
-            <button type="submit">Submit</button>
+
+            <label htmlFor="fundingAmount">Funding Amount:</label>
+            <input
+              type="number"
+              id="fundingAmount"
+              name="fundingAmount"
+              value={formData.fundingAmount}
+              onChange={handleChange}
+              className={styles.inputField}
+            />
+
+            <label htmlFor="applicationDeadline">Application Deadline:</label>
+            <input
+              type="date"
+              id="applicationDeadline"
+              name="applicationDeadline"
+              value={formData.applicationDeadline}
+              onChange={handleChange}
+              className={styles.inputField}
+            />
+
+          <button type="submit">Submit</button>
+
           </form>
+       
           <button onClick={handleReviewClick}>Review Posts</button>
         </>
       ) : (
