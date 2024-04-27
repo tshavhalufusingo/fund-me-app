@@ -9,6 +9,8 @@ export default function Navbar() {
   const { data: session } = useSession();
   const router = useRouter();
 
+  const logosource = "https://scontent.xx.fbcdn.net/v/t1.15752-9/440589588_1416138286453095_6091461302783876786_n.jpg?stp=dst-jpg_p403x403&_nc_cat=111&ccb=1-7&_nc_sid=5f2048&_nc_ohc=kgKvlL23V2QQ7kNvgGGhxLo&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_Q7cD1QEhAF5fEM4BOLJJ1JzTk6lmN2rNL_M7yw-Ho885MyDcqA&oe=66558C68";
+
   const LogOut = (e) => {
     e.preventDefault();
     signOut({ callbackUrl: "/" }); // Use signOut from next-auth/react
@@ -32,7 +34,7 @@ export default function Navbar() {
               <Link href="/profile">Profile</Link>
             </li>
             <li>
-              <button onClick={LogOut}> Sing out </button>
+              <button onClick={LogOut}> Sign out </button>
             </li>
           </ul>
         </nav>
@@ -41,18 +43,49 @@ export default function Navbar() {
   }
   return (
     <nav className="navbar">
+
+      <div className="headerx">
+
+      <img src={logosource} className="mylogo" style={{ width: '60px', height: '60px' }}></img>
+
       <header>
         <h1>Fund ME</h1>
       </header>
 
-      <ul>
-        <li>
-          <Link href="/">Sign In</Link>
-        </li>
-        <li>
-          <Link href="/register">Register</Link>
-        </li>
-      </ul>
+      </div>
+
+
+    
+   
+      
+
+    <div className="navRight">
+    <button className="contactUsButton">
+      Contact Us
+    </button>
+    
+        
+
+    <div className="dropdown">
+      <div className="default">Learn About ▼</div>
+       <div className="dropdown-content">
+        <a href="#">Our Staff</a>
+        <a href="#">Our Services</a>
+        <a href="#">Company Profile</a>
+
+    </div>
+
+
+  
+
+    </div>
+
+
+    
+
+   
+    
+</div>
     </nav>
   );
 }

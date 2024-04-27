@@ -9,8 +9,8 @@ export async function GET() {
     .request()
     .query(`SELECT * FROM [dbo].[post] WHERE activeStatus = '1';`);
   poolConnection.close();
-  const user = res.recordset;
-  return NextResponse.json(user);
+  const post = res.recordset;
+  return NextResponse.json(post);
 }
 
 export async function POST(req) {
@@ -24,7 +24,7 @@ export async function POST(req) {
     const res = await poolConnection
       .request()
       .query(
-        `INSERT INTO [dbo].[post] VALUES ('${data.companyName}','${data.postContent}',${1},${data.id});`
+        `INSERT INTO [dbo].[post]  VALUES (${data.id},'${data.companyName}','${data.postContent}',${1},${1});`
       );
     poolConnection.close();
 
