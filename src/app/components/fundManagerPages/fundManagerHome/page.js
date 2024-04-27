@@ -85,7 +85,7 @@ export default function FundManagerHome() {
     <>
       <h1>Funding Manager Home</h1>
 
-      {isReviewing && <h2>All your Posts</h2>}
+      {isReviewing && <h2>Application Review</h2>}
 
       {!isReviewing ? (
         <>
