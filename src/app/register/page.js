@@ -7,8 +7,8 @@ import { useRouter } from "next/navigation";
 
 export default function Home() {
   const router = useRouter();
-  const handleRegister = async (e) => {
-    e.preventDefault;
+  const handleRegister = async (event) => {
+    event.preventDefault;
 
     let userFirstName = document.getElementById("firstname").value;
     let userLastName = document.getElementById("lastname").value;
@@ -23,6 +23,7 @@ export default function Home() {
       firstname: userFirstName,
       role: userRole,
     };
+    
     const resp = await fetch("api/users", {
       method: "POST",
       headers: {

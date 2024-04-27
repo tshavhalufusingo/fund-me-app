@@ -4,7 +4,6 @@ import { useSession } from "next-auth/react";
 import AdminHome from "./../components/adminPages/adminHome/page"
 import FundManagerHome from "./../components/fundManagerPages/fundManagerHome/page"
 import ApplicantHome from "./../components/applicantPages/applicantHome/page"
-// import AdminHome from "../../components/adminPages/adminHome";
 
 export default function Page() {
   const { data: session, status } = useSession();

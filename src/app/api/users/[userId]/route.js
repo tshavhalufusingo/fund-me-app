@@ -11,7 +11,6 @@ export async function GET(req, context) {
     .request()
     .query(`SELECT * FROM [dbo].[user] WHERE userId = ${id};`);
   poolConnection.close();
-  console.log(res.recordset.length)
   if(res.recordset.length == 0){
     console.log("no data avali")
   }
@@ -33,6 +32,26 @@ export async function POST(req) {
     poolConnection.close();
 
     return res;
+  } catch (error) {
+    console.error("error is: ", error.message);
+  }
+}
+
+export async function PUT(req) {
+  const data = await req.json();
+  console.log(data);
+
+  try {
+    let poolConnection = await sql.connect(config);
+
+    const res = await poolConnection
+      .request()
+      .query(
+        `UPDATE [dbo].[user]  SET  statusId = '${data.userApproval}', userPermission = '${data.userPermited}', userBlock = '${data.userAccess}' WHERE userId='${data.userId}';`
+      );
+    poolConnection.close();
+
+    return NextResponse.json(res);
   } catch (error) {
     console.error("error is: ", error.message);
   }

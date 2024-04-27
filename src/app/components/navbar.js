@@ -11,7 +11,7 @@ export default function Navbar() {
 
   const LogOut = (e) => {
     e.preventDefault();
-    signOut({callbackUrl:'/'}); // Use signOut from next-auth/react
+    signOut({ callbackUrl: "/" }); // Use signOut from next-auth/react
   };
 
   if (session?.user) {
@@ -25,6 +25,9 @@ export default function Navbar() {
           </header>
 
           <ul>
+            {session?.user.role == 'Admin'?<><li>
+              <Link href="/home">Dashboard</Link>
+            </li></>: null}
             <li>
               <Link href="/profile">Profile</Link>
             </li>
