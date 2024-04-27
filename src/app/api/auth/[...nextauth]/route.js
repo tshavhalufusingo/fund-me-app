@@ -56,6 +56,9 @@ const authOptions = {
         token.email = user.userEmail;
         token.lastName = user.lastname;
         token.role = user.userRole;
+        token.statusId= user.statusId;
+        token.userPermission=user.userPermission;
+        token.userBlock =user.userBlock;
       }
       return token;
     },
@@ -63,8 +66,11 @@ const authOptions = {
       if (session?.user) {
         session.user.id = token.id;
         session.user.firstName = token.firstName;
-        session.user.email = token.email;
         session.user.lastName = token.lastName;
+        session.user.email = token.email;
+        session.user.statusId = token.statusId;
+        session.user.userPermission = token.userPermission;
+        session.user.userBlock = token.userBlock;
         session.user.role = token.role;
       }
       return session;

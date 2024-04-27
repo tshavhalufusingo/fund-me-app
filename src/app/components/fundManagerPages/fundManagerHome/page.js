@@ -2,13 +2,15 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import styles from "../../../page.module.css";
+import { useSession } from "next-auth/react";
 
 
 export default function FundManagerHome() {
+  const { data: session} = useSession();
   const [formData, setFormData] = useState({
     companyName: '',
     postContent: '',
-    status: 'pending',
+    id: session?.user.id,
   });
 
   const handleChange = (e) => {
@@ -39,7 +41,7 @@ export default function FundManagerHome() {
       setFormData({
         companyName: '',
         postContent: '',
-        status: 'pending',
+        id: session?.user.id,
       });
     } catch (error) {
       console.error('Error submitting post:', error);

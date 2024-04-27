@@ -7,7 +7,7 @@ export async function GET() {
 
   const res = await poolConnection
     .request()
-    .query(`SELECT * FROM [dbo].[user] WHERE statusId IN (1,3);`);
+    .query(`SELECT * FROM [dbo].[post] WHERE activeStatus = '1';`);
   poolConnection.close();
   const user = res.recordset;
   return NextResponse.json(user);
@@ -16,17 +16,19 @@ export async function GET() {
 export async function POST(req) {
   const data = await req.json();
 
+  console.log("data on api: ",data)
+
   try {
     let poolConnection = await sql.connect(config);
 
     const res = await poolConnection
       .request()
       .query(
-        `INSERT INTO [dbo].[user] VALUES ('${data.email}','${data.password}','${data.firstname}','${data.lastname}','${data.role}');`
+        `INSERT INTO [dbo].[post] VALUES ('${data.companyName}','${data.postContent}',${1},${data.id});`
       );
     poolConnection.close();
 
-    return res;
+    return NextResponse.json(res);
   } catch (error) {
     console.error("error is: ", error.message);
   }
