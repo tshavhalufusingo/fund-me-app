@@ -43,8 +43,10 @@ export default function FundManagerHome() {
         postContent: '',
         id: session?.user.id,
       });
+      alert('Post submitted succesfully')
     } catch (error) {
       console.error('Error submitting post:', error);
+      alert('Failed to submit post.Please try again later')
     }
   };
 
