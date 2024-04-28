@@ -17,49 +17,53 @@ export default function UserWaintingApproval() {
       <header>
         <h2>Users awaiting approval</h2>
       </header>
-      <table>
-        <thead>
-          <tr>
-            <th>User id</th>
-            <th>First name</th>
-            <th>Last name</th>
-            <th>Email</th>
-            <th>Role</th>
-            <th>Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data?.map((userdata) => {
-            return (
-              <tr key={userdata.userId}>
-                <td>{userdata.userId}</td>
-                <td>{userdata.firstname}</td>
-                <td>{userdata.lastname}</td>
-                <td>{userdata.userEmail}</td>
-                <td>
-                  {userdata.userRole == "FundManager"
-                    ? "Fund Manager"
-                    : "Applicant"}
-                </td>
-                <td>
-                  {userdata.statusId == 1
-                    ? "Pending"
-                    : userdata.statusId == 2
-                    ? "Approved"
-                    : "Rejected"}
-                </td>
-                <td>
-                  <Link href={`/user/${userdata.userId}`}>
-                    <button id={userdata.userId} key={userdata.userId}>
-                      Review
-                    </button>
-                  </Link>
-                </td>
-              </tr>
-            );
-          })}
-        </tbody>
-      </table>
+      {data?.length > 0 ? (
+        <table>
+          <thead>
+            <tr>
+              <th>User id</th>
+              <th>First name</th>
+              <th>Last name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data?.map((userdata) => {
+              return (
+                <tr key={userdata.userId}>
+                  <td>{userdata.userId}</td>
+                  <td>{userdata.firstname}</td>
+                  <td>{userdata.lastname}</td>
+                  <td>{userdata.userEmail}</td>
+                  <td>
+                    {userdata.userRole == "FundManager"
+                      ? "Fund Manager"
+                      : "Applicant"}
+                  </td>
+                  <td>
+                    {userdata.statusId == 1
+                      ? "Pending"
+                      : userdata.statusId == 2
+                      ? "Approved"
+                      : "Rejected"}
+                  </td>
+                  <td>
+                    <Link href={`/user/${userdata.userId}`}>
+                      <button id={userdata.userId} key={userdata.userId}>
+                        Review
+                      </button>
+                    </Link>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      ) : (
+        <p>no account is waiting for approval</p>
+      )}
     </div>
   );
 }

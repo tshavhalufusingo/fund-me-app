@@ -39,7 +39,7 @@ export default function Home() {
 
   const goToLoginPage = async (e) => {
     e.preventDefault;
-      router.push("/register");
+      router.push("/");
   };
   return (
     <main className={styles.main}>
