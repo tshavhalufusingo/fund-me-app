@@ -22,11 +22,11 @@ export async function POST(req) {
     const res = await poolConnection
       .request()
       .query(
-        `INSERT INTO [dbo].[user] VALUES ('${data.email}','${data.password}','${data.firstname}','${data.lastname}','${data.role}');`
+        `INSERT INTO [dbo].[user]  VALUES ('${data.email}','${data.password}','${data.firstname}','${data.lastname}','${data.role}',0,1,1);`
       );
     poolConnection.close();
 
-    return res;
+    return NextResponse.json(res);
   } catch (error) {
     console.error("error is: ", error.message);
   }

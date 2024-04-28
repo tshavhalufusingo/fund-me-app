@@ -24,7 +24,7 @@ export async function POST(req) {
     const res = await poolConnection
       .request()
       .query(
-        `INSERT INTO [dbo].[post]  VALUES (${data.id},'${data.companyName}','${data.postContent}',${1},${1});`
+        `INSERT INTO [dbo].[post]  VALUES (${data.id},'${data.companyName}','${data.postContent}',${1},${1},${data.fundingAmount},'${data.opportunityType}','${data.applicationDeadline}');`
       );
     poolConnection.close();
 
