@@ -3,6 +3,7 @@ import Link from "next/link";
 import "../styles.css";
 import { signOut, useSession } from "next-auth/react";
 
+
 import { useRouter } from "next/navigation";
 
 export default function Navbar() {
@@ -60,11 +61,11 @@ export default function Navbar() {
       
 
     <div className="navRight">
-    <button className="contactUsButton">
+    <button className="contactUsButton" href="/aboutUs" onClick={router.push("/aboutUs")}>
       Contact Us
     </button>
     
-        
+
 
     <div className="dropdown">
       <div className="default">Learn About ▼</div>
