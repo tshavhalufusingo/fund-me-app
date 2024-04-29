@@ -4,13 +4,13 @@ import "./styles.css";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useState } from "react"; // Import the useState hook
+import { useState } from "react"; 
 import { signOut, useSession } from "next-auth/react";
 
 export default function Home() {
   const { data: session } = useSession();
   const router = useRouter();
-  const [Loading, setLoading] = useState(false); // Use useState hook correctly
+  const [Loading, setLoading] = useState(false);
   const [showError, setShowError] = useState(false);
 
   if (session?.user) {
@@ -29,7 +29,7 @@ export default function Home() {
 
     const resp = await signIn("credentials", { ...inputData, redirect: false });
 
-    setLoading(true);
+    setLoading(false);
     console.log("the response is ", resp.status);
     if (!resp.error) {
       setLoading(false);
@@ -40,7 +40,7 @@ export default function Home() {
     if (resp.status == 401) {
       setLoading(false);
       setShowError(true);
-      setTimeout(() => setShowError(false), 10000);
+      setTimeout(() => setShowError(false), 5000);
     }
 
     setLoading(false); // Hide loading animation
@@ -71,7 +71,8 @@ export default function Home() {
           </div>
         )}
 
-        {Loading && <div className="Loading-bubble">Signing in</div>}
+        {Loading && (
+        <div className="Loading-bubble">Signing in</div>)}
       </form>
       <p>If you have no account click register below</p>
       <button id="register" onClick={goToRegisterPage} type="submit">

@@ -43,6 +43,12 @@ export default function Page() {
   return (
     <main className={styles.main}>
       <div>Please login</div>
+      { router.push("/")};
+      
+
+
+
+      
     </main>
   );
 }
