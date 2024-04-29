@@ -38,19 +38,20 @@ export default function Navbar() {
     return (
       <>
         <nav className="navbar">
-          <img
-            src={logosource}
-            className="mylogo"
-            onClick={gotoHome}
-            style={{ width: "60px", height: "60px" }}
-          ></img>
+          <div className="headerx">
+            <img
+              src={logosource}
+              className="mylogo"
+              onClick={gotoHome}
+              style={{ width: "60px", height: "60px" }}
+            ></img>
 
-          <header>
-            <h1>
-              <Link href="/home"> Fund ME</Link>
-            </h1>
-          </header>
-
+            <header>
+              <h1>
+                <Link href="/home"> Fund ME</Link>
+              </h1>
+            </header>
+          </div>
           <ul>
             {session?.user.role == "Admin" ? (
               <>
@@ -71,7 +72,6 @@ export default function Navbar() {
     );
   }
   return (
-    
     <nav className="navbar">
       <div className="headerx">
         <img

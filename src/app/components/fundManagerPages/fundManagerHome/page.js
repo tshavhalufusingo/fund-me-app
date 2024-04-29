@@ -89,6 +89,7 @@ export default function FundManagerHome() {
       // const currentUserPosts = postData.filter(
       //   (post) => post.userId === session?.user.id
       // );
+      console.log(currentUserPosts);
       setUserPosts(currentUserPosts);
     } catch (error) {
       console.error("Error fetching user posts:", error);
@@ -105,7 +106,6 @@ export default function FundManagerHome() {
 
       {isReviewing && <h2>Application Review</h2>}
 
-
       {!isReviewing && session?.user.userPermission ? (
         <>
           <h2>Submit a New Post</h2>
@@ -118,7 +118,6 @@ export default function FundManagerHome() {
               value={formData.companyName}
               onChange={handleChange}
               className={styles.inputField}
-              
             />
 
             <label htmlFor="opportunityType">Opportunity Type:</label>
@@ -175,6 +174,7 @@ export default function FundManagerHome() {
               <tr>
                 <th>Funding opportunity</th>
                 <th>Applicant name</th>
+                <th>Latest status</th>
                 <th>Action </th>
               </tr>
             </thead>
@@ -185,7 +185,55 @@ export default function FundManagerHome() {
                   <tr key={post.postId}>
                     <td>{post.postname}</td>
                     <td>{post.username}</td>
-                    <td><button>Review</button></td>
+                    <td>
+                      {post.statusId == '1'
+                        ? "Pending"
+                        : post.statusId == '2'
+                        ? "Approved"
+                        : "Rejected"}
+                    </td>
+                    <Link href={`/user/${post.userId}/review`}>
+                      <button id={post.userId} key={post.userId}>
+                        Review
+                      </button>
+                    </Link>
+
+                    <td>
+                      <button
+                        onClick={() => {
+                          fetch(
+                            `/api/applications/${post.postId}/${post.userId}`,
+                            {
+                              method: "PUT",
+                              headers: {
+                                "Content-Type": "application/json",
+                              },
+                              body: JSON.stringify({ status: 3 }),
+                            }
+                          );
+                        }}
+                      >
+                        Reject
+                      </button>
+                    </td>
+                    <td>
+                      <button
+                        onClick={() => {
+                          fetch(
+                            `/api/applications/${post.postId}/${post.userId}`,
+                            {
+                              method: "PUT",
+                              headers: {
+                                "Content-Type": "application/json",
+                              },
+                              body: JSON.stringify({ status: 2 }),
+                            }
+                          );
+                        }}
+                      >
+                        Approve
+                      </button>
+                    </td>
                   </tr>
                 );
               })}

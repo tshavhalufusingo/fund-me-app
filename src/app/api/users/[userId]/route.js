@@ -4,6 +4,7 @@ const config = require("../../../database/dbconnection");
 
 export async function GET(req, context) {
   const { params } = context;
+
   const id = params.userId;
   let poolConnection = await sql.connect(config);
 
