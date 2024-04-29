@@ -17,7 +17,21 @@ jest.mock('next/navigation', () => ({
     }),
   }));
 
+  jest.mock("next-auth/react", () => ({
+    signIn: jest.fn(),
+}));
+
 describe('Home Component', () => {
+  it("should display error message when login fails", async () => {
+    // Mock signIn function to return an error
+    signIn.mockReturnValueOnce({ error: true });
+
+    render(<Home />);
+    fireEvent.click(screen.getByText("Login"));
+
+    // Expect error message to be displayed
+   await waitFor(() => expect(screen.getByText("If you have no account click register below")).toBeInTheDocument());
+  });
 
   it('should render login form', () => {
     render(<Home />);
