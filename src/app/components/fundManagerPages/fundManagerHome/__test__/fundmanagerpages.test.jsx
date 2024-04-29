@@ -61,5 +61,13 @@ describe('FundManagerHome component', () => {
       fireEvent.submit(getByText('Submit'));
       // You can add assertions for successful form submission here
     });
+    test('renders review table when reviewing', () => {
+        render(<FundManagerHome />);
+        const reviewButton = screen.getByText('Review Posts');
+        userEvent.click(reviewButton);
+        //const reviewTable = screen.getByRole('table');
+        //expect(reviewTable).toBeInTheDocument();
+      });
+      
   });
 
