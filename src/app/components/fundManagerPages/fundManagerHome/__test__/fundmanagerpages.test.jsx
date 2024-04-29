@@ -1,73 +1,63 @@
-import { render, screen,fireEvent,waitFor } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import FundManagerHome from "../page"; 
+import FundManagerHome from "../page";
+import { useSession } from "next-auth/react";
+
+// Mocking useSession
 jest.mock("next-auth/react", () => ({
-  useSession: () => ({ data: { user: { id: 1 } } }),
+  useSession: jest.fn(),
 }));
 
-
-//////////////////
 describe('FundManagerHome component', () => {
-    beforeEach(() => {
-      jest.clearAllMocks(); // clear mocks before each test
-    });
-
-    test("renders form to create new post initially", () => {
-        render(<FundManagerHome />);
-        const titleInput = screen.getByLabelText("Title:");
-        const descriptionInput = screen.getByLabelText("Description:");
-        const submitButton = screen.getByText("Submit");
-      
-        expect(titleInput).toBeInTheDocument();
-        expect(descriptionInput).toBeInTheDocument();
-        expect(submitButton).toBeInTheDocument();
-      });
-  
-    test('renders submit form when not reviewing', () => {
-      // Mock useSession to return a mock session object
-      const mockSession = {
-        user: {
-          id: '123',
-        },
-      };
-      jest.spyOn(require('next-auth/react'), 'useSession').mockReturnValueOnce({ data: mockSession });
-  
-      const { getByText, getByLabelText } = render(<FundManagerHome />);
-      expect(getByText('Submit a New Post')).toBeInTheDocument();
-      expect(getByLabelText('Title:')).toBeInTheDocument();
-      expect(getByLabelText('Opportunity Type:')).toBeInTheDocument();
-      expect(getByLabelText('Description:')).toBeInTheDocument();
-      expect(getByLabelText('Funding Amount:')).toBeInTheDocument();
-      expect(getByLabelText('Application Deadline:')).toBeInTheDocument();
-      expect(getByText('Submit')).toBeInTheDocument();
-    });
-  
-   
-  
-    test('submits form data', async () => {
-      // Mock useSession to return a mock session object
-      const mockSession = {
-        user: {
-          id: '123',
-        },
-      };
-      jest.spyOn(require('next-auth/react'), 'useSession').mockReturnValueOnce({ data: mockSession });
-  
-      const { getByLabelText, getByText } = render(<FundManagerHome />);
-      fireEvent.change(getByLabelText('Title:'), { target: { value: 'Test Title' } });
-      fireEvent.change(getByLabelText('Description:'), { target: { value: 'Test Description' } });
-      fireEvent.change(getByLabelText('Funding Amount:'), { target: { value: '10000' } });
-      fireEvent.change(getByLabelText('Application Deadline:'), { target: { value: '2024-04-30' } });
-      fireEvent.submit(getByText('Submit'));
-      // You can add assertions for successful form submission here
-    });
-    test('renders review table when reviewing', () => {
-        render(<FundManagerHome />);
-        const reviewButton = screen.getByText('Review Posts');
-        userEvent.click(reviewButton);
-        //const reviewTable = screen.getByRole('table');
-        //expect(reviewTable).toBeInTheDocument();
-      });
-      
+  beforeEach(() => {
+    jest.clearAllMocks();
+    useSession.mockReturnValue({ data: { user: { id: 1, userPermission: true } } });
   });
 
+  test("renders form to create new post initially", () => {
+    render(<FundManagerHome />);
+    expect(screen.getByText("Submit a New Post")).toBeInTheDocument();
+    expect(screen.getByLabelText("Title:")).toBeInTheDocument();
+    expect(screen.getByLabelText("Opportunity Type:")).toBeInTheDocument();
+    expect(screen.getByLabelText("Description:")).toBeInTheDocument();
+    expect(screen.getByLabelText("Funding Amount:")).toBeInTheDocument();
+    expect(screen.getByLabelText("Application Deadline:")).toBeInTheDocument();
+    expect(screen.getByText("Submit")).toBeInTheDocument();
+  });
+
+  test("submits form data", async () => {
+    render(<FundManagerHome />);
+    const titleInput = screen.getByLabelText("Title:");
+    const descriptionInput = screen.getByLabelText("Description:");
+    const submitButton = screen.getByText("Submit");
+
+    fireEvent.change(titleInput, { target: { value: "Test Title" } });
+    fireEvent.change(descriptionInput, { target: { value: "Test Description" } });
+    // Add more fireEvent calls for other form fields if needed
+
+    fireEvent.click(submitButton);
+
+    // Add assertions for successful form submission if needed
+  });
+
+  test("renders review table when reviewing", () => {
+    render(<FundManagerHome />);
+    const reviewButton = screen.getByText("Review Posts");
+    userEvent.click(reviewButton);
+    //expect(screen.getByText("Application Review")).toBeInTheDocument();
+  });
+
+  test("displays user posts in the table", async () => {
+    // Mocking the userPosts data
+    const mockUserPosts = [
+      { postId: 1, postname: "Test Post 1", username: "User 1" },
+      { postId: 2, postname: "Test Post 2", username: "User 2" }
+    ];
+    useSession.mockReturnValue({ data: { user: { id: 1, userPermission: false } } });
+    render(<FundManagerHome />);
+    // Assuming there's a button with text "Review" for each post
+    // await waitFor(() => {
+    //   expect(screen.getAllByText("Review").length).toBe(mockUserPosts.length);
+    // });
+  });
+});

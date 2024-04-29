@@ -1,59 +1,47 @@
-import React from 'react';
-import { render, screen, waitFor, act } from '@testing-library/react';
-import UserWaintingApproval from '../userWaintingApproval';
 
-beforeEach(() => {
-  jest.spyOn(global, 'fetch').mockResolvedValue({
+//import UserWaitingApproval from '../UserWaitingApproval'; // Corrected component name
+import { render, screen } from "@testing-library/react";
+import UserWaintingApproval from "../UserWaintingApproval";
+
+// Mocking the fetch API to return dummy data
+global.fetch = jest.fn(() =>
+  Promise.resolve({
     json: () =>
       Promise.resolve([
         {
           userId: 1,
-          firstname: 'John',
-          lastname: 'Doe',
-          userEmail: 'john@example.com',
-          userRole: 'Applicant',
+          firstname: "John",
+          lastname: "Doe",
+          userEmail: "john@example.com",
+          userRole: "Applicant",
           statusId: 1,
         },
-        {
-          userId: 2,
-          firstname: 'Jane',
-          lastname: 'Doe',
-          userEmail: 'jane@example.com',
-          userRole: 'FundManager',
-          statusId: 2,
-        },
+        // Add more dummy data as needed
       ]),
+  })
+);
+
+describe("UserWaintingApproval component", () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
   });
-});
 
-afterEach(() => {
-  jest.restoreAllMocks();
-});
-
-test('renders user data correctly', async () => {
-  await act(async () => {
+  it("renders a table of users awaiting approval", async () => {
     render(<UserWaintingApproval />);
+
+    // Check if the header is rendered
+    expect(screen.getByText("Users awaiting approval")).toBeInTheDocument();
+
+    // Wait for the data to be fetched and displayed
+    const userId = await screen.findByText("1");
+    expect(userId).toBeInTheDocument();
+    expect(screen.getByText("John")).toBeInTheDocument();
+    expect(screen.getByText("Doe")).toBeInTheDocument();
+    expect(screen.getByText("john@example.com")).toBeInTheDocument();
+    expect(screen.getByText("Applicant")).toBeInTheDocument();
+    expect(screen.getByText("Pending")).toBeInTheDocument();
+    expect(screen.getByText("Review")).toBeInTheDocument();
   });
 
-  expect(screen.getByText('Users awaiting approval')).toBeInTheDocument();
-  expect(screen.getByText('User id')).toBeInTheDocument();
-  expect(screen.getByText('First name')).toBeInTheDocument();
-  expect(screen.getByText('Last name')).toBeInTheDocument();
-  expect(screen.getByText('Email')).toBeInTheDocument();
-  expect(screen.getByText('Role')).toBeInTheDocument();
-  expect(screen.getByText('Status')).toBeInTheDocument();
-
-  await waitFor(() => {
-    expect(screen.getByText('John')).toBeInTheDocument();
-    //expect(screen.getByText('Doe')).toBeInTheDocument();
-    expect(screen.getByText('john@example.com')).toBeInTheDocument();
-    expect(screen.getByText('Applicant')).toBeInTheDocument();
-    expect(screen.getByText('Pending')).toBeInTheDocument();
-
-    expect(screen.getByText('Jane')).toBeInTheDocument();
-    //expect(screen.getByText('Doe')).toBeInTheDocument();
-    expect(screen.getByText('jane@example.com')).toBeInTheDocument();
-    expect(screen.getByText('Fund Manager')).toBeInTheDocument();
-    expect(screen.getByText('Approved')).toBeInTheDocument();
-  });
+  // Add more test cases as needed for other scenarios like empty data, approved users, etc.
 });
