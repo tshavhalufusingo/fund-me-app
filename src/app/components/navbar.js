@@ -17,6 +17,11 @@ export default function Navbar() {
     signOut({ callbackUrl: "/" }); // Use signOut from next-auth/react
   };
 
+  const gotoSendMessage = async (e) => {
+    e.preventDefault;
+      router.push("/components/contactUs");
+  };
+
   if (session?.user) {
     return (
       <>
@@ -61,7 +66,7 @@ export default function Navbar() {
       
 
     <div className="navRight">
-    <button className="contactUsButton" href="/aboutUs" onClick={router.push("/aboutUs")}>
+    <button className="contactUsButton" onClick={gotoSendMessage}>
       Contact Us
     </button>
     
