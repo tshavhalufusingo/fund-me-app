@@ -1,12 +1,13 @@
 "use client";
 import styles from "../../page.module.css";
-import { useParams } from "next/navigation";
+import { useParams, } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
 export default function ReviewUser() {
   const params = useParams();
   const router = useRouter();
+
 
   const id = params.userId;
 
