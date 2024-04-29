@@ -1,12 +1,18 @@
-import React from 'react';
-import { render } from '@testing-library/react';
-import Loading from '../loading_animation';
+// __tests__/Loading.test.js
+import React from "react";
+import { render } from "@testing-library/react";
+import Loading from "../Loading";
 
-describe('Loading component', () => {
+describe("Loading component", () => {
+  it("renders loading text", () => {
+    const { getByText } = render(<Loading />);
+    const loadingText = getByText(/Loading.../i);
+    expect(loadingText).toBeInTheDocument();
+  });
 
-  test('renders loader element', () => {
+  it("renders with correct class", () => {
     const { container } = render(<Loading />);
-    const loaderElement = container.querySelector('.loader');
-    expect(loaderElement).toBeInTheDocument();
+    const loadingContainer = container.querySelector(".loading-container");
+    expect(loadingContainer).toBeInTheDocument();
   });
 });
