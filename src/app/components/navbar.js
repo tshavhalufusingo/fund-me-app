@@ -22,10 +22,32 @@ export default function Navbar() {
       router.push("/components/contactUs");
   };
 
+
+  if(session?.user){
+
+  }
+  const gotoHome = async (e) => {
+    if(session?.user){
+      
+    e.preventDefault;
+    router.push("/home");
+
+    }
+    else{
+      e.preventDefault;
+      router.push("/");
+  
+      
+    }
+  };
+
+
   if (session?.user) {
     return (
       <>
         <nav className="navbar">
+        <img src={logosource} className="mylogo" onClick={gotoHome} style={{ width: '60px', height: '60px' }}></img>
+
           <header>
             <h1>
               <Link href="/home"> Fund ME</Link>
@@ -52,7 +74,7 @@ export default function Navbar() {
 
       <div className="headerx">
 
-      <img src={logosource} className="mylogo" style={{ width: '60px', height: '60px' }}></img>
+      <img src={logosource} className="mylogo" onClick={gotoHome} style={{ width: '60px', height: '60px' }}></img>
 
       <header>
         <h1>Fund ME</h1>
