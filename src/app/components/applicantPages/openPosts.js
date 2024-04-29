@@ -1,6 +1,10 @@
 "use client";
+
+import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 export default function OpenPosts() {
+
+  const { data: session } = useSession();
   const [data, setData] = useState(null);
   useEffect(() => {
     fetch("/api/posts")
@@ -10,6 +14,24 @@ export default function OpenPosts() {
       });
   }, []);
 
+  const handleApply = async (e) => {
+    e.preventDefault;
+    
+
+    const inputData = {
+      postId: e.target.id,
+      userId: session?.user.id,
+    };
+    
+    const response = await fetch("/api/applications", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(inputData),
+    });
+  };
+
   return (
     <section>
       {data?.map((postData) => {
@@ -17,7 +39,7 @@ export default function OpenPosts() {
           <div key={postData.postId}>
             <p>{postData.companyName}</p>
             <p>{postData.postContent}</p>
-            <button>Apply</button>
+            <button key={postData.postId} id={postData.postId} onClick={handleApply}>Apply</button>
           </div>
         );
       })}

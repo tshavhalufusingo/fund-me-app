@@ -7,14 +7,16 @@ export async function GET() {
 
   const res = await poolConnection
     .request()
-    .query(`SELECT * FROM [dbo].[user];`);
+    .query(`SELECT * FROM [dbo].[postApplication] WHERE;`);
   poolConnection.close();
-  const user = res.recordset;
-  return NextResponse.json(user);
+  const post = res.recordset;
+  return NextResponse.json(post);
 }
 
 export async function POST(req) {
   const data = await req.json();
+
+  console.log("data on api: ",data)
 
   try {
     let poolConnection = await sql.connect(config);
@@ -22,7 +24,7 @@ export async function POST(req) {
     const res = await poolConnection
       .request()
       .query(
-        `INSERT INTO [dbo].[user]  VALUES ('${data.email}','${data.password}','${data.firstname}','${data.lastname}','${data.role}',0,1,${data.role == 'Applicant'? 2: 1 });`
+        `INSERT INTO [dbo].[postApplication]  VALUES (${data.postId},${data.userId},1);`
       );
     poolConnection.close();
 

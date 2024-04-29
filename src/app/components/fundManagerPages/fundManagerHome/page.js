@@ -64,20 +64,31 @@ export default function FundManagerHome() {
     }
   };
 
+  const [data, setData] = useState(null);
+
+  // useEffect(() => {
+  //   fetch(`/api/applications/${session?.user.id}`)
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       setUserPosts(...currentUserPosts);
+  //     });
+  // }, []);
+
   const handleReviewClick = () => {
     setIsReviewing(true);
   };
   const fetchUserPosts = async () => {
     try {
-      const response = await fetch(`/api/posts?userId=${session?.user.id}`);
+      // const response = await fetch(`/api/posts?userId=${session?.user.id}`);
+      const response = await fetch(`/api/applications/${session?.user.id}`);
       if (!response.ok) {
         throw new Error("Failed to fetch user posts");
       }
-      const postData = await response.json();
+      const currentUserPosts = await response.json();
       // Filter posts based on the current user ID
-      const currentUserPosts = postData.filter(
-        (post) => post.userId === session?.user.id
-      );
+      // const currentUserPosts = postData.filter(
+      //   (post) => post.userId === session?.user.id
+      // );
       setUserPosts(currentUserPosts);
     } catch (error) {
       console.error("Error fetching user posts:", error);
@@ -94,7 +105,8 @@ export default function FundManagerHome() {
 
       {isReviewing && <h2>Application Review</h2>}
 
-      {!isReviewing ? (
+
+      {!isReviewing && session?.user.userPermission ? (
         <>
           <h2>Submit a New Post</h2>
           <form onSubmit={handleSubmit} className={styles.formContainer}>
@@ -106,6 +118,7 @@ export default function FundManagerHome() {
               value={formData.companyName}
               onChange={handleChange}
               className={styles.inputField}
+              
             />
 
             <label htmlFor="opportunityType">Opportunity Type:</label>
@@ -161,23 +174,25 @@ export default function FundManagerHome() {
             <thead>
               <tr>
                 <th>Funding opportunity</th>
-                <th>Number of applications</th>
+                <th>Applicant name</th>
+                <th>Action </th>
               </tr>
             </thead>
 
             <tbody>
               {userPosts.map((post) => {
                 return (
-                  <tr key={post.companyName}>
-                    <td>{post.companyName}</td>
-                    <td>{post.numberOfApplications}</td>
+                  <tr key={post.postId}>
+                    <td>{post.postname}</td>
+                    <td>{post.username}</td>
+                    <td><button>Review</button></td>
                   </tr>
                 );
               })}
             </tbody>
           </table>
 
-          <Link href="/FundManagerHome" passHref>
+          <Link href="/" passHref>
             <button>Back to Home</button>
           </Link>
         </>

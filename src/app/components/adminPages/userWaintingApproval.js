@@ -3,13 +3,28 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 export default function UserWaintingApproval() {
   const [data, setData] = useState(null);
+  const [unapprovedData, setUnapproved] = useState(null);
+  const [approvedData, setApproved] = useState(null);
 
   useEffect(() => {
     fetch("/api/users")
       .then((res) => res.json())
       .then((data) => {
         setData(data);
+        setUnapproved(
+          data?.filter(
+            (user) => user.statusId === 1 || user.statusId === 3
+          )
+        );
+        setApproved(
+          data?.filter(
+            (user) => user.statusId === 2
+          )
+        );
       });
+    
+
+    console.log(unapprovedData)
   }, []);
 
   return (
@@ -17,7 +32,7 @@ export default function UserWaintingApproval() {
       <header>
         <h2>Users awaiting approval</h2>
       </header>
-      {data?.length > 0 ? (
+      {unapprovedData?.length > 0 ? (
         <table>
           <thead>
             <tr>
@@ -30,7 +45,7 @@ export default function UserWaintingApproval() {
             </tr>
           </thead>
           <tbody>
-            {data?.map((userdata) => {
+            {unapprovedData?.map((userdata) => {
               return (
                 <tr key={userdata.userId}>
                   <td>{userdata.userId}</td>
@@ -64,6 +79,59 @@ export default function UserWaintingApproval() {
       ) : (
         <p>no account is waiting for approval</p>
       )}
+
+
+<header>
+        <h2>All system users</h2>
+      </header>
+      {approvedData?.length > 0 ? (
+        <table>
+          <thead>
+            <tr>
+              <th>User id</th>
+              <th>First name</th>
+              <th>Last name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {approvedData?.map((userdata) => {
+              return (
+                <tr key={userdata.userId}>
+                  <td>{userdata.userId}</td>
+                  <td>{userdata.firstname}</td>
+                  <td>{userdata.lastname}</td>
+                  <td>{userdata.userEmail}</td>
+                  <td>
+                    {userdata.userRole == "FundManager"
+                      ? "Fund Manager"
+                      : "Applicant"}
+                  </td>
+                  <td>
+                    {userdata.statusId == 1
+                      ? "Pending"
+                      : userdata.statusId == 2
+                      ? "Approved"
+                      : "Rejected"}
+                  </td>
+                  <td>
+                    <Link href={`/user/${userdata.userId}`}>
+                      <button id={userdata.userId} key={userdata.userId}>
+                        Review
+                      </button>
+                    </Link>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      ) : (
+        <p>no one is approved to use the system yet</p>
+      )}
+
     </div>
   );
 }

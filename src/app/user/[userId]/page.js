@@ -73,9 +73,9 @@ export default function ReviewUser() {
           <div>
             <p>Account status:</p>
             <select name="approvalStatus" id="approvalStatus">
-              <option value="1">Pending</option>
-              <option value="2">Approve</option>
-              <option value="3">Reject</option>
+              <option value="1" selected={data?.statusId === 1}>Pending</option>
+              <option value="2" selected={data?.statusId === 2}>Approve</option>
+              <option value="3" selected={data?.statusId === 3}>Reject</option>
             </select>
           </div>
 
