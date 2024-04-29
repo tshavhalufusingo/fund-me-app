@@ -22,6 +22,7 @@ jest.mock('next/navigation', () => ({
 }));
 
 describe('Home Component', () => {
+ 
   it("should display error message when login fails", async () => {
     // Mock signIn function to return an error
     signIn.mockReturnValueOnce({ error: true });
