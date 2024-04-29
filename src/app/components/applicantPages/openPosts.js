@@ -1,8 +1,10 @@
 "use client";
+import "../../styles.css";
 
 import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 export default function OpenPosts() {
+
 
   const { data: session } = useSession();
   const [data, setData] = useState(null);
@@ -36,10 +38,10 @@ export default function OpenPosts() {
     <section>
       {data?.map((postData) => {
         return (
-          <div key={postData.postId}>
+          <div key={postData.postId} className="postDiv">
             <p>{postData.companyName}</p>
             <p>{postData.postContent}</p>
-            <button key={postData.postId} id={postData.postId} onClick={handleApply}>Apply</button>
+            <button className="postButtons"  key={postData.postId} id={postData.postId} onClick={handleApply}>Apply</button>
           </div>
         );
       })}

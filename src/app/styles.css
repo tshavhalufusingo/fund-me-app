@@ -19,12 +19,20 @@ button {
   transition: background-color 0.3s ease;
 }
 
-#register {
+.register {
   width: 30%;
 }
-#register:hover {
+.register:hover {
   opacity: 0.8;
 }
+
+.registerx {
+  width: 100%;
+}
+.registerx:hover {
+  opacity: 0.8;
+}
+
 
 .navbar {
   position: fixed;
@@ -230,4 +238,15 @@ padding: 10px;
 border-radius: 10px;
 box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
 z-index: 9999;
+}
+
+.postButtons{
+  width: 100px;
+  height: 30px;
+  margin-bottom: 1rem;
+}
+
+.postDiv{
+  border-bottom: 1px solid whitesmoke;
+  margin-bottom: 2rem;
 }

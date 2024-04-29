@@ -64,7 +64,7 @@ export default function Home() {
           type="password"
           placeholder="User password"
         ></input>
-        <button type="submit">Login</button>
+        <button className="registerx" type="submit">Login</button>
         {showError && (
           <div className="error-bubble">
             Either username or password is wrong. Please try again
@@ -75,7 +75,7 @@ export default function Home() {
         <div className="Loading-bubble">Signing in</div>)}
       </form>
       <p>If you have no account click register below</p>
-      <button id="register" onClick={goToRegisterPage} type="submit">
+      <button className="register" onClick={goToRegisterPage} type="submit">
         Register
       </button>
     </main>
