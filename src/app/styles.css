@@ -26,7 +26,8 @@ button {
 .navbar {
   position: fixed;
   top: 0;
-  width: 100%;
+  align-items: center;
+  width:100%;
   display: flex;
   background-color: #684606;
   flex-direction: row;
@@ -147,4 +148,83 @@ td button{
   background-color: white ;
   width: 130px;
 
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+.container {
+    max-width: 800px;
+    margin: 100px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+h1 {
+    text-align: center;
+    color: #333;
+}
+.contact-form {
+    margin-top: 50px;
+}
+.form-group {
+    margin-bottom: 20px;
+}
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+.form-group textarea {
+    resize: vertical;
+    height: 150px;
+}
+.form-group button {
+    padding: 10px 20px;
+    font-size: 16px;
+    background-color: #4caf50;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.form-group button:hover {
+    background-color: #45a049;
+}
+
+
+.error-bubble {
+    top: 10px;
+  right: 10px;
+  background-color: #ff5f5f;
+  color: rgb(212, 16, 16);
+  padding: 10px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+  z-index: 9999;
+}
+
+
+.Loading-bubble {
+  top: 10px;
+right: 10px;
+background-color: #6a5fff;
+color: rgb(16, 212, 16);
+padding: 10px;
+border-radius: 10px;
+box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+z-index: 9999;
 }

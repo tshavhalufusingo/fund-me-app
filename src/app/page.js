@@ -4,9 +4,16 @@ import "./styles.css";
 import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { useState } from "react"; // Import the useState hook
+
+
 
 export default function Home() {
   const router = useRouter();
+  const [Loading, setLoading] = useState(false); // Use useState hook correctly
+  const [showError, setShowError] = useState(false);
+
+
   const Login = async (e) => {
     e.preventDefault;
 
@@ -15,12 +22,27 @@ export default function Home() {
     let userpassword = document.getElementById("password").value;
 
     const inputData = { email: useremail, password: userpassword };
+    setLoading(true); // Show loading animation
+
     const resp = await signIn("credentials", { ...inputData, redirect: false });
 
+    setLoading(true);
+    console.log("the response is ", resp.status);
     if (!resp.error) {
+      setLoading(false);  
       router.refresh();
       router.push("/home");
     }
+
+    if(resp.status==401){
+      setLoading(false);  
+      setShowError(true);
+      setTimeout(() => setShowError(false), 10000)
+
+    }
+
+    setLoading(false); // Hide loading animation
+
   };
 
   const goToRegisterPage = async (e) => {
@@ -42,6 +64,17 @@ export default function Home() {
           placeholder="User password"
         ></input>
         <button type="submit">Login</button>
+        {showError && (
+        <div className="error-bubble">
+          Either username or password is wrong. Please try again
+        </div>
+      )}
+
+      {Loading && (
+        <div className="Loading-bubble">
+          Signing in
+        </div>
+      )}
       </form>
       <p>If you have no account click register below</p>
       <button id="register" onClick={goToRegisterPage} type="submit">
