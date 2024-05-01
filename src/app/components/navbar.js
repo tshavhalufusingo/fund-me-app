@@ -2,7 +2,7 @@
 import Link from "next/link";
 import "../styles.css";
 import { signOut, useSession } from "next-auth/react";
-
+import Graph from "./graphs/page";
 import { useRouter } from "next/navigation";
 
 export default function Navbar() {
@@ -20,6 +20,12 @@ export default function Navbar() {
   const gotoSendMessage = async (e) => {
     e.preventDefault;
     router.push("/components/contactUs");
+  };
+
+  const gotoInsights = async (e) => {
+    e.preventDefault;
+    router.push("/components/graphs");
+
   };
 
   if (session?.user) {
@@ -56,12 +62,14 @@ export default function Navbar() {
             {session?.user.role == "Admin" ? (
               <>
                 <li>
-                  <Link href="/home">Dashboard</Link>
+                  <Link href="{return (
+                      <Graph/>
+                  );}">Dashboard</Link>
                 </li>
               </>
             ) : null}
             <li>
-              <Link href="/profile">Profile</Link>
+              <Link href="/components/graphs">Profile</Link>
             </li>
             <li>
               <button onClick={LogOut}> Sign out </button>
@@ -89,6 +97,10 @@ export default function Navbar() {
       <div className="navRight">
         <button className="contactUsButton" onClick={gotoSendMessage}>
           Contact Us
+        </button>
+
+        <button className="contactUsButton" onClick={gotoInsights}>
+          Insights  
         </button>
 
         <div className="dropdown">

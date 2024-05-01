@@ -250,3 +250,11 @@ z-index: 9999;
   border-bottom: 1px solid whitesmoke;
   margin-bottom: 2rem;
 }
+
+canvas{
+  margin-top: 50px;
+}
+
+.pichart{
+  margin-top: 100px;
+}
