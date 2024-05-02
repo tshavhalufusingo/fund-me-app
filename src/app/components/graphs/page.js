@@ -5,14 +5,19 @@ import GeneratePiChart from "./generateGraph";
 function Graph() {
   const [companyNames, setCompanyNames] = useState([]);
   const [fundingAmounts, setFundingAmounts] = useState([]);
+
+  
+  const status =  generateAprovedStudentsGraph()[0];
+  const statusFlag =  generateAprovedStudentsGraph()[1];
   
   let dist = [0,0,0];
 
-  for(let x in companyNames){
-    if(x === 1){
+  for(let x = 0; x < status.length; x++){
+    console.log("x = ",status[x]);  
+    if( status[x]=== 1){
       dist[0] += 1;
     }
-    else if(x === 2){
+    else if(status[x] === 2){
       dist[1] += 1;
     }
     else{
@@ -20,8 +25,6 @@ function Graph() {
     }
   }
 
-  const status =  generateAprovedStudentsGraph()[0];
-  const statusFlag =  generateAprovedStudentsGraph()[1];
   console.log(status);
 
   useEffect(() => {
@@ -73,6 +76,13 @@ function Graph() {
         Applications 
       </h1>
       <GeneratePiChart labels={statusFlag} data={dist} />
+
+      <p>
+        Pending : {dist[0]}      </p> 
+
+
+       <p> Approved : {dist[1]} </p> 
+      <p>  Rejected : {dist[2 ]} </p>
 
 
     </div>
