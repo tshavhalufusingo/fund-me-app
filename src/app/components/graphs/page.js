@@ -82,7 +82,7 @@ function Graph() {
 
 
        <p> Approved : {dist[1]} </p> 
-      <p>  Rejected : {dist[2 ]} </p>
+      <p>  Rejected : {dist[2]} </p>
 
 
     </div>
