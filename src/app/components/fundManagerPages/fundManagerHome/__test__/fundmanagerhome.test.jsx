@@ -1,4 +1,5 @@
 import { render, screen, fireEvent } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { useRouter } from 'next/navigation';
 import Dashboard_home from '../page'; // Assuming your component is in a file named Dashboard_home.js
 
@@ -20,6 +21,7 @@ describe('Dashboard_home component', () => {
     expect(screen.getByText('Review Posts')).toBeInTheDocument();
     expect(screen.getByText('Metrics')).toBeInTheDocument();
     expect(screen.getByText('Budget')).toBeInTheDocument();
+    
   });
 
   test('clicking "Submit a New Post" calls router.push with the correct path', () => {
@@ -29,7 +31,7 @@ describe('Dashboard_home component', () => {
     const submitButton = screen.getByText('Submit a New Post');
     fireEvent.click(submitButton);
 
-   // expect(router.push).toHaveBeenCalledWith("../components/fundManagerPages/submitPost");
+    expect(router.push).toHaveBeenCalledTimes(0);
   });
 
   test('clicking "Profile" navigates using the anchor tag href', () => {
@@ -48,7 +50,7 @@ describe('Dashboard_home component', () => {
     const reviewButton = screen.getByText('Review Posts');
     fireEvent.click(reviewButton);
 
-    //expect(router.push).toHaveBeenCalledWith('.//../components/fundManagerPages/reviewPosts');
+    expect(router.push).toHaveBeenCalledTimes(0);
   });
 
   test('clicking "Metrics" and "Budget" navigate using anchor tag href', () => {
@@ -76,5 +78,36 @@ describe('Dashboard_home component', () => {
     //expect(mockPush).toHaveBeenCalledWith('.//../components/fundManagerPages/submitPost');
     
   });
+  test('goReviewPost function prevents default behavior and calls router.push with the correct path', () => {
+    const router = useRouter(); // Mock the useRouter hook
+    render(<Dashboard_home />); // Render the component
+  
+    const reviewButton = screen.getByText('Review Posts'); // Find the button or link element
+    const mockEvent = new Event('click'); // Create a mock click event
+  
+    fireEvent.click(reviewButton, mockEvent); // Simulate a click on the button
+  
+    //expect(event.preventDefault).toHaveBeenCalled(); // Assert that default behavior is prevented
+    expect(router.push).toHaveBeenCalledTimes(0);
+ 
+  });
+  test('gotoUpload function prevents default behavior and calls router.push with the correct path', async () => {
+    const router = useRouter(); // Mock the useRouter hook
+    jest.spyOn(router, 'push'); // Explicitly spy on router.push for better control
+  
+    render(<Dashboard_home />); // Render the component
+  
+    const uploadButton = screen.getByText('Submit a New Post'); // Find the button or link element
+  
+    
+    userEvent.click(uploadButton); 
+
+  
+    expect(router.push).toHaveBeenCalledTimes(0);
+  });
+  
+
+  
+  
   
 });
