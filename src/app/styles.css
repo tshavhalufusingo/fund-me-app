@@ -262,3 +262,43 @@ canvas{
 .graphH{
   margin-top: 135px;
 }
+
+.dashboard {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Adjust the number of columns as needed */
+  gap: 20px; /* Adjust the gap between options */
+}
+
+.option {
+  background-color: #f0f0f0;
+  padding: 20px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.option a {
+  text-decoration: none;
+  color: #333;
+}
+
+.option:hover {
+  background-color: #ddd;
+}
+
+
+.homeheader{
+  margin-top: 100px;
+  align-items: center;
+
+}
+
+.newpostbody{
+
+  background: linear-gradient(to bottom, #6da5c0, #0f959c ); /* Example gradient colors */
+  height: 100%;
+  
+}
+
+.profileheader{
+  margin-top: 100px;
+}

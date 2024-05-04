@@ -94,7 +94,7 @@ function Graph() {
 function generateAprovedStudentsGraph(){
 
 
-  const [status, setStatus] = useState([1,3,5]);
+  const [status, setStatus] = useState([0,0,0]);
   const statusFlag = ["pending", "Approved", "Rejected"];
   
   useEffect(() => {
