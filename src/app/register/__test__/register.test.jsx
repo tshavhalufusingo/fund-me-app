@@ -1,18 +1,21 @@
-import { render, screen, fireEvent, getByTestId } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
+import { useRouter } from 'next/navigation'
 import { act } from "@testing-library/react"; // for handling async operations
 import Home from "../page";
 
-jest.mock("next/navigation", () => ({
-  useRouter: () => ({
-    push: jest.fn(),
-    events: {
-      on: jest.fn(),
-      off: jest.fn(),
-      emit: jest.fn(),
-    },
-    isFallback: false,
-  }),
-}));
+// jest.mock("next/navigation", () => ({
+//   useRouter: () => ({
+//     push: jest.fn(),
+//     events: {
+//       on: jest.fn(),
+//       off: jest.fn(),
+//       emit: jest.fn(),
+//     },
+//     isFallback: false,
+//   }),
+// }));
+// e
+jest.mock('next/navigation'); // Mock the entire modul
 
 describe("Home Component", () => {
   it("should display error message on short password", async () => {
@@ -118,5 +121,10 @@ describe("Home Component", () => {
     expect(screen.getByPlaceholderText("Confirm password")).toBeInTheDocument();
     expect(screen.getByText("Register")).toBeInTheDocument();
   });
+  
+
+
+  
+  
 
 });
