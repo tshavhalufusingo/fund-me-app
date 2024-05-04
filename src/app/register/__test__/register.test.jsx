@@ -118,4 +118,28 @@ describe("Home Component", () => {
     expect(screen.getByPlaceholderText("Confirm password")).toBeInTheDocument();
     expect(screen.getByText("Register")).toBeInTheDocument();
   });
+  it("should display error message on API request error", async () => {
+    const mockResponse = { error: "Internal server error" };
+    jest.spyOn(window, "fetch").mockResolvedValueOnce(new Response(JSON.stringify(mockResponse), { status: 500 }));
+  
+    render(<Home />);
+  
+    const firstName = screen.getByPlaceholderText("User firstname");
+    const lastName = screen.getByPlaceholderText("User lastname");
+    const email = screen.getByPlaceholderText("User email");
+    const password = screen.getByPlaceholderText("Password");
+    const confirmPassword = screen.getByPlaceholderText("Confirm password");
+    const submitButton = screen.getByText("Register");
+  
+    fireEvent.change(firstName, { target: { value: "John" } });
+    fireEvent.change(email, { target: { value: "test@example.com" } });
+    fireEvent.change(lastName, { target: { value: "Doe" } });
+    fireEvent.change(password, { target: { value: "testpassword" } });
+    fireEvent.change(confirmPassword, { target: { value: "testpassword" } });
+  
+    await act(async () => fireEvent.click(submitButton));
+  
+    
+  });
+  
 });
