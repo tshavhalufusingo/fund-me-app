@@ -118,6 +118,7 @@ describe("Home Component", () => {
     expect(screen.getByPlaceholderText("Confirm password")).toBeInTheDocument();
     expect(screen.getByText("Register")).toBeInTheDocument();
   });
+<<<<<<< HEAD
   it("should display error message on API request error", async () => {
     const mockResponse = { error: "Internal server error" };
     jest.spyOn(window, "fetch").mockResolvedValueOnce(new Response(JSON.stringify(mockResponse), { status: 500 }));
@@ -168,4 +169,6 @@ describe("Home Component", () => {
     // Assertions within the component (optional)
   });
   
+=======
+>>>>>>> parent of 8126796 (tests)
 });
