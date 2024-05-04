@@ -118,57 +118,5 @@ describe("Home Component", () => {
     expect(screen.getByPlaceholderText("Confirm password")).toBeInTheDocument();
     expect(screen.getByText("Register")).toBeInTheDocument();
   });
-<<<<<<< HEAD
-  it("should display error message on API request error", async () => {
-    const mockResponse = { error: "Internal server error" };
-    jest.spyOn(window, "fetch").mockResolvedValueOnce(new Response(JSON.stringify(mockResponse), { status: 500 }));
-  
-    render(<Home />);
-  
-    const firstName = screen.getByPlaceholderText("User firstname");
-    const lastName = screen.getByPlaceholderText("User lastname");
-    const email = screen.getByPlaceholderText("User email");
-    const password = screen.getByPlaceholderText("Password");
-    const confirmPassword = screen.getByPlaceholderText("Confirm password");
-    const submitButton = screen.getByText("Register");
-  
-    fireEvent.change(firstName, { target: { value: "John" } });
-    fireEvent.change(email, { target: { value: "test@example.com" } });
-    fireEvent.change(lastName, { target: { value: "Doe" } });
-    fireEvent.change(password, { target: { value: "testpassword" } });
-    fireEvent.change(confirmPassword, { target: { value: "testpassword" } });
-  
-    await act(async () => fireEvent.click(submitButton));
-  
-    
-  });
-  jest.spyOn(document, 'getElementById');
 
-  test('handleRegister retrieves user input values', async () => {
-    render(<Home />);
-  
-    // Simulate user input
-    const firstNameInput = screen.getByPlaceholderText("User firstname");
-    const lastNameInput = screen.getByPlaceholderText("User lastname"); // Corrected line
-    const emailInput = screen.getByPlaceholderText("User email");
-    //const roleSelect = screen.getByRole('select'); // Assuming role is a select element
-    const passwordInput = screen.getByPlaceholderText("Password");
-    const confirmPasswordInput = screen.getByPlaceholderText("Confirm password");
-  
-    fireEvent.change(firstNameInput, { target: { value: 'John' } });
-    fireEvent.change(lastNameInput, { target: { value: 'Doe' } });
-    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
-    //fireEvent.change(roleSelect, { target: { value: 'Applicant' } });
-    fireEvent.change(passwordInput, { target: { value: 'securepassword' } });
-    fireEvent.change(confirmPasswordInput, { target: { value: 'securepassword' } });
-  
-    // Trigger form submission (assuming it's called within handleRegister)
-    const submitButton = screen.getByText("Register");
-    await fireEvent.click(submitButton);
-  
-    // Assertions within the component (optional)
-  });
-  
-=======
->>>>>>> parent of 8126796 (tests)
 });
