@@ -1,30 +1,56 @@
+'use client'
+import styles from "../../../page.module.css";
+import "../../../styles.css"
+
+
 export default function applicationForm(){
 
-    //create an application form to request for funding
 
-    // Mock data for attachment
     const attachmentUrl = ""; // Add URL to the uploaded file here
 
+
+        const handleApplication = async (e) => {
+            e.preventDefault;
+        
+            
+            const inputData = {
+              postId: e.target.id,
+              userId: session?.user.id,
+            };
+            
+            const response = await fetch("/api/applications", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(inputData),
+            });
+          };
+
+    
+
     return (
-        <form>
-            <label htmlFor="name">Name:</label>
+      <main className={styles.main}>
+
+        <form className="applicationForm">
+            <label htmlFor="name">Full name:</label>
             <input type="text" id="name" name="name" required />
 
             <label htmlFor="email">Email:</label>
             <input type="email" id="email" name="email" required />
 
-            <label htmlFor="amount">Amount Requested:</label>
-            <input type="number" id="amount" name="amount" required />
+            <label htmlFor="amount">Motivation</label>
+            <input type="text" id="amount" name="amount" required />
 
 
 
-            <label htmlFor="description">Description:</label>
-            <textarea id="description" name="description" required></textarea>
+
+      
+            
 
             <label htmlFor="attachment">Attachments:</label>
             <input type="file" id="attachment" name="attachment" required />
 
-            {/* Download link/button */}
             {attachmentUrl && (
                 <div>
                     <label>Attachment:</label>
@@ -39,7 +65,9 @@ export default function applicationForm(){
                 <option value="other">Other</option>
             </select>
 
-            <button type="submit">Submit</button>
+            <button onClick={handleApplication}>Submit</button>
         </form>
+
+        </main>
     );
 }
