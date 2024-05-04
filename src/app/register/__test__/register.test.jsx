@@ -141,5 +141,31 @@ describe("Home Component", () => {
   
     
   });
+  jest.spyOn(document, 'getElementById');
+
+  test('handleRegister retrieves user input values', async () => {
+    render(<Home />);
+  
+    // Simulate user input
+    const firstNameInput = screen.getByPlaceholderText("User firstname");
+    const lastNameInput = screen.getByPlaceholderText("User lastname"); // Corrected line
+    const emailInput = screen.getByPlaceholderText("User email");
+    //const roleSelect = screen.getByRole('select'); // Assuming role is a select element
+    const passwordInput = screen.getByPlaceholderText("Password");
+    const confirmPasswordInput = screen.getByPlaceholderText("Confirm password");
+  
+    fireEvent.change(firstNameInput, { target: { value: 'John' } });
+    fireEvent.change(lastNameInput, { target: { value: 'Doe' } });
+    fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
+    //fireEvent.change(roleSelect, { target: { value: 'Applicant' } });
+    fireEvent.change(passwordInput, { target: { value: 'securepassword' } });
+    fireEvent.change(confirmPasswordInput, { target: { value: 'securepassword' } });
+  
+    // Trigger form submission (assuming it's called within handleRegister)
+    const submitButton = screen.getByText("Register");
+    await fireEvent.click(submitButton);
+  
+    // Assertions within the component (optional)
+  });
   
 });
