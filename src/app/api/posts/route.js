@@ -2,7 +2,11 @@ import { NextResponse } from "next/server";
 const sql = require("mssql");
 const config = require("../../database/dbconnection");
 
+
 export async function GET() {
+
+
+
   let poolConnection = await sql.connect(config);
 
   const res = await poolConnection
@@ -24,7 +28,7 @@ export async function POST(req) {
     const res = await poolConnection
       .request()
       .query(
-        `INSERT INTO [dbo].[post]  VALUES (${data.id},'${data.companyName}','${data.postContent}',${1},${1},${data.fundingAmount},'${data.opportunityType}','${data.applicationDeadline}');`
+        `INSERT INTO [dbo].[post]  VALUES (${data.id},'${data.companyName}','${data.postContent}',${1},${1},${data.fundingAmount},'${data.opportunityType}','${data.applicationDeadline}', '0.00');`
       );
     poolConnection.close();
 

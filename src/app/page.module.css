@@ -9,6 +9,8 @@
   min-height: 100vh;
 }
 
+
+
 .description {
   display: inherit;
   justify-content: inherit;
@@ -259,4 +261,14 @@
 
 .gra {
   margin-top: 150px;
+}
+
+.customDis {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 6rem;
+  background: linear-gradient(to bottom, #6da5c0, #0f959c ); /* Example gradient colors */
+
+  min-height: 100vh;
 }

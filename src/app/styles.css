@@ -242,6 +242,7 @@ z-index: 9999;
 
 .postButtons{
   width: 100px;
+  margin: 20px;
   height: 30px;
   margin-bottom: 1rem;
 }
@@ -249,6 +250,7 @@ z-index: 9999;
 .postDiv{
   border-bottom: 1px solid whitesmoke;
   margin-bottom: 2rem;
+  width: 100%;
 }
 
 canvas{
@@ -301,4 +303,8 @@ canvas{
 
 .profileheader{
   margin-top: 100px;
+}
+
+.applicationForm{
+  margin-top: 30px;
 }
