@@ -11,7 +11,6 @@ function GeneratePiChart({ labels, data }) {
   useEffect(() => {
     const createPieChart = () => {
       if (chartRef.current) {
-        // Check if there's an existing chart instance and destroy it
         if (chartInstanceRef.current) {
           chartInstanceRef.current.destroy();
         }
