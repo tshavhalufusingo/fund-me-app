@@ -1,54 +1,52 @@
-import styles from "./../../../page.module.css"
+'use client'
+import styles from "./../../../page.module.css";
 import { useSession } from "next-auth/react";
-export default function(){
+import { useEffect, useState } from "react";
+import "./../../../styles.css"
 
-    const session = useSession();
+export default function Status() {
+  const { data: session } = useSession();
+  const userID = session?.user.id;
 
-    const userID =session?.user.id;
+  const [applications, setApplications] = useState([]);
 
-    //fetch the applicatipons with this userID
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch("../../api/applicationStatus");
+        const jsonData = await response.json();
+        const userApplications = jsonData.filter(app => app.userId === userID);
+        setApplications(userApplications);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
 
-
-
-
-    const company_name = " ";
-    const status = " ";
-    const application_data = " ";
-
-
-
-    useEffect(() => {
-        async function fetchData() {
-          try {
-            const response = await fetch("../../api/graphdata/graphapplicants");
-          
-    
-        
-          } catch (error) {
-            console.error("Error fetching data:", error);
-          }
-        }
-    
-        fetchData();
-      }, []);
-    
-    
+    fetchData();
+  }, [userID]);
 
 
 
-    return(
 
+  return (
+    <main className={styles.main}>
+      <div>
+        <h1>Application Status</h1>
+        <ul>
+          {applications.map((app, index) => (
 
-        <main style={styles.main}>
+            <div className="MyApplications">
+            <li key={index}>
+              <div>
+              Status: {app.statusId === 1 ? "Pending" : app.statusId === 2 ? "Accepted" : ""}
+              </div>
+              <div>Application Data: {app.application_data}</div>
+            </li>
 
-
-            <div>
-                <h1></h1>
             </div>
-
-
-        </main>
-
-
-    );
+          ))}
+        </ul>
+      </div>
+    </main>
+  );
 }

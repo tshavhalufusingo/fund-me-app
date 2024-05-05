@@ -308,3 +308,9 @@ canvas{
 .applicationForm{
   margin-top: 30px;
 }
+
+.MyApplications{
+  border: solid;
+  border-color: #6a5fff;
+  
+}
