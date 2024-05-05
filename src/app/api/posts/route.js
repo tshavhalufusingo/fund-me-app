@@ -13,7 +13,9 @@ export async function GET() {
     .request()
     .query(`SELECT * FROM [dbo].[post] WHERE activeStatus = '1';`);
   poolConnection.close();
+  
   const post = res.recordset;
+  console.table(post);
   return NextResponse.json(post);
 }
 

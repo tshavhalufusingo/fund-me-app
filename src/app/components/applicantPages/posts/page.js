@@ -30,9 +30,10 @@ export default function OpenPosts() {
       {data?.map((postData) => {
         return (
           <div key={postData.postId} className="postDiv">
-            <p> Company : {postData.companyName}</p>
-            <p> Information : {postData.postContent}</p>
-            <p>Closing date :</p>
+            <h1>{postData.companyName}</h1>
+            <p>{postData.postContent}</p>
+            <p>Funding Type : {postData.opportunityType}</p>
+            <p>Closing date : {postData.applicationDeadline.split('T')[0]}</p>
             <button
               className="postButtons"
               onClick={handleApplication}  // Event handler defined within the component

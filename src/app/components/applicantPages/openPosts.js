@@ -43,7 +43,7 @@ export default function OpenPosts() {
       {data?.map((postData) => {
         return (
           <div key={postData.postId} className="postDiv">
-            <p>{postData.companyName}</p>
+            <h1>{postData.companyName}</h1>
             <p>{postData.postContent}</p>
             <button className="postButtons"  key={postData.postId} id={postData.postId} onClick={handleApply}>Apply</button>
           </div>
