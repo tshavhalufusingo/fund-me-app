@@ -14,10 +14,7 @@ export default function applicationForm(){
 
 
             <Status/>
-            <h1>
-                You have no existing applications
-            </h1>
-
+           
         </main>
     );
 }

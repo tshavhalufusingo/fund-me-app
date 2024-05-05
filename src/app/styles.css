@@ -312,5 +312,6 @@ canvas{
 .MyApplications{
   border: solid;
   border-color: #6a5fff;
-  
+  margin: 20px;
+  width: 100%;
 }

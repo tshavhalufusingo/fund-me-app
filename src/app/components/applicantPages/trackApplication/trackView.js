@@ -16,6 +16,18 @@ export default function Status() {
         const response = await fetch("../../api/applicationStatus");
         const jsonData = await response.json();
         const userApplications = jsonData.filter(app => app.userId === userID);
+
+        console.log(userApplications)
+
+        if(userApplications.length == 0){
+            return(
+
+                <h1>
+                    No current applications
+                </h1>
+
+            );
+        }
         setApplications(userApplications);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -38,9 +50,9 @@ export default function Status() {
             <div className="MyApplications">
             <li key={index}>
               <div>
-              Status: {app.statusId === 1 ? "Pending" : app.statusId === 2 ? "Accepted" : ""}
+              Status: {app.statusId === 1 ? "Pending" : app.statusId === 2 ? "Accepted" : app.statusId === 3 ? "Rejected" : ""}
               </div>
-              <div>Application Data: {app.application_data}</div>
+              <div> Company: {app.application_data}</div>
             </li>
 
             </div>
