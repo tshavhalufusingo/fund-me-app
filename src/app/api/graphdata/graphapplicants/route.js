@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 const sql = require("mssql");
-const config = require("../../database/dbconnection");
+const config = require("../../../database/dbconnection");
 import { useSession } from "next-auth/react";
 
 
