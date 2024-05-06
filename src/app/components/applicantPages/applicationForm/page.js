@@ -34,12 +34,12 @@ export default function ApplicationForm() {
   }
 
   const handleApplication = async (e) => {
-    e.preventDefault;
+    e.preventDefault();
     const inputData = {
       postId: params.postId,
       userId: session?.user.id,
     };
-
+  
     const response = await fetch("/api/applications", {
       method: "POST",
       headers: {
@@ -47,8 +47,11 @@ export default function ApplicationForm() {
       },
       body: JSON.stringify(inputData),
     });
+  
+    // Handle response here (e.g., show success message, update UI, etc.)
   };
 
+  
   return (
     <main className={styles.main}>
       <form className="applicationForm">
