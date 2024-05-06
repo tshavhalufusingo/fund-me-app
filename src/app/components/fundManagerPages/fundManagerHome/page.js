@@ -8,7 +8,7 @@ import { useSession } from "next-auth/react";
 
 
 export default function Dashboard_home(){ 
-  const { data: session, status } = useSession();
+  //const { data: session, status } = useSession();
 
   const router = useRouter();
 
@@ -54,7 +54,7 @@ export default function Dashboard_home(){
           </div>
 
           <div className="option">
-              <a href="#" onClick={gotoBudget}>Buget</a>
+              <a href="#" onClick={gotoBudget}>Budget</a>
           </div>
 
       </div>
