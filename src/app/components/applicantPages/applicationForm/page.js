@@ -12,6 +12,7 @@ export default function ApplicationForm() {
   const handlefile = async(event)=>{
 
     const documentType = document.getElementById('documentType').value;
+    const documentDocDiv = document.getElementById('documentsDiv');
 
     const fileReader = new FileReader()
     const file =  event.target.files[0];
@@ -51,7 +52,13 @@ export default function ApplicationForm() {
           body: JSON.stringify(pdf),
         });
       }, 3000);
-      
+
+      var element = document.createElement('a');
+      element.setAttribute('href',base64data)
+      element.innerText = file.name
+      element.setAttribute('download',"download")
+
+      documentDocDiv.appendChild(element)
 
         alert("file upload successful");
       }
@@ -115,14 +122,9 @@ export default function ApplicationForm() {
         <label htmlFor="attachment">Attachments:</label>
         <input type="file" id="attachment" onChange={handlefile} name="attachment" required />
 
-        {attachmentUrl && (
-          <div>
-            <label>Attachment:</label>
-            <a href={attachmentUrl} download>
-              Download Attachment
-            </a>
-          </div>
-        )}
+        
+          
+      
 
         <label htmlFor="documentType">Document Type:</label>
         <select id="documentType" name="documentType" required>
@@ -130,6 +132,13 @@ export default function ApplicationForm() {
           <option value="CV">CV</option>
           <option value="other">Other</option>
         </select>
+
+        <div className="documentsDiv" id="documentsDiv">
+            <label>Attachment:</label>
+            {/* <a href={attachmentUrl} download>
+              Download Attachment
+            </a> */}
+          </div>
 
         <button onClick={handleApplication}>Submit</button>
       </form>

@@ -314,3 +314,8 @@ canvas{
     border-color: #009879;
     border-radius: 10px;
   }
+
+  .documentsDiv{
+    display: flex;
+    flex-direction: column;
+  }
