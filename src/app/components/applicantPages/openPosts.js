@@ -1,13 +1,10 @@
 "use client";
 
-import styles from "../../page.module.css"
+import styles from "../../page.module.css";
 import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
 
-
 export default function OpenPosts() {
-
-
   const { data: session } = useSession();
   const [data, setData] = useState(null);
   useEffect(() => {
@@ -20,13 +17,12 @@ export default function OpenPosts() {
 
   const handleApply = async (e) => {
     e.preventDefault;
-    
 
     const inputData = {
       postId: e.target.id,
       userId: session?.user.id,
     };
-    
+
     const response = await fetch("/api/applications", {
       method: "POST",
       headers: {
@@ -37,15 +33,20 @@ export default function OpenPosts() {
   };
 
   return (
-
-
     <section className="{styles.main}">
       {data?.map((postData) => {
         return (
           <div key={postData.postId} className="postDiv">
-            <p>{postData.companyName}</p>
+            <h1>{postData.companyName}</h1>
             <p>{postData.postContent}</p>
-            <button className="postButtons"  key={postData.postId} id={postData.postId} onClick={handleApply}>Apply</button>
+            <button
+              className="postButtons"
+              key={postData.postId}
+              id={postData.postId}
+              onClick={handleApply}
+            >
+              Apply
+            </button>
           </div>
         );
       })}

@@ -87,4 +87,4 @@ export default function ApplicationForm() {
       </form>
     </main>
   );
-}
+
