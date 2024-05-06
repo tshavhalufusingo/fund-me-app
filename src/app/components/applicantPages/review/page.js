@@ -6,7 +6,7 @@ import './../../../styles.css'
 export default function Review() {
     const { data: session } = useSession();
     const [applications, setApplications] = useState([]);
-    const [userID, setuserID] = useState(0);
+    const [userID, setuserID] = useState(null);
 
     useEffect(() => {
         const fetchApplications = async () => {
@@ -29,6 +29,8 @@ export default function Review() {
         fetchApplications();
     }, []);
 
+    console.log('user id',userID)
+
 
     const getStatusText = (statusId) => {
         switch (statusId) {
@@ -49,20 +51,18 @@ export default function Review() {
 
             <h1>Review your applications</h1>
             <ul>
-
                 {applications.map(application => (
-                    <li key={application.applicationId}>
-                                    <div className='applicantsreview'>
-
-                        <p>Application ID: {application.applicationId}</p>
-                        <p>Post ID: {application.postId}</p>
-                        <p>User ID: {application.userId}</p>
-                        <p>Status ID: {getStatusText(application.statusId)}</p>
-                        </div>
-
-                    </li>
+                    application.userId == userID ? (
+                        <li key={application.applicationId}>
+                            <div className='applicantsreview'>
+                                <p>Application ID: {application.applicationId}</p>
+                                <p>Post ID: {application.postId}</p>
+                                <p>User ID: {application.userId}</p>
+                                <p>Status: {getStatusText(application.statusId)}</p>
+                            </div>
+                        </li>
+                    ) : null
                 ))}
-
             </ul>
  
         </main>

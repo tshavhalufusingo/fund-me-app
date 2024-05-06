@@ -13,11 +13,12 @@ export async function POST(req) {
     console.log(data);
     const res = await poolConnection
       .request()
-      .input('userId', sql.Int, data.userId)
-      .input('postId', sql.Int, data.postId)
-      .input('type', sql.NVarChar(50), data.type)
+    //   .input('userId', sql.Int, data.userId)
+    //   .input('postId', sql.Int, data.postId)
+    //   .input('attachment', sql.text, data.attachment)
+    //   .input('type', sql.VarChar(50), data.type)
       .query(
-        `INSERT INTO [dbo].[attachments] (userId, postId, type) VALUES (@userId, @postId, @type);`
+        `INSERT INTO [dbo].[attachments] (userId, postId, type, attachment) VALUES ('${data.userId}', ${data.postId}, '${data.type}', '${data.attachment}');`
       );
     poolConnection.close(); 
 

@@ -11,6 +11,8 @@ export default function ApplicationForm() {
 
   const handlefile = async(event)=>{
 
+    const documentType = document.getElementById('documentType').value;
+
     const fileReader = new FileReader()
     const file =  event.target.files[0];
 
@@ -28,13 +30,17 @@ export default function ApplicationForm() {
     fileReader.readAsDataURL(file);
     fileReader.addEventListener('loadend',()=>{
       if(fileReader.result != null){
+       let base64data = fileReader.result;
+
        const pdf = {
-        attachment : fileReader.result,
+        attachment : base64data,
         postId: params.postId,
-        type : 'id',
+        type : documentType,
         userId: session?.user.id,
 
        }
+
+       console.log('pdf info',pdf);
 
        setTimeout(() => {
         const response = fetch("/api/attachments", {
@@ -62,6 +68,13 @@ export default function ApplicationForm() {
   const motivation = document.getElementById('amount').value;
   const documentType = document.getElementById('documentType').value;
 
+  const attachmentUpload = {
+
+    str : fileReader.result,
+
+  }
+
+  console.log(srt);
 
   
 
@@ -94,7 +107,7 @@ export default function ApplicationForm() {
         <input type="text" id="name" name="name" required />
 
         <label htmlFor="email">Email:</label>
-        <input type="Phone Number" id="email" name="email" required />
+        <input type="email" id="email" name="email" required />
 
         <label htmlFor="amount">Motivation</label>
         <input type="text" id="amount" name="amount" required />
@@ -114,7 +127,7 @@ export default function ApplicationForm() {
         <label htmlFor="documentType">Document Type:</label>
         <select id="documentType" name="documentType" required>
           <option value="Identity Document">ID</option>
-          <option value="2">CV</option>
+          <option value="CV">CV</option>
           <option value="other">Other</option>
         </select>
 
