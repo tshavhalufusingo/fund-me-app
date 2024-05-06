@@ -1,10 +1,17 @@
 'use client'
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 
-export default function Dashboard_home(){
+
+
+
+export default function Dashboard_home(){ 
+  //const { data: session, status } = useSession();
+
   const router = useRouter();
+
 
   function gotoUpload(event) {
     event.preventDefault(); // Prevent the default behavior of the anchor tag
@@ -18,12 +25,12 @@ export default function Dashboard_home(){
     
 
   }
-  function gotoProfile(event){
+  function gotoBudget(event){
 
     event.preventDefault(); // Prevent the default behavior of the anchor tag
-    router.push(".//../components/profile"); 
+    router.push(".//../components/fundManagerPages/budgetReport"); 
     
-    
+
   }
 
   
@@ -41,12 +48,15 @@ export default function Dashboard_home(){
           <div className="option">
               <a href="#" onClick={goReviewPost}>Review Posts</a>
           </div>
+       
           <div className="option">
-              <a href="/metrics">Metrics</a>
+              <a href="#" onClick={gotoBudget}>Report</a>
           </div>
+
           <div className="option">
-              <a href="/budget">Budget</a>
+              <a href="#" onClick={gotoBudget}>Budget</a>
           </div>
+
       </div>
   );
 }

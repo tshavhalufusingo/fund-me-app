@@ -104,6 +104,8 @@ export default function submit_post() {
   return (
     <>
 
+    <main className="{styles.main}">
+
     <div className="newpostbody">
 
       <h1 className="homeheader">Funding Manager Home</h1>
@@ -251,6 +253,7 @@ export default function submit_post() {
       )}
           </div>
 
+          </main>
     </>
   );
 }

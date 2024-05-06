@@ -22,9 +22,15 @@ export default function Navbar() {
     router.push("/components/contactUs");
   };
 
+  // const gotoInsights = async (e) => {
+  //   e.preventDefault;
+  //   router.push("/components/graphs");
+
+  // };
+
   const gotoInsights = async (e) => {
     e.preventDefault;
-    router.push("/components/graphs");
+    router.push("/components/fundManagerPages/report");
 
   };
 
