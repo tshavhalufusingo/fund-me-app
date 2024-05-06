@@ -308,3 +308,9 @@ canvas{
 .applicationForm{
   margin-top: 30px;
 }
+
+  .applicantsreview{
+    border: solid;
+    border-color: #009879;
+    border-radius: 10px;
+  }

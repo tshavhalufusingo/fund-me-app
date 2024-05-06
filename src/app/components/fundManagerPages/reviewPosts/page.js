@@ -12,7 +12,6 @@ export default function ReviewP() {
 
   const handleStatusChange = (index, sta) => {
     
-    console.log(sta);
 
 
     console.log(`Changed status of application at index ${index} to ${selectedStatus}`);

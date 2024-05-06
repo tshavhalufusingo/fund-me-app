@@ -1,48 +1,70 @@
 'use client'
+import styles from './../../../page.module.css';
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import styles from "../../../page.module.css";
-
-export default function MyComponent() {
-    const { session } = useSession();
+import './../../../styles.css'
+export default function Review() {
+    const { data: session } = useSession();
     const [applications, setApplications] = useState([]);
+    const [userID, setuserID] = useState(0);
 
     useEffect(() => {
-        const fetchData = async () => {
-            if (session) {
-                const userId = session.user.id;
-                try {
-                    const response = await fetch('/api/applications');
-                    if (response.ok) {
-                        const data = await response.json();
-                        // Filter applications based on userId
-                        const userApplications = data.filter(app => app.userId === userId);
-                        setApplications(userApplications);
-                        console.log(userApplications.length); // Log filtered applications length
-                    } else {
-                        console.error('Failed to fetch applications:', response.statusText);
-                    }
-                } catch (error) {
-                    console.error('Error fetching applications:', error);
+        const fetchApplications = async () => {
+            try {
+                const response = await fetch('/api/applications');
+                if (response.ok) {
+                    const data = await response.json();
+                
+                    setuserID(session?.user.id)
+
+                    setApplications(data);
+                } else {
+                    console.error('Failed to fetch applications:', response.status);
                 }
+            } catch (error) {
+                console.error('Error fetching applications:', error);
             }
         };
 
-        fetchData();
-    }, [session]);
+        fetchApplications();
+    }, []);
+
+
+    const getStatusText = (statusId) => {
+        switch (statusId) {
+            case 1:
+                return "Pending";
+            case 2:
+                return "Approved";
+            case 3:
+                return "Rejected";
+            default:
+                return "Unknown";
+        }
+    };
+
 
     return (
         <main className={styles.main}>
-            <div>
-                <h1> My Applications</h1>
-                <ul>
-                    {applications.map(app => (
-                        <li key={app.applicationId}>    
-                            Application ID: {app.applicationId}, Status ID: {app.statusId}
-                        </li>
-                    ))}
-                </ul>
-            </div>
+
+            <h1>Review your applications</h1>
+            <ul>
+
+                {applications.map(application => (
+                    <li key={application.applicationId}>
+                                    <div className='applicantsreview'>
+
+                        <p>Application ID: {application.applicationId}</p>
+                        <p>Post ID: {application.postId}</p>
+                        <p>User ID: {application.userId}</p>
+                        <p>Status ID: {getStatusText(application.statusId)}</p>
+                        </div>
+
+                    </li>
+                ))}
+
+            </ul>
+ 
         </main>
     );
 }
