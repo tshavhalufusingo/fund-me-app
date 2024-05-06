@@ -33,8 +33,10 @@ export default function ApplicationForm() {
             // Assuming the server responds with the URL of the uploaded attachment
             if (response.ok) {
                 const data = await response.json();
+                alert(data);
                 setAttachmentUrl(data.attachmentUrl); // Set the attachment URL if available
             } else {
+                alert('failed  to submit application');
                 console.error('Failed to submit application');
             }
         } catch (error) {
