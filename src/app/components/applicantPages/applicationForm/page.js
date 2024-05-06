@@ -35,21 +35,23 @@ export default function ApplicationForm() {
 
   const handleApplication = async (e) => {
   e.preventDefault();
-  const name = document.getElementById('name').value;
-  const email = document.getElementById('email').value;
-  const amount = document.getElementById('amount').value;
+  const columnName = document.getElementById('name').value;
+  const phoneNumber = document.getElementById('email').value;
+  const motivation = document.getElementById('amount').value;
   const documentType = document.getElementById('documentType').value;
 
 
   const inputData = {
     postId: params.postId,
     userId: session?.user.id,
-    name,
-    email,
-    amount,
+    columnName,
+    phoneNumber,
+    motivation,
+    statusId:1,
   };
-  
+
     console.log( params.postId);
+    console.log(inputData);
     const response = await fetch("/api/applicationform", {
       method: "POST",
       headers: {

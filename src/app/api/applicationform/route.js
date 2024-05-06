@@ -24,6 +24,8 @@ export async function POST(req) {
     let poolConnection = await sql.connect(config);
 
     // Using parameterized query to prevent SQL injection
+
+    console.log(data);
     const res = await poolConnection
       .request()
       .input('userId', sql.Int, data.userId)
@@ -35,7 +37,7 @@ export async function POST(req) {
       .query(
         `INSERT INTO [dbo].[ApplicationForm] (userId, phoneNumber, motivation, postId, statusId, columnName) VALUES (@userId, @phoneNumber, @motivation, @postId, @statusId, @columnName);`
       );
-    poolConnection.close();
+    poolConnection.close(); 
 
     return NextResponse.json(res);
   } catch (error) {
