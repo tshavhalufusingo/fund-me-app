@@ -1,28 +1,60 @@
-export default function applicationForm(){
+import React, { useState } from 'react';
 
-    //create an application form to request for funding
+export default function ApplicationForm() {
+    // State variables to hold form data
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [amount, setAmount] = useState('');
+    const [description, setDescription] = useState('');
+    const [attachment, setAttachment] = useState(null);
+    const [documentType, setDocumentType] = useState('Identity Document');
+    const [attachmentUrl, setAttachmentUrl] = useState('');
 
-    // Mock data for attachment
-    const attachmentUrl = ""; // Add URL to the uploaded file here
+    // Function to handle form submission
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        // Create FormData object to send form data
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('email', email);
+        formData.append('amount', amount);
+        formData.append('description', description);
+        formData.append('attachment', attachment);
+        formData.append('documentType', documentType);
+
+        try {
+            // Make POST request to the API endpoint
+            const response = await fetch('/api/application', {
+                method: 'POST',
+                body: formData,
+            });
+
+            // Assuming the server responds with the URL of the uploaded attachment
+            if (response.ok) {
+                const data = await response.json();
+                setAttachmentUrl(data.attachmentUrl); // Set the attachment URL if available
+            } else {
+                console.error('Failed to submit application');
+            }
+        } catch (error) {
+            console.error('Error submitting application:', error);
+        }
+    };
+
+    // Function to handle file input change
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        setAttachment(file);
+    };
 
     return (
-        <form>
-            <label htmlFor="name">Name:</label>
-            <input type="text" id="name" name="name" required />
-
-            <label htmlFor="email">Email:</label>
-            <input type="email" id="email" name="email" required />
-
-            <label htmlFor="amount">Amount Requested:</label>
-            <input type="number" id="amount" name="amount" required />
-
-
-
-            <label htmlFor="description">Description:</label>
-            <textarea id="description" name="description" required></textarea>
+        <form onSubmit={handleSubmit}>
+            {/* Form fields */}
+            {/* Your existing form fields */}
 
             <label htmlFor="attachment">Attachments:</label>
-            <input type="file" id="attachment" name="attachment" required />
+            <input type="file" id="attachment" name="attachment" onChange={handleFileChange} required />
 
             {/* Download link/button */}
             {attachmentUrl && (
@@ -32,13 +64,7 @@ export default function applicationForm(){
                 </div>
             )}
 
-            <label htmlFor="documentType">Document Type:</label>
-            <select id="documentType" name="documentType" required>
-                <option value="Identity Document">ID</option>
-                <option value="2">CV</option>
-                <option value="other">Other</option>
-            </select>
-
+            {/* Submit button */}
             <button type="submit">Submit</button>
         </form>
     );
