@@ -9,7 +9,7 @@ export default function ApplicationForm() {
   const { data: session, status } = useSession();
   const attachmentUrl = ""; // Add URL to the uploaded file here
 
-  const handlefile =(event)=>{
+  const handlefile = async(event)=>{
 
     const fileReader = new FileReader()
     const file =  event.target.files[0];
@@ -28,10 +28,32 @@ export default function ApplicationForm() {
     fileReader.readAsDataURL(file);
     fileReader.addEventListener('loadend',()=>{
       if(fileReader.result != null){
-        console.log(fileReader.result)
+       const pdf = {
+        attachment : fileReader.result,
+        postId: params.postId,
+        type : 'id',
+        userId: session?.user.id,
+
+       }
+
+       setTimeout(() => {
+        const response = fetch("/api/attachments", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(pdf),
+        });
+      }, 3000);
+      
+
+        alert("file upload successful");
       }
     })
   }
+
+
+
 
   const handleApplication = async (e) => {
   e.preventDefault();
@@ -41,6 +63,8 @@ export default function ApplicationForm() {
   const documentType = document.getElementById('documentType').value;
 
 
+  
+
   const inputData = {
     postId: params.postId,
     userId: session?.user.id,
@@ -49,6 +73,8 @@ export default function ApplicationForm() {
     motivation,
     statusId:1,
   };
+
+  
 
     console.log( params.postId);
     console.log(inputData);
@@ -68,7 +94,7 @@ export default function ApplicationForm() {
         <input type="text" id="name" name="name" required />
 
         <label htmlFor="email">Email:</label>
-        <input type="email" id="email" name="email" required />
+        <input type="Phone Number" id="email" name="email" required />
 
         <label htmlFor="amount">Motivation</label>
         <input type="text" id="amount" name="amount" required />
