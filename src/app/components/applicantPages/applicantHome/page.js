@@ -11,6 +11,12 @@ export default function Dashboard_home(){
     router.push(".//../components/applicantPages/posts"); // Use router.push() to navigate to the desired page
   }
 
+  function rev(event) {
+    event.preventDefault(); // Prevent the default behavior of the anchor tag
+    router.push(".//../components/applicantPages/review"); // Use router.push() to navigate to the desired page
+  }
+
+
   
 
 
@@ -24,7 +30,7 @@ export default function Dashboard_home(){
               <a href="/profile">Profile</a>
           </div>
           <div className="option">
-              <a href="#" onClick={opnePosts}>Review Applications</a>
+              <a href="#" onClick={rev}>Review Applications</a>
           </div>
         
       </div>

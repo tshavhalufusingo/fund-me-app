@@ -10,9 +10,11 @@ export default function ReviewP() {
 
 
 
-  const handleStatusChange = (index) => {
-    // Here you would typically update the status of the application in your data
-    // For demonstration purposes, let's just log the index and the selected status
+  const handleStatusChange = (index, sta) => {
+    
+    console.log(sta);
+
+
     console.log(`Changed status of application at index ${index} to ${selectedStatus}`);
   };
 
@@ -73,7 +75,7 @@ export default function ReviewP() {
           <select
             className={styles.select}
             value={selectedStatus}
-            onChange={(e) => setSelectedStatus(e.target.value)}
+            onChange={(e) => setSelectedStatus(e.target.value)} 
           >
             <option value="">Select Status</option>
             <option value="approved">Approved</option>
@@ -81,7 +83,7 @@ export default function ReviewP() {
             <option value="pending">Pending</option>
           </select>
 
-          <button className={styles.button} onClick={() => handleStatusChange(index)}>Change Status</button>
+          <button className={styles.button} onClick={() => handleStatusChange(index,application.statusId)}>Change Status</button>
         </div>
       ))}
     </main>
