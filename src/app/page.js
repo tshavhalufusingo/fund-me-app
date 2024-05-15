@@ -52,18 +52,33 @@ export default function Home() {
   };
   return (
     <main className={styles.main}>
-      <form action={Login}>
-        <input
+      <form action={Login} className="form">
+      <p class="title">Signin</p>
+    <p class="message">Signup now and get full acce ss to our app.</p>
+
+    <label>
+
+    <input
+        className="input"
           id="useremail"
           type="email"
-          placeholder="User email"
           required
         ></input>
-        <input
+
+<span>Email</span>
+
+    </label>
+      
+      <label>
+      <input
+        className="input"
           id="password"
           type="password"
-          placeholder="User password"
         ></input>
+        <span>Password</span>
+
+      </label>
+     
         <button className="registerx" type="submit">Login</button>
         {showError && (
           <div className="error-bubble">
@@ -73,11 +88,12 @@ export default function Home() {
 
         {Loading && (
         <div className="Loading-bubble">Signing in</div>)}
-      </form>
       <p>If you have no account click register below</p>
-      <button className="register" onClick={goToRegisterPage} type="submit">
+      <button className="registerx" onClick={goToRegisterPage} type="submit">
         Register
       </button>
+      </form>
+
     </main>
   );
 }

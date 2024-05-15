@@ -46,45 +46,45 @@ export default function Home() {
   };
   return (
     <main className={styles.main}>
-      <form action={handleRegister}>
-        <input
-          id="firstname"
-          type="firstname"
-          placeholder="User firstname"
-          required
-        ></input>
-
-        <input
-          id="lastname"
-          type="lastname"
-          placeholder="User lastname"
-          required
-        ></input>
-
-        <input id="email" type="email" placeholder="User email"></input>
-        <select name="role" id="role">
-          <option value="Applicant">Applicant</option>
-          <option value="FundManager">Fund Manager</option>
+<form id="registerForm" className="form" onSubmit={handleRegister}>
+    <p class="title">Register</p>
+    <p class="message">Signup now and get full access to our app.</p>
+    <div class="flex">
+        <label>
+            <input id="firstname" className="input" type="text" required />
+            <span>Firstname</span>
+        </label>
+        <label>
+            <input id="lastname" className="input" type="text" required />
+            <span>Lastname</span>
+        </label>
+    </div>
+    <label>
+        <input id="email" className="input" type="email" required />
+        <span>Email</span>
+    </label>
+    <label>
+        <select id="role" className="input" name="role" required>
+            <option value="Applicant">Applicant</option>
+            <option value="FundManager">Fund Manager</option>
         </select>
+        <span>Role</span>
+    </label>
+    <label>
+        <input id="password" className="input" type="password"  required />
+        <span>Password</span>
+    </label>
+    <label> 
+        <input id="confirmPassword" className="input" type="password" required />
+        <span>Confirm password</span>
+    </label>
+    <button class="submit" type="submit">Register</button>
 
-        <input
-          id="password"
-          type="password"
-          placeholder="Password"
-          required
-        ></input>
-        <input
-          id="confirmPassword"
-          type="password"
-          placeholder="Confirm password"
-          required
-        ></input>
-        <button type="submit">Register</button>
-      </form>
-      <p>If you already have an account click login below</p>
-      <button id="register" onClick={goToLoginPage} type="submit">
-        Login
-      </button>
+    <p class="signin">Already have an acount ? <a href="#" onClick={goToLoginPage}>Signin</a> </p>
+
+</form>
+
+      
     </main>
   );
 }
