@@ -54,7 +54,6 @@ export default function Home() {
     <main className={styles.main}>
       <form action={Login} className="form">
       <p class="title">Signin</p>
-    <p class="message">Signup now and get full acce ss to our app.</p>
 
     <label>
 
@@ -79,7 +78,7 @@ export default function Home() {
 
       </label>
      
-        <button className="registerx" type="submit">Login</button>
+        <button className="submit" type="submit">Login</button>
         {showError && (
           <div className="error-bubble">
             Either username or password is wrong. Please try again
@@ -89,7 +88,7 @@ export default function Home() {
         {Loading && (
         <div className="Loading-bubble">Signing in</div>)}
       <p>If you have no account click register below</p>
-      <button className="registerx" onClick={goToRegisterPage} type="submit">
+      <button className="submit" onClick={goToRegisterPage}>
         Register
       </button>
       </form>
