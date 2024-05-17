@@ -4,10 +4,13 @@ import "../styles.css";
 import { signOut, useSession } from "next-auth/react";
 import Graph from "./graphs/page";
 import { useRouter } from "next/navigation";
+import { FaBell } from "react-icons/fa";
+import { useState, useEffect } from "react";
 
 export default function Navbar() {
   const { data: session } = useSession();
   const router = useRouter();
+  const [notifications, setNotifications] = useState([]);
 
   const logosource =
     "https://scontent.xx.fbcdn.net/v/t1.15752-9/440589588_1416138286453095_6091461302783876786_n.jpg?stp=dst-jpg_p403x403&_nc_cat=111&ccb=1-7&_nc_sid=5f2048&_nc_ohc=kgKvlL23V2QQ7kNvgGGhxLo&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_Q7cD1QEhAF5fEM4BOLJJ1JzTk6lmN2rNL_M7yw-Ho885MyDcqA&oe=66558C68";
@@ -74,6 +77,25 @@ export default function Navbar() {
                 </li>
               </>
             ) : null}
+
+<div className="notification">
+        <FaBell size={20} />
+        {notifications.length > 0 && <span className="badge">{notifications.length}</span>}
+        <div className="dropdown">
+          {notifications.map((notification) => (
+            <div key={notification.id} className="notification-item">
+              {notification.message}
+            </div>
+          ))}
+        </div>
+      </div>
+  
+
+
+
+
+
+
             <li>
               <Link href="/components/graphs">Profile</Link>
             </li>
