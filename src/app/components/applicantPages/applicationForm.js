@@ -1,73 +1,147 @@
-import React, { useState } from 'react';
+"use client";
+import styles from "../../../page.module.css";
+import "../../../styles.css";
+import { useSession } from "next-auth/react";
+import { useParams, } from "next/navigation";
 
 export default function ApplicationForm() {
-    // State variables to hold form data
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [amount, setAmount] = useState('');
-    const [description, setDescription] = useState('');
-    const [attachment, setAttachment] = useState(null);
-    const [documentType, setDocumentType] = useState('Identity Document');
-    const [attachmentUrl, setAttachmentUrl] = useState('');
+  const params = useParams();
+  const { data: session, status } = useSession();
+  const attachmentUrl = ""; // Add URL to the uploaded file here
 
-    // Function to handle form submission
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+  const handlefile = async(event)=>{
 
-        // Create FormData object to send form data
-        const formData = new FormData();
-        formData.append('name', name);
-        formData.append('email', email);
-        formData.append('amount', amount);
-        formData.append('description', description);
-        formData.append('attachment', attachment);
-        formData.append('documentType', documentType);
+    const documentType = document.getElementById('documentType').value;
+    const documentDocDiv = document.getElementById('documentsDiv');
 
-        try {
-            // Make POST request to the API endpoint
-            const response = await fetch('/api/application', {
-                method: 'POST',
-                body: formData,
-            });
+    const fileReader = new FileReader()
+    const file =  event.target.files[0];
 
-            // Assuming the server responds with the URL of the uploaded attachment
-            if (response.ok) {
-                const data = await response.json();
-                alert(data);
-                setAttachmentUrl(data.attachmentUrl); // Set the attachment URL if available
-            } else {
-                alert('failed  to submit application');
-                console.error('Failed to submit application');
-            }
-        } catch (error) {
-            console.error('Error submitting application:', error);
-        }
-    };
+    if(!file){
+      return;
+    }
 
-    // Function to handle file input change
-    const handleFileChange = (e) => {
-        const file = e.target.files[0];
-        setAttachment(file);
-    };
+    const allowedExt = /\.(pdf|txt)$/i;
 
-    return (
-        <form onSubmit={handleSubmit}>
-            {/* Form fields */}
-            {/* Your existing form fields */}
+    if(!allowedExt.test(file.name)){
+      alert("Invalid type only pdf allowed")
+      
+    }
 
-            <label htmlFor="attachment">Attachments:</label>
-            <input type="file" id="attachment" name="attachment" onChange={handleFileChange} required />
+    fileReader.readAsDataURL(file);
+    fileReader.addEventListener('loadend',()=>{
+      if(fileReader.result != null){
+       let base64data = fileReader.result;
 
-            {/* Download link/button */}
-            {attachmentUrl && (
-                <div>
-                    <label>Attachment:</label>
-                    <a href={attachmentUrl} download>Download Attachment</a>
-                </div>
-            )}
+    //    const pdf = {
+    //     attachment : base64data,
+    //     postId: params.postId,
+    //     type : documentType,
+    //     userId: session?.user.id,
 
-            {/* Submit button */}
-            <button type="submit">Submit</button>
-        </form>
-    );
+    //    }
+
+    //    console.log('pdf info',pdf);
+
+    //    setTimeout(() => {
+    //     const response = fetch("/api/attachments", {
+    //       method: "POST",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //       body: JSON.stringify(pdf),
+    //     });
+    //   }, 3000);
+
+      var element = document.createElement('a');
+      element.setAttribute('href',base64data)
+      element.innerText = file.name
+      element.setAttribute('download',"download")
+
+      documentDocDiv.appendChild(element)
+
+        alert("file upload successful");
+      }
+    })
+  }
+
+
+
+
+  const handleApplication = async (e) => {
+  e.preventDefault();
+  const columnName = document.getElementById('name').value;
+  const phoneNumber = document.getElementById('email').value;
+  const motivation = document.getElementById('amount').value;
+  const documentType = document.getElementById('documentType').value;
+
+//   const attachmentUpload = {
+
+//     str : fileReader.result,
+
+//   }
+
+//   console.log(srt);
+
+  
+
+  const inputData = {
+    postId: params.postId,
+    userId: session?.user.id,
+    columnName,
+    phoneNumber,
+    motivation,
+    statusId:1,
+  };
+
+  
+
+    console.log( params.postId);
+    console.log(inputData);
+    const response = await fetch("/api/applicationform", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(inputData),
+    });
+  };
+
+  return (
+    <main className={styles.main}>
+      <form className="applicationForm">
+        <label htmlFor="name">Full name:</label>
+        <input type="text" id="name" name="name" required />
+
+        <label htmlFor="email">Email:</label>
+        <input type="email" id="email" name="email" required />
+
+        <label htmlFor="amount">Motivation</label>
+        <input type="text" id="amount" name="amount" required />
+
+        <label htmlFor="attachment">Attachments:</label>
+        <input type="file" id="attachment" onChange={handlefile} name="attachment" required />
+
+        
+          
+      
+
+        <label htmlFor="documentType">Document Type:</label>
+        <select id="documentType" name="documentType" required>
+          <option value="Identity Document">ID</option>
+          <option value="CV">CV</option>
+          <option value="other">Other</option>
+        </select>
+
+        <div className="documentsDiv" id="documentsDiv">
+            <label>Attachment:</label>
+            {/* <a href={attachmentUrl} download>
+              Download Attachment
+            </a> */}
+          </div>
+
+        <button onClick={handleApplication}>Submit</button>
+      </form>
+    </main>
+  );
 }

@@ -9,6 +9,8 @@ export default function ApplicationForm() {
   const { data: session, status } = useSession();
   const attachmentUrl = ""; // Add URL to the uploaded file here
 
+  let documentsObj = [];
+
   const handlefile = async(event)=>{
 
     const documentType = document.getElementById('documentType').value;
@@ -33,25 +35,7 @@ export default function ApplicationForm() {
       if(fileReader.result != null){
        let base64data = fileReader.result;
 
-       const pdf = {
-        attachment : base64data,
-        postId: params.postId,
-        type : documentType,
-        userId: session?.user.id,
-
-       }
-
-       console.log('pdf info',pdf);
-
-       setTimeout(() => {
-        const response = fetch("/api/attachments", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(pdf),
-        });
-      }, 3000);
+      documentsObj.push({type: documentType, content: base64data});
 
       var element = document.createElement('a');
       element.setAttribute('href',base64data)
@@ -59,7 +43,6 @@ export default function ApplicationForm() {
       element.setAttribute('download',"download")
 
       documentDocDiv.appendChild(element)
-
         alert("file upload successful");
       }
     })
@@ -70,66 +53,63 @@ export default function ApplicationForm() {
 
   const handleApplication = async (e) => {
   e.preventDefault();
-  const columnName = document.getElementById('name').value;
-  const phoneNumber = document.getElementById('email').value;
-  const motivation = document.getElementById('amount').value;
-  const documentType = document.getElementById('documentType').value;
-
-  const attachmentUpload = {
-
-    str : fileReader.result,
-
-  }
-
-  console.log(srt);
-
-  
-
-  const inputData = {
+    const inputData = {
     postId: params.postId,
     userId: session?.user.id,
-    columnName,
-    phoneNumber,
-    motivation,
     statusId:1,
   };
 
-  
 
     console.log( params.postId);
     console.log(inputData);
-    const response = await fetch("/api/applicationform", {
+    const response = await fetch(`/api/applications/${params.postId}`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(inputData),
-    });
+    }).then((data) => data).then((r) => r);
+
+    const res1 =await response.json();
+
+    
+
+    for(let i = 0;i < documentsObj.length;i++){
+
+      const pdf = {
+        attachment : documentsObj[i].content,
+        type : documentsObj[i].type,
+        applicationId: res1.applicationId,
+
+       }
+      setTimeout(() => {
+        const response = fetch("/api/attachments", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(pdf),
+        });
+      }, 3000);
+    }
+    
   };
 
   return (
     <main className={styles.main}>
       <form className="applicationForm">
-        <label htmlFor="name">Full name:</label>
-        <input type="text" id="name" name="name" required />
 
-        <label htmlFor="email">Email:</label>
-        <input type="email" id="email" name="email" required />
-
-        <label htmlFor="amount">Motivation</label>
-        <input type="text" id="amount" name="amount" required />
+        {/* <label htmlFor="amount">Motivation</label>
+        <textarea type="text" id="amount" name="amount" required /> */}
 
         <label htmlFor="attachment">Attachments:</label>
         <input type="file" id="attachment" onChange={handlefile} name="attachment" required />
-
-        
-          
-      
 
         <label htmlFor="documentType">Document Type:</label>
         <select id="documentType" name="documentType" required>
           <option value="Identity Document">ID</option>
           <option value="CV">CV</option>
+          <option value="Motivation">ID</option>
           <option value="other">Other</option>
         </select>
 

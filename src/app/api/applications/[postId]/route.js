@@ -27,11 +27,14 @@ export async function POST(req) {
     const res = await poolConnection
       .request()
       .query(
-        `INSERT INTO [dbo].[postApplication]  VALUES (${data.postId},${data.userId},1);`
+        `INSERT INTO [dbo].[postApplication] OUTPUT Inserted.applicationId  VALUES (${data.postId},${data.userId},${data.statusId});`
       );
     poolConnection.close();
 
-    return NextResponse.json(res);
+    console.log("response of creating application",res)
+    console.log(res.recordset[0])
+
+    return NextResponse.json(res.recordset[0]);
   } catch (error) {
     console.error("error is: ", error.message);
   }
