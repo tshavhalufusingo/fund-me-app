@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import SendNotification from "./sendNotification";
 export default function UserWaintingApproval() {
   const [data, setData] = useState(null);
   const [unapprovedData, setUnapproved] = useState(null);
@@ -28,7 +29,10 @@ export default function UserWaintingApproval() {
   }, []);
 
   return (
+    
+  
     <div>
+    <SendNotification/>
       <header>
         <h2>Users awaiting approval</h2>
       </header>
@@ -79,9 +83,15 @@ export default function UserWaintingApproval() {
       ) : (
         <p>no account is waiting for approval</p>
       )}
+     
+
+
+
+
 
 
 <header>
+
         <h2>All system users</h2>
       </header>
       {approvedData?.length > 0 ? (
@@ -131,7 +141,12 @@ export default function UserWaintingApproval() {
       ) : (
         <p>no one is approved to use the system yet</p>
       )}
+      
+ 
+      
 
     </div>
+   
+    
   );
 }
