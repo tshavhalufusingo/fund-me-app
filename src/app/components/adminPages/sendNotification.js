@@ -8,7 +8,7 @@ export default function SendNotification() {
     e.preventDefault();
 
     try {
-      const response = await fetch('/api/admin/route', {
+      const response = await fetch('/api/admin', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
