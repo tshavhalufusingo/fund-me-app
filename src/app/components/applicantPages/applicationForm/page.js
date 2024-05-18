@@ -2,125 +2,110 @@
 import styles from "../../../page.module.css";
 import "../../../styles.css";
 import { useSession } from "next-auth/react";
-import { useParams, } from "next/navigation";
+import { useParams } from "next/navigation";
+import { useState } from "react";
 
 export default function ApplicationForm() {
   const params = useParams();
   const { data: session, status } = useSession();
-  const attachmentUrl = ""; // Add URL to the uploaded file here
+  const [documents, setDocuments] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  let documentsObj = [];
+  const handleFile = (event) => {
+    const documentType = document.getElementById("documentType").value;
+    const file = event.target.files[0];
 
-  const handlefile = async(event)=>{
+    if (!file) return;
 
-    const documentType = document.getElementById('documentType').value;
-    const documentDocDiv = document.getElementById('documentsDiv');
-
-    const fileReader = new FileReader()
-    const file =  event.target.files[0];
-
-    if(!file){
+    const allowedExt = /\.(pdf|txt)$/i;
+    if (!allowedExt.test(file.name)) {
+      alert("Invalid type, only PDF and TXT files are allowed");
       return;
     }
 
-    const allowedExt = /\.(pdf|txt)$/i;
-
-    if(!allowedExt.test(file.name)){
-      alert("Invalid type only pdf allowed")
-      
-    }
-
+    const fileReader = new FileReader();
     fileReader.readAsDataURL(file);
-    fileReader.addEventListener('loadend',()=>{
-      if(fileReader.result != null){
-       let base64data = fileReader.result;
-
-      documentsObj.push({type: documentType, content: base64data});
-
-      var element = document.createElement('a');
-      element.setAttribute('href',base64data)
-      element.innerText = file.name
-      element.setAttribute('download',"download")
-
-      documentDocDiv.appendChild(element)
-        alert("file upload successful");
-      }
-    })
-  }
-
-
-
-
-  const handleApplication = async (e) => {
-  e.preventDefault();
-    const inputData = {
-    postId: params.postId,
-    userId: session?.user.id,
-    statusId:1,
+    fileReader.onloadend = () => {
+      const base64data = fileReader.result;
+      setDocuments((prev) => [...prev, { type: documentType, content: base64data, name: file.name }]);
+    };
   };
 
+  const handleApplication = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
 
-    console.log( params.postId);
-    console.log(inputData);
-    const response = await fetch(`/api/applications/${params.postId}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(inputData),
-    }).then((data) => data).then((r) => r);
+    try {
+      const inputData = {
+        postId: parseInt(params.postId),
+        userId: session?.user.id,
+        statusId: 1,
+      };
 
-    const res1 =await response.json();
+      const response = await fetch(`/api/applications/${params.postId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(inputData),
+      });
 
-    
+      if (!response.ok) throw new Error("Failed to submit application");
 
-    for(let i = 0;i < documentsObj.length;i++){
+      const applicationData = await response.json();
 
-      const pdf = {
-        attachment : documentsObj[i].content,
-        type : documentsObj[i].type,
-        applicationId: res1.applicationId,
+      for (const document of documents) {
+        const pdf = {
+          attachment: document.content,
+          type: document.type,
+          applicationId: applicationData.applicationId,
+        };
 
-       }
-      setTimeout(() => {
-        const response = fetch("/api/attachments", {
+        await fetch("/api/attachments", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify(pdf),
         });
-      }, 3000);
+      }
+
+      alert("Application submitted successfully");
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
     }
-    
   };
 
   return (
     <main className={styles.main}>
-      <form className="applicationForm">
-
-        {/* <label htmlFor="amount">Motivation</label>
-        <textarea type="text" id="amount" name="amount" required /> */}
-
+      <form className="applicationForm" onSubmit={handleApplication}>
         <label htmlFor="attachment">Attachments:</label>
-        <input type="file" id="attachment" onChange={handlefile} name="attachment" required />
+        <input type="file" id="attachment" onChange={handleFile} name="attachment" required />
 
         <label htmlFor="documentType">Document Type:</label>
         <select id="documentType" name="documentType" required>
           <option value="Identity Document">ID</option>
           <option value="CV">CV</option>
-          <option value="Motivation">ID</option>
-          <option value="other">Other</option>
+          <option value="Motivation">Motivation</option>
+          <option value="Other">Other</option>
         </select>
 
         <div className="documentsDiv" id="documentsDiv">
-            <label>Attachment:</label>
-            {/* <a href={attachmentUrl} download>
-              Download Attachment
-            </a> */}
-          </div>
+          {documents.map((doc, index) => (
+            <div key={index}>
+              <a href={doc.content} download={doc.name}>{doc.name}</a> - {doc.type}
+            </div>
+          ))}
+        </div>
 
-        <button onClick={handleApplication}>Submit</button>
+        <button type="submit" disabled={loading}>
+          {loading ? "Submitting..." : "Submit"}
+        </button>
+        {error && <p style={{ color: 'red' }}>{error}</p>}
       </form>
     </main>
   );

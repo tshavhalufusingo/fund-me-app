@@ -6,15 +6,37 @@ import { useEffect, useState } from "react";
 export default function ReviewP() {
   const { data: session } = useSession();
   const [applications, setApplications] = useState([]);
-  const [selectedStatus, setSelectedStatus] = useState('');
+  const [statusMap, setStatusMap] = useState({}); // State to track status for each application
 
+  const handleStatusChange = async (index, status, appid) => {
+    const updatedStatusMap = { ...statusMap, [index]: status };
+    setStatusMap(updatedStatusMap);
 
+    const inputData = {
+      applicationId: appid,
+      status: status,
+    };
 
-  const handleStatusChange = (index, sta) => {
-    
+    try {
+      const resp = await fetch("/api/updateStatus", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(inputData),
+      });
 
+      if (!resp.ok) {
+        const errorData = await resp.json();
+        throw new Error(errorData.error || "Failed to update status");
+      }
 
-    console.log(`Changed status of application at index ${index} to ${selectedStatus}`);
+      console.log(`Changed status of application at index ${index} to ${status}, with application id ${appid}`);
+      // Optionally, you can refresh the data or navigate to another page
+      // router.push("/");
+    } catch (error) {
+      console.error("Error updating status:", error);
+    }
   };
 
   useEffect(() => {
@@ -33,8 +55,8 @@ export default function ReviewP() {
           }
 
           const data = await response.json();
-          setApplications(data.filter(application => application.postId === 2));
-          console.log(applications);
+          setApplications(data.filter(application => application.postId > 0));
+          console.log(data); // Log the fetched data instead of applications
         }
       } catch (error) {
         console.error("Error fetching applications:", error);
@@ -44,9 +66,6 @@ export default function ReviewP() {
     fetchData();
   }, [session]);
 
-
-
-
   const getStatusLabel = (statusId) => {
     switch (statusId) {
       case 1:
@@ -55,36 +74,41 @@ export default function ReviewP() {
         return "Approved";
       case 3:
         return "Rejected";
-      default:  
+      default:
         return "Unknown";
     }
   };
 
-
   return (
     <main className={styles.main}>
       <h1 className={styles.heading}>Review Applications</h1>
-      {applications.map((application, index) => (
-        <div className={styles.application} key={index}>
-          <p className={styles.detail}>Applicant name: {application.columnName}</p>
-          <p className={styles.detail}>Status: {getStatusLabel(application.statusId)}</p>
-          <p className={styles.detail}>Phone number: {application.phoneNumber}</p>
-          <p className={styles.detail}>Motivation: {application.motivation}</p>
-          
-          <select
-            className={styles.select}
-            value={selectedStatus}
-            onChange={(e) => setSelectedStatus(e.target.value)} 
-          >
-            <option value="">Select Status</option>
-            <option value="approved">Approved</option>
-            <option value="rejected">Rejected</option>
-            <option value="pending">Pending</option>
-          </select>
 
-          <button className={styles.button} onClick={() => handleStatusChange(index,application.statusId)}>Change Status</button>
-        </div>
-      ))}
+      {
+        applications.map((application, index) => (
+          <div className={styles.application} key={application.applicationId}>
+            <p className={styles.detail}>Status: {getStatusLabel(application.statusId)}</p>
+
+            <select
+              className={styles.select}
+              value={statusMap[index] || application.statusId || ''} // Handle initial value
+              onChange={(e) => handleStatusChange(index, e.target.value, application.applicationId)}
+            >
+              <option value="">Select Status</option>
+              <option value="1">Pending</option>
+              <option value="2">Approved</option>
+              <option value="3">Rejected</option>
+            </select>
+
+            <button
+              className={styles.button}
+              onClick={() => handleStatusChange(index, statusMap[index] || application.statusId, application.applicationId)}
+            >
+              Change Status
+            </button>
+          </div>
+        ))
+      }
     </main>
   );
 }
+  

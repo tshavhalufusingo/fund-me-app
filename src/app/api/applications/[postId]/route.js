@@ -18,6 +18,9 @@ export async function GET(req, context) {
 
 export async function POST(req) {
   const data = await req.json();
+  const date = new Date();
+  const formattedDate = date.toISOString().split('T')[0]; // Format to 'YYYY-MM-DD'
+
 
   console.log("data on api: ",data)
 
@@ -27,7 +30,7 @@ export async function POST(req) {
     const res = await poolConnection
       .request()
       .query(
-        `INSERT INTO [dbo].[postApplication] OUTPUT Inserted.applicationId  VALUES (${data.postId},${data.userId},${data.statusId});`
+        `INSERT INTO [dbo].[postApplication](postId, userId, statusId, applicationDate) OUTPUT Inserted.applicationId  VALUES (${data.postId},${data.userId},${data.statusId},${formattedDate});`
       );
     poolConnection.close();
 

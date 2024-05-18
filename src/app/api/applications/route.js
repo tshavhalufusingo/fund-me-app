@@ -1,37 +1,41 @@
 import { NextResponse } from "next/server";
-const sql = require("mssql");
-const config = require("../../database/dbconnection");
+import sql from "mssql";
+import config from "../../database/dbconnection";
 
 export async function GET() {
-  let poolConnection = await sql.connect(config);
-
-  const res = await poolConnection
-    .request()
-    .query(`SELECT * FROM [dbo].[postApplication];`);
-  poolConnection.close();
-  const post = res.recordset;
-  return NextResponse.json(post);
-}
-
-export async function POST(req) {
-  const data = await req.json();
-
-  console.log("data on api: ",data)
-
   try {
-    let poolConnection = await sql.connect(config);
-
-    const res = await poolConnection
-      .request()
-      .query(
-        `INSERT INTO [dbo].[postApplication]  VALUES (${data.postId},${data.userId},1);`
-      );
+    const poolConnection = await sql.connect(config);
+    const res = await poolConnection.request().query("SELECT * FROM [dbo].[postApplication];");
     poolConnection.close();
-
-    return NextResponse.json(res);
+    return NextResponse.json(res.recordset);
   } catch (error) {
-    console.error("error is: ", error.message);
+    console.error("Error fetching data: ", error.message);
+    return NextResponse.error();
   }
 }
 
+export async function POST(req) {
+  try {
+    const data = await req.json();
+    const { postId, userId, statusId } = data;
 
+    const poolConnection = await sql.connect(config);
+    const res = await poolConnection
+      .request()
+      .input('postId', sql.Int, postId)
+      .input('userId', sql.Int, userId)
+      .input('statusId', sql.Int, statusId)
+      .query(
+        `INSERT INTO [dbo].[postApplication] (postId, userId, statusId) 
+         VALUES (@postId, @userId, @statusId);
+         SELECT SCOPE_IDENTITY() AS applicationId;`
+      );
+    poolConnection.close();
+
+    const applicationId = res.recordset[0].applicationId;
+    return NextResponse.json({ applicationId });
+  } catch (error) {
+    console.error("Error inserting data: ", error.message);
+    return NextResponse.error();
+  }
+}

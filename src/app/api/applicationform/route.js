@@ -7,7 +7,7 @@ export async function GET() {
     let poolConnection = await sql.connect(config);
     const res = await poolConnection
       .request()
-      .query(`SELECT * FROM [dbo].[ApplicationForm];`);
+      .query(`SELECT * FROM [dbo].[postApplication];`);
     poolConnection.close();
     const user = res.recordset;
     return NextResponse.json(user);
