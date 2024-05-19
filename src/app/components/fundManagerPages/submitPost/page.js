@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect, Fragment } from "react";
-import styles from "../../../page.module.css";
+import Link from "next/link";
+import styles from "../../../page.module.css"
 import { useSession } from "next-auth/react";
 import "../../../styles.css";
 
@@ -102,158 +103,157 @@ export default function submit_post() {
 
   return (
     <>
-      <main className="{styles.main}">
-        <div className="newpostbody">
-          <h1 className="homeheader">Funding Manager Home</h1>
 
-          {/* {isReviewing && <h2>Application Review</h2>} */}
+    <main className="{styles.main}">
 
-          {session?.user.userPermission ? (
-            <>
-              <h2>Submit a New Post</h2>
-              <form onSubmit={handleSubmit} className={styles.formContainer}>
-                <label htmlFor="companyName">Title:</label>
-                <input
-                  type="text"
-                  id="companyName"
-                  name="companyName"
-                  value={formData.companyName}
-                  onChange={handleChange}
-                  className={styles.inputField}
-                />
+    <div className="newpostbody">
 
-                <label htmlFor="opportunityType">Opportunity Type:</label>
-                <select
-                  id="opportunityType"
-                  name="opportunityType"
-                  value={formData.opportunityType}
-                  onChange={handleChange}
-                  className={styles.selectField}
-                >
-                  <option value="educational">Educational</option>
-                  <option value="business">Business</option>
-                  <option value="events">Events</option>
-                </select>
+      <h1 className="homeheader">Funding Manager Home</h1>
 
-                <label htmlFor="postContent">Description:</label>
-                <textarea
-                  id="postContent"
-                  name="postContent"
-                  value={formData.postContent}
-                  onChange={handleChange}
-                  className={styles.textareaField}
-                ></textarea>
+      {isReviewing && <h2>Application Review</h2>}
 
-                <label htmlFor="fundingAmount">Funding Amount:</label>
-                <input
-                  type="number"
-                  id="fundingAmount"
-                  name="fundingAmount"
-                  value={formData.fundingAmount}
-                  onChange={handleChange}
-                  className={styles.inputField}
-                />
+      {!isReviewing && session?.user.userPermission ? (
+        <>
+          <h2>Submit a New Post</h2>
+          <form onSubmit={handleSubmit} className={styles.formContainer}>
+            <label htmlFor="companyName">Title:</label>
+            <input
+              type="text"
+              id="companyName"
+              name="companyName"
+              value={formData.companyName}
+              onChange={handleChange}
+              className={styles.inputField}
+            />
 
-                <label htmlFor="applicationDeadline">
-                  Application Deadline:
-                </label>
-                <input
-                  type="date"
-                  id="applicationDeadline"
-                  name="applicationDeadline"
-                  value={formData.applicationDeadline}
-                  onChange={handleChange}
-                  className={styles.inputField}
-                />
+            <label htmlFor="opportunityType">Opportunity Type:</label>
+            <select
+              id="opportunityType"
+              name="opportunityType"
+              value={formData.opportunityType}
+              onChange={handleChange}
+              className={styles.selectField}
+            >
+              <option value="educational">Educational</option>
+              <option value="business">Business</option>
+              <option value="events">Events</option>
+            </select>
 
-                <button type="submit">Submit</button>
-              </form>
+            <label htmlFor="postContent">Description:</label>
+            <textarea
+              id="postContent"
+              name="postContent"
+              value={formData.postContent}
+              onChange={handleChange}
+              className={styles.textareaField}
+            ></textarea>
 
-              {/* <button onClick={handleReviewClick}>Review Posts</button> */}
-            </>
-          ) : 
-          (
-            <>
-              {/* <table>
-                <thead>
-                  <tr>
-                    <th>Funding opportunity</th>
-                    <th>Applicant name</th>
-                    <th>Latest status</th>
-                    <th>Action </th>
-                  </tr>
-                </thead>
+            <label htmlFor="fundingAmount">Funding Amount:</label>
+            <input
+              type="number"
+              id="fundingAmount"
+              name="fundingAmount"
+              value={formData.fundingAmount}
+              onChange={handleChange}
+              className={styles.inputField}
+            />
 
-                <tbody>
-                  {userPosts.map((post) => {
-                    return (
-                      <tr key={post.postId}>
-                        <td>{post.postname}</td>
-                        <td>{post.username}</td>
-                        <td>
-                          {post.statusId == "1"
-                            ? "Pending"
-                            : post.statusId == "2"
-                            ? "Approved"
-                            : "Rejected"}
-                        </td>
-                        <Link href={`/user/${post.userId}/review`}>
+            <label htmlFor="applicationDeadline">Application Deadline:</label>
+            <input
+              type="date"
+              id="applicationDeadline"
+              name="applicationDeadline"
+              value={formData.applicationDeadline}
+              onChange={handleChange}
+              className={styles.inputField}
+            />
+
+            <button type="submit">Submit</button>
+          </form>
+
+          <button onClick={handleReviewClick}>Review Posts</button>
+        </>
+      ) : (
+        <>
+          <table>
+            <thead>
+              <tr>
+                <th>Funding opportunity</th>
+                <th>Applicant name</th>
+                <th>Latest status</th>
+                <th>Action </th>
+              </tr>
+            </thead>
+
+            <tbody>
+              {userPosts.map((post) => {
+                return (
+                  <tr key={post.postId}>
+                    <td>{post.postname}</td>
+                    <td>{post.username}</td>
+                    <td>
+                      {post.statusId == '1'
+                        ? "Pending"
+                        : post.statusId == '2'
+                        ? "Approved"
+                        : "Rejected"}
+                    </td>
+                    <Link href={`/user/${post.userId}/review`}>
                       <button id={post.userId} key={post.userId}>
                         Review
                       </button>
                     </Link>
 
-                        <td>
-                          <button
-                            onClick={() => {
-                              fetch(
-                                `/api/applications/${post.postId}/${post.userId}`,
-                                {
-                                  method: "PUT",
-                                  headers: {
-                                    "Content-Type": "application/json",
-                                  },
-                                  body: JSON.stringify({ status: 3 }),
-                                }
-                              );
-                            }}
-                          >
-                            Reject
-                          </button>
-                        </td>
-                        <td>
-                          <button
-                            onClick={() => {
-                              fetch(
-                                `/api/applications/${post.postId}/${post.userId}`,
-                                {
-                                  method: "PUT",
-                                  headers: {
-                                    "Content-Type": "application/json",
-                                  },
-                                  body: JSON.stringify({ status: 2 }),
-                                }
-                              );
-                            }}
-                          >
-                            Approve
-                          </button>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table> */}
-{/* 
-              <Link href="/" passHref>
-                <button>Back to Home</button>
-              </Link> */}
+                    <td>
+                      <button
+                        onClick={() => {
+                          fetch(
+                            `/api/applications/${post.postId}/${post.userId}`,
+                            {
+                              method: "PUT",
+                              headers: {
+                                "Content-Type": "application/json",
+                              },
+                              body: JSON.stringify({ status: 3 }),
+                            }
+                          );
+                        }}
+                      >
+                        Reject
+                      </button>
+                    </td>
+                    <td>
+                      <button
+                        onClick={() => {
+                          fetch(
+                            `/api/applications/${post.postId}/${post.userId}`,
+                            {
+                              method: "PUT",
+                              headers: {
+                                "Content-Type": "application/json",
+                              },
+                              body: JSON.stringify({ status: 2 }),
+                            }
+                          );
+                        }}
+                      >
+                        Approve
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
 
-              <h1>This account is not permited to creat new opportunities</h1>
-            </>
-          )}
-        </div>
-      </main>
+          <Link href="/" passHref>
+            <button>Back to Home</button>
+          </Link>
+        </>
+      )}
+          </div>
+
+          </main>
     </>
   );
 }
