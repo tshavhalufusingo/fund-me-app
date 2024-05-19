@@ -601,3 +601,33 @@ canvas{
     opacity: 0;
   }
 }
+
+.DocumentBorder{
+  display: flex;
+  margin: 10px;
+  align-items: center;
+  justify-content: flex-start;
+  width: fit-content;
+  height: 45px;
+  border: none;
+  padding: 0px 15px;
+  border-radius: 5px;
+  background-color: rgb(49, 49, 83);
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.documents{
+
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 20px;
+  width: 20%;
+}
+
+.documentAnchor{
+  width: 100%;
+  align-items: center;
+  margin-left: 10px;
+}
