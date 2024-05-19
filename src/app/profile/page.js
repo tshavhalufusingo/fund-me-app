@@ -4,42 +4,45 @@ import { useSession } from "next-auth/react";
 export default function Profile() {
   const { data: session, status } = useSession();
   const id = session?.user.id;
-  
 
   if (session?.user) {
-    const handleRegister = async (event) => {
-      event.preventDefault;
+    const handleUpdateProfile = async (event) => {
+
+      event.preventDefault()
 
       let userFirstName = document.getElementById("firstname").value;
       let userLastName = document.getElementById("lastname").value;
       let useremail = document.getElementById("email").value;
       let userRole = document.getElementById("role").value;
-      let userpassword = document.getElementById("password").value;
-      let status = 0;
+      // let userpassword = document.getElementById("password").value;
+      let ustatus = 0;
 
-      if(userRole  === "Applicant"){
-        status == 2;
-      }
-      else{
-        if(session?.user?.role == "FundManager" && userRole === "FundManager"){
-          status == 2
+      if (userRole === "Applicant") {
+        ustatus = 2;
+      } 
+      else {
+        if (
+          session?.user?.role == "FundManager" &&
+          userRole === "FundManager"
+        ) {
+          ustatus = 2;
+        } else {
+          ustatus = 1;
         }
-        else{
-          status == 1
-        }
-        
       }
 
       const inputData = {
         email: useremail,
-        password: userpassword,
+        userId: id,
         lastname: userLastName,
         firstname: userFirstName,
-        newStatus: status,
+        newStatus: ustatus,
         role: userRole,
       };
 
-      const resp = await fetch(`/api/users/${id}`, {
+      console.log(inputData);
+
+      const resp = await fetch(`/api/users/`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -49,9 +52,9 @@ export default function Profile() {
     };
 
     return (
-      <main className={styles.main} onSubmit={handleRegister}>
-        <form id="registerForm" className="form">
-          <div class="flex">
+      <main className={styles.main}>
+        <form id="registerForm" className="form" >
+          <div className="flex">
             <label>
               <input
                 id="firstname"
@@ -68,47 +71,39 @@ export default function Profile() {
                 className="input"
                 type="text"
                 defaultValue={session?.user.lastName}
-                
                 required
               />
               <span>Lastname</span>
             </label>
           </div>
           <label>
-            <input id="email" className="input" type="email" defaultValue={session?.user?.email} required />
-            <span >Email</span>
+            <input
+              id="email"
+              className="input"
+              type="email"
+              defaultValue={session?.user?.email}
+              required
+            />
+            <span>Email</span>
           </label>
           <label>
             <select id="role" className="input" name="role" required>
-              <option
-                selected={session?.user?.role == "Applicant"}
-                value="Applicant"
-              >
-                Applicant
-              </option>
-              <option
-                selected={session?.user?.role == "FundManager"}
-                value="FundManager"
-              >
-                Fund Manager
-              </option>
+              <option value="Applicant" selected={session?.user?.role == 'Applicant'}>Applicant</option>
+              <option value="FundManager" selected={session?.user?.role == 'FundManager'}>Fund Manager</option>
             </select>
             <span>Role</span>
           </label>
-          <label>
-            <input id="password" className="input" type="password" required />
-            <span>New password</span>
-          </label>
-          <button class="submit" type="submit">
+          <button className="submit"  onClick={handleUpdateProfile}>
             Update profile
           </button>
         </form>
       </main>
     );
   }
-  return (
+  else{ (
     <main className={styles.main}>
       <div>Please login</div>
     </main>
   );
+}
 }
