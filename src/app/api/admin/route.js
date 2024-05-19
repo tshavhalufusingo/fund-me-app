@@ -8,20 +8,36 @@ export async function POST(req) {
   try {
     let poolConnection = await sql.connect(config);
 
-    await poolConnection
+    // Insert the notification into the Notifications table
+    const result = await poolConnection
       .request()
-      .input('userId', sql.Int, userId)
       .input('message', sql.NVarChar, message)
-      .query('INSERT INTO Notifications (userId, message, isRead, createdAt) VALUES (@userId, @message, 0, GETDATE());');
+      .query('INSERT INTO [dbo].[Notifications] (message, createdAt) OUTPUT INSERTED.id VALUES (@message, GETDATE());');
+
+    const notificationId = result.recordset[0].id;
+
+    // Insert into UserNotifications table for the specific user
+    if (userId) {
+      await poolConnection
+        .request()
+        .input('userId', sql.Int, userId)
+        .input('notificationId', sql.Int, notificationId)
+        .query('INSERT INTO [dbo].[UserNotifications] (userId, notificationId, isRead) VALUES (@userId, @notificationId, 0);');
+    } else {
+      // If userId is not provided, handle it accordingly (if needed)
+    }
 
     poolConnection.close();
 
+    // Return success response
     return NextResponse.json({ message: 'Notification sent successfully' });
   } catch (error) {
-    console.error('Error is: ', error.message);
+    console.error('Error sending notification:', error);
+    // Return error response
     return NextResponse.error('Failed to send notification', { status: 500 });
   }
 }
+
 
 export async function GET(req) {
   const { searchParams } = new URL(req.url);
@@ -64,3 +80,4 @@ export async function PATCH(req) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
+
