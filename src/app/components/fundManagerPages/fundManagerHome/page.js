@@ -46,7 +46,7 @@ export default function Dashboard_home(){
               <a href="/profile">Profile</a>
           </div>
           <div className="option">
-              <a href="#" onClick={goReviewPost}>Review Applications</a>
+              <a href="#" onClick={goReviewPost}>Review Posts</a>
           </div>
        
           <div className="option">
