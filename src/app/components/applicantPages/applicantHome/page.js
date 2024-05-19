@@ -2,6 +2,8 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
+import "../../../styles.css";
+
 
 export default function Dashboard_home(){
   const router = useRouter();
@@ -23,16 +25,14 @@ export default function Dashboard_home(){
   return(
 
       <div className="dashboard">
-          <div className="option">
-              <a href="#" onClick={opnePosts}>Check available opportunies</a>
-          </div>
-          <div className="option">
-              <a href="/profile">Profile</a>
-          </div>
-          <div className="option">
-              <a href="#" onClick={rev}>Review Applications</a>
-          </div>
-        
+
+
+              <button className="submit" onClick={opnePosts}>Check available opportunies</button>
+              <button className="submit" onClick={opnePosts}>Profile</button>
+              <button className="submit" onClick={rev}>Track Application</button>
+
+
+
       </div>
   );
 }

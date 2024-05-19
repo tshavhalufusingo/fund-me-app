@@ -267,6 +267,7 @@ canvas{
 
 .dashboard {
   display: grid;
+  margin-top: 20px;
   grid-template-columns: repeat(3, 1fr); /* Adjust the number of columns as needed */
   gap: 20px; /* Adjust the gap between options */
 }

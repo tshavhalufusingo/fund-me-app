@@ -2,20 +2,43 @@ import { NextResponse } from "next/server";
 const sql = require("mssql");
 const config = require("../../database/dbconnection");
 
-export async function GET() {
+
+export async function GET(req) {
+  const { searchParams } = new URL(req.url);
+  const userId = searchParams.get('userId');
+
+  if (!userId) {
+    return NextResponse.json({ error: "Missing userId" }, { status: 400 });
+  }
+
   try {
     let poolConnection = await sql.connect(config);
     const res = await poolConnection
       .request()
-      .query(`SELECT * FROM [dbo].[postApplication];`);
+      .input('userId', sql.Int, userId)
+      .query(`SELECT 
+      post.*, 
+      postApplication.*, 
+      [user].*
+  FROM 
+      [dbo].[post]
+  INNER JOIN 
+      [dbo].[postApplication] ON [dbo].[post].postId = [dbo].[postApplication].postId
+  INNER JOIN 
+      [dbo].[user] ON [dbo].[postApplication].userId = [dbo].[user].userId
+  WHERE 
+      [dbo].[post].userId = @userId;
+  `);
     poolConnection.close();
     const user = res.recordset;
     return NextResponse.json(user);
   } catch (error) {
     console.error("Error retrieving data: ", error.message);
-    return NextResponse.error("Failed to retrieve data", { status: 500 });
+    return NextResponse.json({ error: "Failed to retrieve data" }, { status: 500 });
   }
 }
+
+
 
 export async function POST(req) {
   const data = await req.json();
