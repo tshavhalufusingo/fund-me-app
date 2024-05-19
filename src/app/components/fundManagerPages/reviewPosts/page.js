@@ -3,6 +3,7 @@ import styles from './../../../page.module.css'
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 
+
 export default function ReviewP() {
   const { data: session } = useSession();
   const [applications, setApplications] = useState([]);
@@ -38,7 +39,7 @@ export default function ReviewP() {
 
       // Update funds only if status update was successful
       const inputData2 = {
-        postId: postId[0],
+        postId: postId,
         fundingused: 10000,
       };
 

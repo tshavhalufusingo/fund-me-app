@@ -2,43 +2,55 @@
 'use client'
 import { useState, useEffect, useRef } from "react";
 import Chart from "chart.js/auto";
-import styles from './ReportAndBudget.module.css';
 import { useSession } from "next-auth/react";
+import styles from "../../../page.module.css"
 
 export default function ReportAndBudget() {
-  const [balance, setBalance] = useState(100000);
+  const [balance, setBalance] = useState(0);
   const [amountUsed, setAmountUsed] = useState(20000);
   const [successfulRecipients, setSuccessfulRecipients] = useState(11);
-
+  const [approvealdate, setapprovaldate] = useState('0');
+  const { data: session } = useSession();  // Destructuring session data
   const chartRef = useRef(null);
   const myChartRef = useRef(null);
 
   useEffect(() => {
+    const fetchData = async () => { 
+      if (!session) return;
 
-    const fetchData = async () => {
       try {
-        if (session) {
-          const response = await fetch(`/api/applicationform`, {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
-          });
+        const response = await fetch(`/api/generatereport?userId=${session?.user?.id}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
 
-          if (!response.ok) {
-            throw new Error("Failed to fetch applications");
-          }
-
-          const data = await response.json();
-          setApplications(data.filter(application => application.postId === 2));
-          console.log(data); // Log the fetched data instead of applications
+        if (!response.ok) {
+          throw new Error(`Failed to fetch data: ${response.status}`);
         }
+
+        const data = await response.json();
+        console.log(data[0]);
+
+        setBalance(data[0].fundingAmount - data[0].fundingused || balance)  ;
+        console.log("balance is :", balance);
+        setAmountUsed(data[0].fundingused || amountUsed);
+        setSuccessfulRecipients(data.successfulRecipients || successfulRecipients);
+        console.log("funding amount :", data[0].fundingAmount);
+        console.log(" amount used:", data[0].fundingused);
+        console.log("funding amount :", data[0].fundingAmount);
+
       } catch (error) {
-        console.error("Error fetching applications:", error);
+        console.error("Error fetching data:", error.message);
       }
     };
 
+    fetchData();
 
+
+
+    
 
 
     const ctx = chartRef.current.getContext("2d");
@@ -73,16 +85,16 @@ export default function ReportAndBudget() {
         myChartRef.current.destroy();
       }
     };
-  }, []);
+  }, [session]);  // Depend on session to fetch data
 
   return (
-    <div className={styles.container}>
+    <div className={styles.main}>
       <h1 className="txt">Budget and Report</h1>
       <div className={styles.balanceContainer}>
         <h2 className="txt">Available Balance: R{balance}</h2>
       </div>
       <div className={styles.amountUsedContainer}>
-        <h2>Amount Used: R{amountUsed}</h2>
+        <h2>Amount Given: R{amountUsed}</h2>
       </div>
       <div className={styles.barGraphContainer}>
         <h2 className="txt">Spending in the Last 6 Months</h2>
