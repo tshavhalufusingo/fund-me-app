@@ -28,7 +28,9 @@ export default function Dashboard_home(){
 
 
               <button className="submit" onClick={opnePosts}>Check available opportunies</button>
-              <button className="submit" onClick={opnePosts}>Profile</button>
+              <div className="submit">
+              <a href="/profile">Profile</a>
+          </div>
               <button className="submit" onClick={rev}>Track Application</button>
 
 

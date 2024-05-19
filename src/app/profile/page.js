@@ -8,38 +8,37 @@ export default function Profile() {
 
   if (session?.user) {
     const handleRegister = async (event) => {
-      event.preventDefault;
+      event.preventDefault();
 
       let userFirstName = document.getElementById("firstname").value;
       let userLastName = document.getElementById("lastname").value;
       let useremail = document.getElementById("email").value;
       let userRole = document.getElementById("role").value;
-      let userpassword = document.getElementById("password").value;
       let status = 0;
 
       if(userRole  === "Applicant"){
-        status == 2;
+        status = 2;
       }
       else{
         if(session?.user?.role == "FundManager" && userRole === "FundManager"){
-          status == 2
+          status = 2
         }
         else{
-          status == 1
+          status = 1
         }
         
       }
 
       const inputData = {
         email: useremail,
-        password: userpassword,
+        userId: id,
         lastname: userLastName,
         firstname: userFirstName,
         newStatus: status,
         role: userRole,
       };
 
-      const resp = await fetch(`/api/users/${id}`, {
+      const resp = await fetch(`/api/users/`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -94,10 +93,6 @@ export default function Profile() {
               </option>
             </select>
             <span>Role</span>
-          </label>
-          <label>
-            <input id="password" className="input" type="password" required />
-            <span>New password</span>
           </label>
           <button class="submit" type="submit">
             Update profile
