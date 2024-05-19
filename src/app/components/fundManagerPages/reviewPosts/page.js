@@ -1,14 +1,15 @@
 'use client'
-import styles from './../../../page.module.css'
+import styles from './../../../page.module.css';
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-
+import "../../../styles.css";
 
 export default function ReviewP() {
   const { data: session } = useSession();
   const [applications, setApplications] = useState([]);
   const [statusMap, setStatusMap] = useState({});
   const [updatedStatus, setUpdatedStatus] = useState({});
+  const [documentType, setDocumentType] = useState([]);
 
   const userId = session?.user?.id;
 
@@ -17,7 +18,7 @@ export default function ReviewP() {
     setStatusMap(updatedStatusMap);
 
     const inputData = {
-      applicationId: appid,
+      applicationId: appid, 
       status: status,
     };
 
@@ -37,7 +38,6 @@ export default function ReviewP() {
 
       console.log(`Changed status of application at index ${index} to ${status}, with application id ${appid}`);
 
-      // Update funds only if status update was successful
       const inputData2 = {
         postId: postId,
         fundingused: 10000,
@@ -60,7 +60,6 @@ export default function ReviewP() {
 
       console.log('Funds updated successfully');
 
-      // Update the updatedStatus state to disable dropdown and button
       setUpdatedStatus((prev) => ({ ...prev, [appid]: true }));
     } catch (error) {
       console.error("Error updating status or funds:", error);
@@ -84,7 +83,7 @@ export default function ReviewP() {
 
           const data = await response.json();
           setApplications(data);
-          console.log(data); // Log the fetched data instead of applications
+          console.log("Fetched applications:", data);
         }
       } catch (error) {
         console.error("Error fetching applications:", error);
@@ -107,6 +106,17 @@ export default function ReviewP() {
     }
   };
 
+  const createBlobUrl = (base64Data) => {
+    const byteCharacters = atob(base64Data.split(',')[1]);
+    const byteNumbers = new Array(byteCharacters.length);
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteNumbers[i] = byteCharacters.charCodeAt(i);
+    }
+    const byteArray = new Uint8Array(byteNumbers);
+    const blob = new Blob([byteArray], { type: 'application/pdf' });
+    return URL.createObjectURL(blob);
+  };
+
   return (
     <main className={styles.main}>
       <h1 className={styles.heading}>Review Applications</h1>
@@ -116,12 +126,28 @@ export default function ReviewP() {
           <p className={styles.detail}>Applicant Name: {application.firstname}</p>
           <p className={styles.detail}>Current Status: {getStatusLabel(application.statusId)}</p>
           <p className={styles.detail}>Application Date: {application.applicationDate}</p>
+        
+          <div className='Documents'>
+            <p>Document Type : {application.type}</p>
+            {application.attachment && (
+              <div className='DocumentBorder'>
+              <a className='documentAnchor' href={createBlobUrl(application.attachment)} target="_blank" rel="noopener noreferrer">
+                Download {application.type}
+
+              
+
+
+              </a>
+              </div>
+
+            )}
+          </div>
 
           <select
             className={styles.select}
             value={statusMap[index] || application.statusId}
             onChange={(e) => handleStatusChange(index, e.target.value, application.applicationId, application.postId)}
-            disabled={updatedStatus[application.applicationId]} // Disable if status updated
+            disabled={updatedStatus[application.applicationId]}
           >
             <option value="">Select Status</option>
             <option value="1">Pending</option>
@@ -131,7 +157,7 @@ export default function ReviewP() {
           <button
             className={styles.button}
             onClick={() => handleStatusChange(index, statusMap[index] || application.statusId, application.applicationId, application.postId)}
-            disabled={updatedStatus[application.applicationId]} // Disable if status updated
+            disabled={updatedStatus[application.applicationId]}
           >
             Change Status
           </button>

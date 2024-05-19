@@ -19,15 +19,19 @@ export async function GET(req) {
       .query(`SELECT 
       post.*, 
       postApplication.*, 
-      [user].*
+      [user].*, 
+      ApplicationAttachments.*
   FROM 
-      [dbo].[post]
+      [dbo].[post] AS post
   INNER JOIN 
-      [dbo].[postApplication] ON [dbo].[post].postId = [dbo].[postApplication].postId
+      [dbo].[postApplication] AS postApplication ON post.postId = postApplication.postId
   INNER JOIN 
-      [dbo].[user] ON [dbo].[postApplication].userId = [dbo].[user].userId
+      [dbo].[user] AS [user] ON postApplication.userId = [user].userId
+  INNER JOIN
+      [dbo].[ApplicationAttachments] AS ApplicationAttachments ON ApplicationAttachments.applicationId = postApplication.applicationId
   WHERE 
-      [dbo].[post].userId = @userId;
+      post.userId = @userId;
+  ;
   `);
     poolConnection.close();
     const user = res.recordset;
