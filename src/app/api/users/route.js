@@ -37,7 +37,6 @@ export async function POST(req) {
 
 export async function PUT(req) {
   const data = await req.json();
-  console.log('input data',data);
 
   try {
     let poolConnection = await sql.connect(config);
@@ -45,7 +44,7 @@ export async function PUT(req) {
     const res = await poolConnection
       .request()
       .query(
-        `UPDATE [dbo].[user]  SET  userEmail = '${data.email}',firstname = '${data.firstname}',lastname = '${data.lastname}',userRole = '${data.role}',statusId = ${data.newStatus} WHERE userId='${data.userId}';`
+        `UPDATE [dbo].[user]  SET  userEmail = '${data.email}','${data.password}',firstname = '${data.firstname}',lastname = userRole = '${data.lastname}','${data.role}',statusId = ${data.newStatus} WHERE userId='${data.userId};`
       );
     poolConnection.close();
 

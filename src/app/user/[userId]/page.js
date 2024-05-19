@@ -33,7 +33,11 @@ export default function ReviewUser() {
     let approvalStatus = document.getElementById("approvalStatus").value;
     let permission = document.getElementById("permission");
     let blockAccount = document.getElementById("blockAccount");
-    
+
+    if (permission.checked) {
+      console.log(permission.checked);
+    }
+
     const inputData = {
       userId: id,
       userApproval: approvalStatus,
@@ -41,13 +45,13 @@ export default function ReviewUser() {
       userAccess: blockAccount.checked == true ? blockAccount.value : "0",
     };
 
-    const resp = await fetch(`/api/users/${id}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(inputData),
-    });
+    // const resp = await fetch(`/api/users/`, {
+    //   method: "PUT",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify(inputData),
+    // });
 
     if (!resp.error) {
       router.push("/home");

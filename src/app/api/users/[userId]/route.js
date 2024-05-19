@@ -40,6 +40,7 @@ export async function POST(req) {
 
 export async function PUT(req) {
   const data = await req.json();
+  console.log(data);
 
   try {
     let poolConnection = await sql.connect(config);
@@ -48,6 +49,25 @@ export async function PUT(req) {
       .request()
       .query(
         `UPDATE [dbo].[user]  SET  statusId = '${data.userApproval}', userPermission = '${data.userPermited}', userBlock = '${data.userAccess}' WHERE userId='${data.userId}';`
+      );
+    poolConnection.close();
+
+    return NextResponse.json(res);
+  } catch (error) {
+    console.error("error is: ", error.message);
+  }
+}
+export async function POST(req,context) {
+  const data = await req.json();
+  console.log("2 params")
+
+  try {
+    let poolConnection = await sql.connect(config);
+
+    const res = await poolConnection
+      .request()
+      .query(
+        `UPDATE [dbo].[user]  SET  userEmail = '${data.email}','${data.password}',firstname = '${data.firstname}',lastname = userRole = '${data.lastname}','${data.role}',statusId = ${data.newStatus} WHERE userId='${data.userId};`
       );
     poolConnection.close();
 

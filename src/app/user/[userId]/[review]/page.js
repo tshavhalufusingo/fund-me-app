@@ -25,7 +25,6 @@ export default function ReviewUser() {
           <p>First name: {data?.firstname}</p>
           <p>Last name: {data?.lastname}</p>
           <p>First name: {data?.userEmail}</p>
-
         </section>
       </main>
     </>

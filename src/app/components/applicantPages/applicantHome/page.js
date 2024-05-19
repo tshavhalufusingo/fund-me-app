@@ -1,10 +1,11 @@
-"use client";
+'use client'
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import "../../../styles.css";
 
-export default function Dashboard_home() {
+
+export default function Dashboard_home(){
   const router = useRouter();
 
   function opnePosts(event) {
@@ -17,17 +18,21 @@ export default function Dashboard_home() {
     router.push(".//../components/applicantPages/review"); // Use router.push() to navigate to the desired page
   }
 
-  return (
-    <div className="dashboard">
-      <button className="submit" onClick={opnePosts}>
-        Check available opportunies
-      </button>
-      <div className="submit">
-        <a href="/profile">Profile</a>
+
+  
+
+
+  return(
+
+      <div className="dashboard">
+
+
+              <button className="submit" onClick={opnePosts}>Check available opportunies</button>
+              <button className="submit" onClick={opnePosts}>Profile</button>
+              <button className="submit" onClick={rev}>Track Application</button>
+
+
+
       </div>
-      <button className="submit" onClick={rev}>
-        Track Application
-      </button>
-    </div>
   );
 }
