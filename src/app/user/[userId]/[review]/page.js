@@ -24,6 +24,7 @@ export default function ReviewUser() {
         <section id="UserProfile">
           <p>First name: {data?.firstname}</p>
           <p>Last name: {data?.lastname}</p>
+          <p>First name: {data?.userEmail}</p>
         </section>
       </main>
     </>

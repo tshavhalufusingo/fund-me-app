@@ -35,4 +35,23 @@ export async function POST(req) {
   }
 }
 
+export async function PUT(req) {
+  const data = await req.json();
+
+  try {
+    let poolConnection = await sql.connect(config);
+
+    const res = await poolConnection
+      .request()
+      .query(
+        `UPDATE [dbo].[user]  SET  userEmail = '${data.email}','${data.password}',firstname = '${data.firstname}',lastname = userRole = '${data.lastname}','${data.role}',statusId = ${data.newStatus} WHERE userId='${data.userId};`
+      );
+    poolConnection.close();
+
+    return NextResponse.json(res);
+  } catch (error) {
+    console.error("error is: ", error.message);
+  }
+}
+
 
