@@ -1,4 +1,4 @@
-'use client'
+'use client';
 import styles from './../../../page.module.css';
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
@@ -9,25 +9,45 @@ export default function ReviewP() {
   const [applications, setApplications] = useState([]);
   const [statusMap, setStatusMap] = useState({});
   const [updatedStatus, setUpdatedStatus] = useState({});
-  const [documentType, setDocumentType] = useState([]);
 
   const userId = session?.user?.id;
+
+  const checkingMultipleUpload = (myjson) => {
+    const postMap = new Map();
+
+    myjson.forEach(post => {
+      const postId = post.postId[0];
+      const attachment = post.attachment || "";
+
+      if (postMap.has(postId)) {
+        const existingPost = postMap.get(postId);
+        const combinedAttachments = [
+          ...existingPost.arrayAttachments,
+          attachment
+        ];
+        const uniqueAttachments = Array.from(new Set(combinedAttachments));
+        existingPost.arrayAttachments = uniqueAttachments;
+      } else {
+        postMap.set(postId, { 
+          ...post, 
+          arrayAttachments: [attachment] 
+        });
+      }
+    });
+
+    return Array.from(postMap.values());
+  };
 
   const handleStatusChange = async (index, status, appid, postId) => {
     const updatedStatusMap = { ...statusMap, [index]: status };
     setStatusMap(updatedStatusMap);
 
-    const inputData = {
-      applicationId: appid, 
-      status: status,
-    };
+    const inputData = { applicationId: appid, status: status };
 
     try {
       const resp = await fetch("/api/updateStatus", {
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(inputData),
       });
 
@@ -36,20 +56,11 @@ export default function ReviewP() {
         throw new Error(errorData.error || "Failed to update status");
       }
 
-      console.log(`Changed status of application at index ${index} to ${status}, with application id ${appid}`);
-
-      const inputData2 = {
-        postId: postId,
-        fundingused: 10000,
-      };
-
-      console.log('Sending data to update funds:', inputData2);
+      const inputData2 = { postId: postId, fundingused: 10000 };
 
       const resp2 = await fetch("/api/updatefunds", {
         method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(inputData2),
       });
 
@@ -57,8 +68,6 @@ export default function ReviewP() {
         const errorData = await resp2.json();
         throw new Error(errorData.error || "Failed to update funds");
       }
-
-      console.log('Funds updated successfully');
 
       setUpdatedStatus((prev) => ({ ...prev, [appid]: true }));
     } catch (error) {
@@ -72,9 +81,7 @@ export default function ReviewP() {
         if (userId) {
           const response = await fetch(`/api/applicationform?userId=${userId}`, {
             method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-            },
+            headers: { "Content-Type": "application/json" },
           });
 
           if (!response.ok) {
@@ -82,8 +89,8 @@ export default function ReviewP() {
           }
 
           const data = await response.json();
-          setApplications(data);
-          console.log("Fetched applications:", data);
+          const processedData = checkingMultipleUpload(data);
+          setApplications(processedData);
         }
       } catch (error) {
         console.error("Error fetching applications:", error);
@@ -95,14 +102,10 @@ export default function ReviewP() {
 
   const getStatusLabel = (statusId) => {
     switch (statusId) {
-      case 1:
-        return "Pending";
-      case 2:
-        return "Approved";
-      case 3:
-        return "Rejected";
-      default:
-        return "Unknown";
+      case 1: return "Pending";
+      case 2: return "Approved";
+      case 3: return "Rejected";
+      default: return "Unknown";
     }
   };
 
@@ -128,19 +131,13 @@ export default function ReviewP() {
           <p className={styles.detail}>Application Date: {application.applicationDate}</p>
         
           <div className='Documents'>
-            <p>Document Type : {application.type}</p>
-            {application.attachment && (
-              <div className='DocumentBorder'>
-              <a className='documentAnchor' href={createBlobUrl(application.attachment)} target="_blank" rel="noopener noreferrer">
-                Download {application.type}
-
-              
-
-
-              </a>
+            {application.arrayAttachments && application.arrayAttachments.map((attachment, i) => (
+              <div className='DocumentBorder' key={i}>
+                <a className='documentAnchor' href={createBlobUrl(attachment)} target="_blank" rel="noopener noreferrer">
+                  Download {application.type} {i + 1}
+                </a>
               </div>
-
-            )}
+            ))}
           </div>
 
           <select
