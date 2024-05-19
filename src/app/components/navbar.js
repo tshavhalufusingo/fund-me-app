@@ -11,6 +11,7 @@ export default function Navbar() {
   const { data: session } = useSession();
   const router = useRouter();
   const [notifications, setNotifications] = useState([]);
+  const [unreadCount, setUnreadCount] = useState(0);
   const [showNotifications, setShowNotifications] = useState(false);
 
   const logosource =
@@ -26,29 +27,21 @@ export default function Navbar() {
     router.push("/components/contactUs");
   };
 
-  // const gotoInsights = async (e) => {
-  //   e.preventDefault;
-  //   router.push("/components/graphs");
-
-  // };
-
   const gotoInsights = async (e) => {
     e.preventDefault;
     router.push("/components/fundManagerPages/report");
-
   };
 
-  if (session?.user) {
-  }
   const gotoHome = async (e) => {
     if (session?.user) {
-      e.preventDefault;
+      e.preventDefault();
       router.push("/home");
     } else {
-      e.preventDefault;
+      e.preventDefault();
       router.push("/");
     }
   };
+
   useEffect(() => {
     if (session?.user) {
       fetchNotifications();
@@ -59,16 +52,36 @@ export default function Navbar() {
     try {
       const response = await fetch(`/api/admin?userId=${session.user.id}`);
       const data = await response.json();
-      setNotifications(data);
+      setNotifications(data.notifications);
+      setUnreadCount(data.unreadCount);
     } catch (error) {
       console.error('Failed to fetch notifications:', error);
     }
   };
 
-  const toggleNotifications = () => {
+  const toggleNotifications = async () => {
     setShowNotifications(!showNotifications);
     if (!showNotifications) {
-      fetchNotifications();
+      await fetchNotifications();
+      await markNotificationsAsRead();
+    }
+  };
+
+  const markNotificationsAsRead = async () => {
+    try {
+      const unreadNotifications = notifications.filter(n => !n.isRead);
+      for (const notification of unreadNotifications) {
+        await fetch(`/api/admin`, {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ notificationId: notification.id }),
+        });
+      }
+      setUnreadCount(0); // Reset unread count after marking all as read
+    } catch (error) {
+      console.error('Failed to mark notifications as read:', error);
     }
   };
 
@@ -101,9 +114,9 @@ export default function Navbar() {
               </>
             ) : null}
 
-<div className="notification" onClick={toggleNotifications}>
+            <div className="notification" onClick={toggleNotifications}>
               <FaBell size={20} />
-              {notifications.length > 0 && <span className="badge">{notifications.length}</span>}
+              {unreadCount > 0 && <span className="badge">{unreadCount}</span>}
               {showNotifications && (
                 <div className="dropdownn">
                   {notifications.map((notification) => (
@@ -114,12 +127,6 @@ export default function Navbar() {
                 </div>
               )}
             </div>
-  
-
-
-
-
-
 
             <li>
               <Link href="/components/graphs">Profile</Link>
@@ -153,7 +160,7 @@ export default function Navbar() {
         </button>
 
         <button className="contactUsButton" onClick={gotoInsights}>
-          Insights  
+          Insights
         </button>
 
         <div className="dropdown">

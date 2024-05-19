@@ -23,22 +23,44 @@ export async function POST(req) {
   }
 }
 
+export async function GET(req) {
+  const { searchParams } = new URL(req.url);
+  const userId = searchParams.get('userId');
 
-
-export async function GET() {
   try {
     let poolConnection = await sql.connect(config);
 
     const res = await poolConnection
       .request()
-      .query(`SELECT * FROM [dbo].[Notifications] WHERE isRead = '0';`);
+      .input('userId', sql.Int, userId)
+      .query(`SELECT * FROM [dbo].[Notifications] WHERE userId = @userId OR userId IS NULL ORDER BY createdAt DESC;`);
     poolConnection.close();
 
-    const Notifications = res.recordset;
-    console.table(Notifications);
-    return NextResponse.json(Notifications);
+    const notifications = res.recordset;
+    const unreadCount = notifications.filter(n => !n.isRead).length;
+
+    return NextResponse.json({ notifications, unreadCount });
   } catch (error) {
     console.error("Error fetching notifications: ", error.message);
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
+}
+
+export async function PATCH(req) {
+  const { notificationId } = await req.json();
+
+  try {
+    let poolConnection = await sql.connect(config);
+
+    await poolConnection
+      .request()
+      .input('notificationId', sql.Int, notificationId)
+      .query(`UPDATE Notifications SET isRead = 1 WHERE id = @notificationId;`);
+    poolConnection.close();
+
+    return NextResponse.json({ message: 'Notification marked as read' });
+  } catch (error) {
+    console.error("Error updating notification: ", error.message);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
