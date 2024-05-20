@@ -2,6 +2,8 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useState, useEffect } from "react";
+import { FaBell } from "react-icons/fa";
 
 
 
@@ -9,6 +11,16 @@ import { useSession } from "next-auth/react";
 
 export default function Dashboard_home(){ 
   //const { data: session, status } = useSession();
+  const [notifications, setNotifications] = useState([]); 
+
+  useEffect(() => {
+    // Simulate fetching notifications from an API
+    const fetchedNotifications = [
+      { id: 1, message: "New funding request submitted" },
+      { id: 2, message: "Your post has been approved" }
+    ];
+    setNotifications(fetchedNotifications);
+  }, []);
 
   const router = useRouter();
 
@@ -53,8 +65,12 @@ export default function Dashboard_home(){
               <a href="#" onClick={gotoBudget}>Budget and Report</a>
           </div>
 
-      
 
-      </div>
+          <div className="option">
+              <a href="#" onClick={gotoBudget}>Budget</a>
+          </div>
+         </div>
+          
+
   );
 }
