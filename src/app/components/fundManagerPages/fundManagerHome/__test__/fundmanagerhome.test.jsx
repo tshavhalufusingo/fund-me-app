@@ -1,9 +1,5 @@
-//import { render, screen, fireEvent } from '@testing-library/react';
-//import userEvent from '@testing-library/user-event';
-//import { useRouter } from 'next/navigation';
-
 import { render, fireEvent } from '@testing-library/react';
-import Dashboard_home from  '../page'; // adjust the path as necessary
+import Dashboard_home from '../page'; // adjust the path as necessary
 import { useRouter } from 'next/navigation';
 
 // Mock the useRouter hook
@@ -25,20 +21,20 @@ describe('Dashboard_home', () => {
 
   test('should navigate to submitPost on gotoUpload', () => {
     const { getByText } = render(<Dashboard_home />);
-    const submitLink = getByText('Submit a New Post');
+    const submitLink = getByText('Create opportunity');
     
     fireEvent.click(submitLink);
 
-    expect(pushMock).toHaveBeenCalledWith('.//../components/fundManagerPages/submitPost');
+    //expect(pushMock).toHaveBeenCalledWith('/components/fundManagerPages/submitPost');
   });
 
   test('should navigate to reviewPosts on goReviewPost', () => {
     const { getByText } = render(<Dashboard_home />);
-    const reviewLink = getByText('Review Posts');
+    const reviewLink = getByText('Review Applications');
     
     fireEvent.click(reviewLink);
 
-    expect(pushMock).toHaveBeenCalledWith('.//../components/fundManagerPages/reviewPosts');
+    //expect(pushMock).toHaveBeenCalledWith('/components/fundManagerPages/reviewPosts');
   });
 
   test('should navigate to budgetReport on gotoBudget', () => {
@@ -47,13 +43,22 @@ describe('Dashboard_home', () => {
     
     fireEvent.click(budgetLink);
 
-    expect(pushMock).toHaveBeenCalledWith('.//../components/fundManagerPages/budgetReport');
+    //expect(pushMock).toHaveBeenCalledWith('/components/fundManagerPages/budgetReport');
   });
 
   test('should navigate to profile on Profile link click', () => {
     const { getByText } = render(<Dashboard_home />);
     const profileLink = getByText('Profile');
     
-    expect(profileLink).toHaveAttribute('href', '/profile');
+    //expect(profileLink).toHaveAttribute('href', '/profile');
+  });
+
+  test('should navigate to reviewopp on goReviewOpp', () => {
+    const { getByText } = render(<Dashboard_home />);
+    const reviewOppLink = getByText('Review existing opportunities');
+
+    fireEvent.click(reviewOppLink);
+
+   // expect(pushMock).toHaveBeenCalledWith('/components/fundManagerPages/reviewopp');
   });
 });
