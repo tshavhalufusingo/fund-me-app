@@ -3,6 +3,9 @@
 import styles from "../../page.module.css";
 import { useSession } from "next-auth/react";
 import { useState, useEffect } from "react";
+import "../../styles.css";
+import "../../../styles.css";
+
 
 export default function OpenPosts() {
   const { data: session } = useSession();
@@ -40,8 +43,8 @@ export default function OpenPosts() {
             <h1>{postData.companyName}</h1>
             <p>{postData.postContent}</p>
             <button
-              className="postButtons"
-              key={postData.postId}
+              className="submit"
+              key={postData.postId} 
               id={postData.postId}
               onClick={handleApply}
             >

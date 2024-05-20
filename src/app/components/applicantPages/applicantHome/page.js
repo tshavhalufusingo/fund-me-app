@@ -17,6 +17,7 @@ export default function Dashboard_home() {
     router.push(".//../components/applicantPages/review"); // Use router.push() to navigate to the desired page
   }
 
+
   return (
     <div className="dashboard">
       <button className="submit" onClick={opnePosts}>
@@ -24,6 +25,7 @@ export default function Dashboard_home() {
       </button>
       <div className="submit">
         <a href="/profile">Profile</a>
+
       </div>
       <button className="submit" onClick={rev}>
         Track Application

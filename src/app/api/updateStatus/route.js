@@ -20,7 +20,7 @@ export async function PUT(req) {
 
     // Connect to the database
     let poolConnection = await sql.connect(config);
-
+    console.log(req);
     // Perform the update query
     const query = `
     UPDATE [dbo].[postApplication]

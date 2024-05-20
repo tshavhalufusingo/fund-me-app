@@ -3,10 +3,8 @@ import styles from "../page.module.css";
 import { useSession } from "next-auth/react";
 export default function Profile() {
   const { data: session, status } = useSession();
-  const id = session?.user.id;
-  
-
   if (session?.user) {
+
     const handleRegister = async (event) => {
       event.preventDefault();
 
@@ -100,10 +98,10 @@ export default function Profile() {
         </form>
       </main>
     );
+r
   }
   return (
-    <main className={styles.main}>
-      <div>Please login</div>
-    </main>
-  );
+    <main className={styles.main} ><div>Please login</div></main>
+    
+  )
 }

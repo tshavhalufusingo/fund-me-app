@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect, Fragment } from "react";
-import styles from "../../../page.module.css";
+import Link from "next/link";
+import styles from "../../../page.module.css"
 import { useSession } from "next-auth/react";
 import "../../../styles.css";
 
@@ -13,6 +14,7 @@ export default function submit_post() {
     id: session?.user.id,
     opportunityType: "",
     fundingAmount: "",
+    indivisualFund: "",
     applicationDeadline: "",
   });
   const [isReviewing, setIsReviewing] = useState(false);
@@ -55,6 +57,7 @@ export default function submit_post() {
         id: session?.user.id,
         opportunityType: "",
         fundingAmount: "",
+        indivisualFund: "",
         applicationDeadline: "",
       });
       alert("Post submitted successfully!");
@@ -65,14 +68,6 @@ export default function submit_post() {
   };
 
   const [data, setData] = useState(null);
-
-  // useEffect(() => {
-  //   fetch(`/api/applications/${session?.user.id}`)
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       setUserPosts(...currentUserPosts);
-  //     });
-  // }, []);
 
   const handleReviewClick = () => {
     setIsReviewing(true);
@@ -102,9 +97,7 @@ export default function submit_post() {
 
   return (
     <>
-      <main className="{styles.main}">
-        <div className="newpostbody">
-          <h1 className="homeheader">Funding Manager Home</h1>
+
 
           {session?.user.userPermission ? (
             <>
@@ -120,54 +113,46 @@ export default function submit_post() {
                   className={styles.inputField}
                 />
 
-                <label htmlFor="opportunityType">Opportunity Type:</label>
-                <select
-                  id="opportunityType"
-                  name="opportunityType"
-                  value={formData.opportunityType}
-                  onChange={handleChange}
-                  className={styles.selectField}
-                >
-                  <option value="educational">Educational</option>
-                  <option value="business">Business</option>
-                  <option value="events">Events</option>
-                </select>
 
-                <label htmlFor="postContent">Description:</label>
-                <textarea
-                  id="postContent"
-                  name="postContent"
-                  value={formData.postContent}
-                  onChange={handleChange}
-                  className={styles.textareaField}
-                ></textarea>
+      <h1 className="homeheader">Funding Manager Home</h1>
 
-                <label htmlFor="fundingAmount">Funding Amount:</label>
-                <input
-                  type="number"
-                  id="fundingAmount"
-                  name="fundingAmount"
-                  value={formData.fundingAmount}
-                  onChange={handleChange}
-                  className={styles.inputField}
-                />
+      {isReviewing && <h2>Application Review</h2>}
 
-                <label htmlFor="applicationDeadline">
-                  Application Deadline:
-                </label>
-                <input
-                  type="date"
-                  id="applicationDeadline"
-                  name="applicationDeadline"
-                  value={formData.applicationDeadline}
-                  onChange={handleChange}
-                  className={styles.inputField}
-                />
+      {!isReviewing && session?.user.userPermission ? (
+        <>
+          <h2>Submit a New Post</h2>
+          <form onSubmit={handleSubmit} className={styles.formContainer}>
+            <label htmlFor="companyName">Title:</label>
+            <input
+              type="text"
+              id="companyName"
+              name="companyName"
+              value={formData.companyName}
+              onChange={handleChange}
+              className={styles.inputField}
+            />
 
-                <button type="submit">Submit</button>
-              </form>
+            <label htmlFor="opportunityType">Opportunity Type:</label>
+            <select
+              id="opportunityType"
+              name="opportunityType"
+              value={formData.opportunityType}
+              onChange={handleChange}
+              className={styles.selectField}
+            >
+              <option value="educational">Educational</option>
+              <option value="business">Business</option>
+              <option value="events">Events</option>
+            </select>
 
-              {/* <button onClick={handleReviewClick}>Review Posts</button> */}
+            <label htmlFor="postContent">Description:</label>
+            <textarea
+              id="postContent"
+              name="postContent"
+              value={formData.postContent}
+              onChange={handleChange}
+              className={styles.textareaField}
+            ></textarea>
             </>
           ) : 
           (

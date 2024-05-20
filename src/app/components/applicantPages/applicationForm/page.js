@@ -5,12 +5,18 @@ import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
 import { useState } from "react";
 
+const date = new Date();
+const applicationDate = date.toISOString().split("T")[0]; 
+
+
 export default function ApplicationForm() {
   const params = useParams();
   const { data: session, status } = useSession();
   const [documents, setDocuments] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const date = new Date();
+  const applicationDate = date.toISOString().split("T")[0]; 
 
   const handleFile = (event) => {
     const documentType = document.getElementById("documentType").value;
@@ -37,11 +43,14 @@ export default function ApplicationForm() {
     setLoading(true);
     setError(null);
 
+    console.log("the date is ", applicationDate);
+
     try {
       const inputData = {
         postId: parseInt(params.postId),
         userId: session?.user.id,
         statusId: 1,
+        date : date.toISOString().split("T")[0],
       };
 
       const response = await fetch(`/api/applications/${params.postId}`, {

@@ -602,32 +602,46 @@ canvas{
   }
 }
 
-.DocumentBorder{
-  display: flex;
-  margin: 10px;
-  align-items: center;
-  justify-content: flex-start;
-  width: fit-content;
-  height: 45px;
-  border: none;
-  padding: 0px 15px;
-  border-radius: 5px;
-  background-color: rgb(49, 49, 83);
-  gap: 10px;
+
+
+
+.notification {
+  position: relative;
   cursor: pointer;
-  transition: all 0.3s;
+  margin-right: 10px;
 }
 
-.documents{
+.badge {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 5px 10px;
+  font-size: 12px;
+}
 
+.dropdownn {
+  position: absolute;
+  top: 30px;
+  right: 0;
+  background-color: white;
   border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 20px;
-  width: 20%;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  z-index: 1;
+  width: 300px;
+  max-height: 400px;
+  overflow-y: auto;
 }
 
-.documentAnchor{
-  width: 100%;
-  align-items: center;
-  margin-left: 10px;
+.notification-item {
+  color: #1a1a1a;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
 }
+
+.notification-item:last-child {
+  border-bottom: none;
+}
+
