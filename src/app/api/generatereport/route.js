@@ -23,7 +23,7 @@ export async function GET(req) {
       [dbo].[post] AS post
   INNER JOIN 
       [dbo].[postApplication] AS postApplication ON post.postId = postApplication.postId
-WHERE postApplication.userId = @userId;
+WHERE post.userId = @userId;
     
   `);
     poolConnection.close();

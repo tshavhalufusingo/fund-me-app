@@ -1,10 +1,11 @@
-'use client'
+"use client";
 import { useState, useEffect, useRef } from "react";
 import Chart from "chart.js/auto";
 import { useSession } from "next-auth/react";
-import html2canvas from 'html2canvas';
-import jsPDF from 'jspdf';
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 import styles from "../../../page.module.css";
+import GeneratePiChart from "../../graphs/generateGraph";
 
 export default function ReportAndBudget() {
   const [balance, setBalance] = useState(0);
@@ -12,116 +13,161 @@ export default function ReportAndBudget() {
   const [successfulRecipients, setSuccessfulRecipients] = useState(0);
   const [pending, setPending] = useState(0);
   const [rejected, setRejected] = useState(0);
-  const [company , setCompany] = useState("");
+  const [totalApplications, setTotalApplications] = useState(0);
+  const [monthlyApprovals, setMonthlyApprovals] = useState([]);
 
-  const months = ["January","February","March","April","May","June","July"];
-  const [approvalDates, setapprovaldate] = useState([]);
-  const [totalApplication, settotalApplications] = useState(0);
-
-  const { data: session } = useSession();  // Destructuring session data
+  const labels = ["pending", "approved", "rejected"];
+  const { data: session } = useSession(); // Destructuring session data
   const chartRef = useRef(null);
   const myChartRef = useRef(null);
-  const reportRef = useRef(null);  // Reference for the report div
+  const reportRef = useRef(null); // Reference for the report div
+  const buttonRef = useRef(null); // Reference for the download button
 
   const userID = session?.user?.id;
 
-  const getAllMonths = (jsonData) =>{
-    // Implement the function as needed
-  };
-
   const getAllData = (jsonData) => {
-    settotalApplications(jsonData.length);
-    console.log("user id is = ",session?.user?.id);
+    setTotalApplications(jsonData.length);
+
     let pendingCount = 0;
     let successfulCount = 0;
     let rejectedCount = 0;
-  
+    const approvals = {};
+
     jsonData.forEach((item) => {
-      console.log(item.statusId);
+      const statusId = item.statusId["0"]; // Extracting the numeric status ID
+      const approvalDate = item.approvalDate
+        ? new Date(item.approvalDate)
+        : null;
+
+      if (approvalDate) {
+        const month = approvalDate.getMonth();
+        const year = approvalDate.getFullYear();
+        const key = `${year}-${month}`;
+        approvals[key] = (approvals[key] || 0) + 10000;
+      }
+
+      switch (statusId) {
+        case 1:
+          pendingCount++;
+          break;
+        case 2:
+          successfulCount++;
+          break;
+        case 3:
+          rejectedCount++;
+          break;
+        default:
+          break;
+      }
     });
-  
+
     setPending(pendingCount);
     setSuccessfulRecipients(successfulCount);
     setRejected(rejectedCount);
+
+    const approvalArray = Object.keys(approvals)
+      .map((key) => ({
+        key,
+        value: approvals[key],
+      }))
+      .sort((a, b) => new Date(a.key) - new Date(b.key));
+
+    setMonthlyApprovals(approvalArray);
   };
-  
+
   useEffect(() => {
-    const fetchData = async () => { 
+    const fetchData = async () => {
       if (!session) return;
 
       try {
-        const response = await fetch(`/api/generatereport?userId=${session?.user?.id}`, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+        const response = await fetch(
+          `/api/generatereport?userId=${session?.user?.id}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
         if (!response.ok) {
           throw new Error(`Failed to fetch data: ${response.status}`);
         }
 
         const data = await response.json();
-        getAllData(data);
-    
-        console.log(data);
 
-        setBalance(data[0].fundingAmount - data[0].fundingused || balance);
-        console.log("balance is :", balance);
-        setAmountUsed(data[0].fundingused || amountUsed);
-        setSuccessfulRecipients(data.successfulRecipients || successfulRecipients);
+        if (data && data.length > 0) {
+          getAllData(data);
 
+          const firstItem = data[0];
+          setBalance(
+            firstItem.fundingAmount - firstItem.fundingused || balance
+          );
+          setAmountUsed(firstItem.fundingused || amountUsed);
+        } else {
+          console.warn("No data received or data is empty");
+        }
       } catch (error) {
         console.error("Error fetching data:", error.message);
       }
     };
 
     fetchData();
+  }, [session]);
 
+  useEffect(() => {
     const ctx = chartRef.current.getContext("2d");
 
     if (myChartRef.current) {
       myChartRef.current.destroy();
     }
 
-    myChartRef.current = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: ["January", "February", "March", "April", "May", "June"],
-        datasets: [
-          {
-            label: 'Amount Spent',
-            data: [5000, 5000, 2500, 2000, 2500, 4000],
-            backgroundColor: 'rgba(75, 192, 192, 0.6)',
-          },
-        ],
-      },
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true,
+    if (monthlyApprovals.length > 0) {
+      const labels = monthlyApprovals.map((item) => item.key);
+      const data = monthlyApprovals.map((item) => item.value);
+
+      myChartRef.current = new Chart(ctx, {
+        type: "bar",
+        data: {
+          labels,
+          datasets: [
+            {
+              label: "Approval Count",
+              data,
+              backgroundColor: "rgba(75, 192, 192, 0.6)",
+            },
+          ],
+        },
+        options: {
+          scales: {
+            y: {
+              beginAtZero: true,
+            },
           },
         },
-      },
-    });
+      });
+    }
 
     return () => {
       if (myChartRef.current) {
         myChartRef.current.destroy();
       }
     };
-  }, [session]);  // Depend on session to fetch data
+  }, [monthlyApprovals]);
 
   const downloadPDF = () => {
     const input = reportRef.current;
-    html2canvas(input).then(canvas => {
-      const imgData = canvas.toDataURL('image/png');
-      const pdf = new jsPDF();
-      const imgProps = pdf.getImageProperties(imgData);
-      const pdfWidth = pdf.internal.pageSize.getWidth();
-      const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
-      pdf.addImage(imgData, 'PNG', 0, 0, pdfWidth, pdfHeight);
+    const button = buttonRef.current;
+    button.classList.add(styles.hidden); // Hide the button
+
+    html2canvas(input).then((canvas) => {
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("p", "mm", "a4"); // Set to A4 size with portrait orientation
+      const pdfWidth = 210; // A4 width in mm
+      const pdfHeight = (canvas.height * pdfWidth) / canvas.width; // Maintain aspect ratio
+      pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
       pdf.save("report.pdf");
+      button.classList.remove(styles.hidden); // Show the button again
     });
   };
 
@@ -139,20 +185,27 @@ export default function ReportAndBudget() {
         <canvas className="barGraph" ref={chartRef}></canvas>
       </div>
       <div className={styles.recipientsContainer}>
-        <h2>Number of application: {totalApplication}</h2>
+        <h2>Number of applications: {totalApplications}</h2>
       </div>
       <div className={styles.recipientsContainer}>
-        <h2>Number of Successful Application: {successfulRecipients}</h2>
+        <h2>Number of Successful Applications: {successfulRecipients}</h2>
       </div>
       <div className={styles.recipientsContainer}>
-        <h2>Number of pending application: {successfulRecipients}</h2>
+        <h2>Number of Pending Applications: {pending}</h2>
       </div>
       <div className={styles.recipientsContainer}>
-        <h2>Number of rejected applications: {rejected}</h2>
+        <h2>Number of Rejected Applications: {rejected}</h2>
       </div>
 
-      <button className={styles.button} onClick={downloadPDF}>
-        Download report as a pdf 
+      <div className={styles.recipientsContainer}>
+        <GeneratePiChart
+          labels={labels}
+          data={[pending, successfulRecipients, rejected]}
+        />
+      </div>
+
+      <button className={styles.button} ref={buttonRef} onClick={downloadPDF}>
+        Download report as a pdf
       </button>
     </div>
   );
