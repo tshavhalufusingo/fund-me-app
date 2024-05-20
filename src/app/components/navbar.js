@@ -128,9 +128,7 @@ export default function Navbar() {
               )}
             </div>
 
-            <li>
-              <Link href="/components/graphs">Profile</Link>
-            </li>
+          
             <li>
               <button onClick={LogOut}> Sign out </button>
             </li>
@@ -159,10 +157,7 @@ export default function Navbar() {
           Contact Us
         </button>
 
-        <button className="contactUsButton" onClick={gotoInsights}>
-          Insights
-        </button>
-
+   
         <div className="dropdown">
           <div className="default">Learn About ▼</div>
           <div className="dropdown-content">
