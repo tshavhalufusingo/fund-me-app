@@ -69,14 +69,6 @@ export default function submit_post() {
 
   const [data, setData] = useState(null);
 
-  // useEffect(() => {
-  //   fetch(`/api/applications/${session?.user.id}`)
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       setUserPosts(...currentUserPosts);
-  //     });
-  // }, []);
-
   const handleReviewClick = () => {
     setIsReviewing(true);
   };
@@ -161,9 +153,6 @@ export default function submit_post() {
               onChange={handleChange}
               className={styles.textareaField}
             ></textarea>
-
-// <<<<<<< singoV2
-              {/* <button onClick={handleReviewClick}>Review Posts</button> */}
             </>
           ) : 
           (
@@ -173,123 +162,6 @@ export default function submit_post() {
           )}
         </div>
       </main>
-// =======
-//             <label htmlFor="fundingAmount">Funding Amount:</label>
-//             <input
-//               type="number"
-//               id="fundingAmount"
-//               name="fundingAmount"
-//               value={formData.fundingAmount}
-//               onChange={handleChange}
-//               className={styles.inputField}
-//             />
-
-//               <label htmlFor="fundingAmount">Funding for each indivisual:</label>
-//             <input
-//               type="number"
-//               id="indivisualFund"
-//               name="indivisualFund"
-//               value={formData.indivisualFund}
-//               onChange={handleChange}
-//               className={styles.inputField}
-//             />
-
-//             <label htmlFor="applicationDeadline">Application Deadline:</label>
-//             <input
-//               type="date"
-//               id="applicationDeadline"
-//               name="applicationDeadline"
-//               value={formData.applicationDeadline}
-//               onChange={handleChange}
-//               className={styles.inputField}
-//             />
-
-//             <button type="submit">Submit</button>
-//           </form>
-
-//         </>
-//       ) : (
-//         <>
-//           <table>
-//             <thead>
-//               <tr>
-//                 <th>Funding opportunity</th>
-//                 <th>Applicant name</th>
-//                 <th>Latest status</th>
-//                 <th>Action </th>
-//               </tr>
-//             </thead>
-
-//             <tbody>
-//               {userPosts.map((post) => {
-//                 return (
-//                   <tr key={post.postId}>
-//                     <td>{post.postname}</td>
-//                     <td>{post.username}</td>
-//                     <td>
-//                       {post.statusId == '1'
-//                         ? "Pending"
-//                         : post.statusId == '2'
-//                         ? "Approved"
-//                         : "Rejected"}
-//                     </td>
-//                     <Link href={`/user/${post.userId}/review`}>
-//                       <button id={post.userId} key={post.userId}>
-//                         Review
-//                       </button>
-//                     </Link>
-
-//                     <td>
-//                       <button
-//                         onClick={() => {
-//                           fetch(
-//                             `/api/applications/${post.postId}/${post.userId}`,
-//                             {
-//                               method: "PUT",
-//                               headers: {
-//                                 "Content-Type": "application/json",
-//                               },
-//                               body: JSON.stringify({ status: 3 }),
-//                             }
-//                           );
-//                         }}
-//                       >
-//                         Reject
-//                       </button>
-//                     </td>
-//                     <td>
-//                       <button
-//                         onClick={() => {
-//                           fetch(
-//                             `/api/applications/${post.postId}/${post.userId}`,
-//                             {
-//                               method: "PUT",
-//                               headers: {
-//                                 "Content-Type": "application/json",
-//                               },
-//                               body: JSON.stringify({ status: 2 }),
-//                             }
-//                           );
-//                         }}
-//                       >
-//                         Approve
-//                       </button>
-//                     </td>
-//                   </tr>
-//                 );
-//               })}
-//             </tbody>
-//           </table>
-
-//           <Link href="/" passHref>
-//             <button>Back to Home</button>
-//           </Link>
-//         </>
-//       )}
-//           </div>
-
-//           </main>
-// >>>>>>> master
     </>
   );
 }
