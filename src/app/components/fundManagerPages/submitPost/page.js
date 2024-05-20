@@ -14,6 +14,7 @@ export default function submit_post() {
     id: session?.user.id,
     opportunityType: "",
     fundingAmount: "",
+    indivisualFund: "",
     applicationDeadline: "",
   });
   const [isReviewing, setIsReviewing] = useState(false);
@@ -56,6 +57,7 @@ export default function submit_post() {
         id: session?.user.id,
         opportunityType: "",
         fundingAmount: "",
+        indivisualFund: "",
         applicationDeadline: "",
       });
       alert("Post submitted successfully!");
@@ -158,6 +160,16 @@ export default function submit_post() {
               className={styles.inputField}
             />
 
+              <label htmlFor="fundingAmount">Funding for each indivisual:</label>
+            <input
+              type="number"
+              id="indivisualFund"
+              name="indivisualFund"
+              value={formData.indivisualFund}
+              onChange={handleChange}
+              className={styles.inputField}
+            />
+
             <label htmlFor="applicationDeadline">Application Deadline:</label>
             <input
               type="date"
@@ -171,7 +183,6 @@ export default function submit_post() {
             <button type="submit">Submit</button>
           </form>
 
-          <button onClick={handleReviewClick}>Review Posts</button>
         </>
       ) : (
         <>

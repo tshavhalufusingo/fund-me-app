@@ -9,6 +9,8 @@ export default function ReviewP() {
   const [applications, setApplications] = useState([]);
   const [statusMap, setStatusMap] = useState({});
   const [updatedStatus, setUpdatedStatus] = useState({});
+  const [myData, setData] = useState([]);
+  const [indivisualAMT, setindivisualAmt] = useState(0);
 
   const userId = session?.user?.id;
 
@@ -42,7 +44,10 @@ export default function ReviewP() {
     const updatedStatusMap = { ...statusMap, [index]: status };
     setStatusMap(updatedStatusMap);
 
-    const inputData = { applicationId: appid, status: status };
+    const inputData = { 
+      applicationId: appid,
+       status: status };
+       
 
     try {
       const resp = await fetch("/api/updateStatus", {
@@ -89,7 +94,13 @@ export default function ReviewP() {
           }
 
           const data = await response.json();
+          setindivisualAmt(data[0].allocatedFunds);
+          setData(data);
+          console.log(data);
+          console.log(data);
+
           const processedData = checkingMultipleUpload(data);
+          console.log(processedData);
           setApplications(processedData);
         }
       } catch (error) {
@@ -127,7 +138,7 @@ export default function ReviewP() {
         <div className={styles.application} key={application.applicationId}>
           <p className={styles.detail}>Funding opportunity: {application.postContent}</p>
           <p className={styles.detail}>Applicant Name: {application.firstname}</p>
-          <p className={styles.detail}>Current Status: {getStatusLabel(application.statusId)}</p>
+          <p className={styles.detail}>Current Status: {getStatusLabel(application.statusId[1])}</p>
           <p className={styles.detail}>Application Date: {application.applicationDate}</p>
         
           <div className='Documents'>
@@ -143,8 +154,8 @@ export default function ReviewP() {
           <select
             className={styles.select}
             value={statusMap[index] || application.statusId}
-            onChange={(e) => handleStatusChange(index, e.target.value, application.applicationId, application.postId)}
-            disabled={updatedStatus[application.applicationId]}
+            onChange={(e) => handleStatusChange(index, e.target.value, application.applicationId[0], application.postId[0])}
+            disabled={updatedStatus[myData.applicationId]}
           >
             <option value="">Select Status</option>
             <option value="1">Pending</option>
@@ -153,7 +164,7 @@ export default function ReviewP() {
           </select>
           <button
             className={styles.button}
-            onClick={() => handleStatusChange(index, statusMap[index] || application.statusId, application.applicationId, application.postId)}
+            onClick={() => handleStatusChange(index, statusMap[index] || application.statusId, application.applicationId[0], application.postId[0])}
             disabled={updatedStatus[application.applicationId]}
           >
             Change Status

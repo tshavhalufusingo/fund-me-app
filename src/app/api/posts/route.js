@@ -30,7 +30,7 @@ export async function POST(req) {
           data.postContent
         }',${1},${1},${data.fundingAmount},'${data.opportunityType}','${
           data.applicationDeadline
-        }', '0.00');`
+        }', '0.00', ${data.indivisualFund});`
       );
     poolConnection.close();
 
