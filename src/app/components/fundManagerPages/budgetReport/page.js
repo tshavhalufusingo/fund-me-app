@@ -9,7 +9,7 @@ import GeneratePiChart from "../../graphs/generateGraph";
 
 export default function ReportAndBudget() {
   const [balance, setBalance] = useState(0);
-  const [amountUsed, setAmountUsed] = useState(20000);
+  const [amountUsed, setAmountUsed] = useState(0);
   const [successfulRecipients, setSuccessfulRecipients] = useState(0);
   const [pending, setPending] = useState(0);
   const [rejected, setRejected] = useState(0);
@@ -28,11 +28,12 @@ export default function ReportAndBudget() {
   const getAllData = (jsonData) => {
     setTotalApplications(jsonData.length);
 
+    console.log(jsonData);
     let pendingCount = 0;
     let successfulCount = 0;
     let rejectedCount = 0;
     const approvals = {};
-
+    console.log(jsonData.individualAmount);
     jsonData.forEach((item) => {
       const statusId = item.statusId["0"]; // Extracting the numeric status ID
       const approvalDate = item.approvalDate
@@ -43,7 +44,7 @@ export default function ReportAndBudget() {
         const month = approvalDate.getMonth();
         const year = approvalDate.getFullYear();
         const key = `${year}-${month}`;
-        approvals[key] = (approvals[key] || 0) + 10000;
+        approvals[key] = (approvals[key] || jsonData[0].individualAmount) ;
       }
 
       switch (statusId) {

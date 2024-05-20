@@ -2,11 +2,20 @@
 import styles from './../../../page.module.css';
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import { useRouter } from 'next/navigation';
 import './../../../styles.css'
 export default function Review() {
     const { data: session } = useSession();
     const [applications, setApplications] = useState([]);
     const [userID, setuserID] = useState(null);
+
+    const router = useRouter();
+
+    const openApplicationForm = (e) =>{
+        e.preventDefault();
+        const postId = e.target.id;
+        router.push(`/apply/${postId}`)
+    }
 
     useEffect(() => {
         const fetchApplications = async () => {
@@ -55,9 +64,8 @@ export default function Review() {
                     application.userId == userID ? (
                         <li key={application.applicationId}>
                             <div className='applicantsreview'>
-                                <p>Application ID: {application.applicationId}</p>
-                                <p>Post ID: {application.postId}</p>
-                                <p>User ID: {application.userId}</p>
+                                <p>Application title: {application.companyName}</p>
+                                <p>App;ication date: {application.applicationDate}</p>
                                 <p>Status: {getStatusText(application.statusId)}</p>
                             </div>
                         </li>
