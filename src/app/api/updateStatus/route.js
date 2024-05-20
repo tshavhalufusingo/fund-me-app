@@ -4,7 +4,7 @@ const config = require("../../database/dbconnection");
 
 export async function PUT(req) {
   const date = new Date();
-  const formattedDate = date.toISOString().split("T")[0]; // Format to 'YYYY-MM-DD'
+  const formattedDate = date.toISOString().split("T")[0]; 
 
   try {
     // Parse the request body to get the input data

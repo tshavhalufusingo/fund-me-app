@@ -127,7 +127,7 @@ export default function ReviewP() {
         <div className={styles.application} key={application.applicationId}>
           <p className={styles.detail}>Funding opportunity: {application.postContent}</p>
           <p className={styles.detail}>Applicant Name: {application.firstname}</p>
-          <p className={styles.detail}>Current Status: {getStatusLabel(application.statusId)}</p>
+          <p className={styles.detail}>Current Status: {getStatusLabel(application.statusId[1])}</p>
           <p className={styles.detail}>Application Date: {application.applicationDate}</p>
         
           <div className='Documents'>

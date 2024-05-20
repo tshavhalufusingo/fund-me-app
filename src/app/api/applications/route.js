@@ -15,19 +15,25 @@ export async function GET() {
 }
 
 export async function POST(req) {
+  const date = new Date();
+  const formattedDate = date.toISOString().split("T")[0]; 
   try {
     const data = await req.json();
-    const { postId, userId, statusId } = data;
+    const { postId, userId, statusId, applicationDate } = data;
 
+
+    console.log("application dats is ", applicationDate);
     const poolConnection = await sql.connect(config);
     const res = await poolConnection
       .request()
       .input('postId', sql.Int, postId)
       .input('userId', sql.Int, userId)
       .input('statusId', sql.Int, statusId)
+      .input('applicationDate', sql.NVarChar, applicationDate)
+
       .query(
-        `INSERT INTO [dbo].[postApplication] (postId, userId, statusId) 
-         VALUES (@postId, @userId, @statusId);
+        `INSERT INTO [dbo].[postApplication] (postId, userId, statusId, applicationDate) 
+         VALUES (@postId, @userId, @statusId, '${date.toISOString().split("T")[0]}');
          SELECT SCOPE_IDENTITY() AS applicationId;`
       );
     poolConnection.close();

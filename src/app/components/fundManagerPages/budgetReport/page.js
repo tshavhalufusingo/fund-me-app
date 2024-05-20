@@ -8,11 +8,49 @@ import styles from "../../../page.module.css"
 export default function ReportAndBudget() {
   const [balance, setBalance] = useState(0);
   const [amountUsed, setAmountUsed] = useState(20000);
-  const [successfulRecipients, setSuccessfulRecipients] = useState(11);
-  const [approvealdate, setapprovaldate] = useState('0');
+  const [successfulRecipients, setSuccessfulRecipients] = useState(0);
+  const [pending, setPending] = useState(0);
+  const [rejected, setRejected] = useState(0);
+  const [company , setCompany] = useState("");
+
+  const months = ["January","February","March","April","May","June","July"];
+
+  const [approvalDates, setapprovaldate] = useState([]);
+  const [totalApplication, settotalApplications] = useState(0);
+
   const { data: session } = useSession();  // Destructuring session data
   const chartRef = useRef(null);
   const myChartRef = useRef(null);
+
+  const userID = session?.user?.id;
+
+  const arrageByMonth =  (jsonData) => {
+
+    let data = [];
+
+
+
+
+  }
+  const getAllData = (jsonData) =>{
+
+    settotalApplications(jsonData.length);
+
+
+    for(let i =0; i < jsonData.length; i++){
+
+      if(jsonData[i].approvalDate==null){
+        console.log("xt");
+        setCompany(jsonData[i].companyName);
+      }
+      else{
+
+        setSuccessfulRecipients(successfulRecipients + 1);
+      }
+
+    }
+
+  }
 
   useEffect(() => {
     const fetchData = async () => { 
@@ -31,7 +69,9 @@ export default function ReportAndBudget() {
         }
 
         const data = await response.json();
-        console.log(data[0]);
+        getAllData(data);
+        console.log("approvalDates are", approvalDates);
+        console.log(data);
 
         setBalance(data[0].fundingAmount - data[0].fundingused || balance)  ;
         console.log("balance is :", balance);
@@ -87,6 +127,14 @@ export default function ReportAndBudget() {
     };
   }, [session]);  // Depend on session to fetch data
 
+  function download() {
+    const downloadUrl = cvs.toDataURL();
+    const a = document.createElement("a");
+    a.href = downloadUrl;
+    a.setAttribute("download", "SketchDownload");
+    a.click();
+  }
+
   return (
     <div className={styles.main}>
       <h1 className="txt">Budget and Report</h1>
@@ -98,11 +146,25 @@ export default function ReportAndBudget() {
       </div>
       <div className={styles.barGraphContainer}>
         <h2 className="txt">Spending in the Last 6 Months</h2>
-        <canvas ref={chartRef}></canvas>
+        <canvas className="barGraph" ref={chartRef}></canvas>
+      </div>
+      <div className={styles.recipientsContainer}>
+        <h2>Number of application Recipients: {totalApplication}</h2>
       </div>
       <div className={styles.recipientsContainer}>
         <h2>Number of Successful Recipients: {successfulRecipients}</h2>
       </div>
+      <div className={styles.recipientsContainer}>
+        <h2>Number of pending application: {successfulRecipients}</h2>
+      </div>
+      <div className={styles.recipientsContainer}>
+        <h2>Number of rejected applications: {rejected}</h2>
+      </div>
+      
+
+      <button className={styles.button}>
+        Download report as a pdf 
+      </button>
     </div>
   );
 }

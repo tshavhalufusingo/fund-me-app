@@ -30,7 +30,7 @@ export async function POST(req) {
     const res = await poolConnection
       .request()
       .query(
-        `INSERT INTO [dbo].[postApplication](postId, userId, statusId, applicationDate) OUTPUT Inserted.applicationId  VALUES (${data.postId},${data.userId},${data.statusId},${formattedDate});`
+        `INSERT INTO [dbo].[postApplication](postId, userId, statusId, applicationDate) OUTPUT Inserted.applicationId  VALUES (${data.postId},${data.userId},${data.statusId},'655');`
       );
     poolConnection.close();
 
