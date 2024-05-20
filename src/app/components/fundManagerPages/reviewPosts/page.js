@@ -11,7 +11,7 @@ export default function ReviewP() {
   const [applications, setApplications] = useState([]);
   const [statusMap, setStatusMap] = useState({});
   const [updatedStatus, setUpdatedStatus] = useState({});
-  const [documentType, setDocumentType] = useState([]);
+
 
   const userId = session?.user?.id;
 
