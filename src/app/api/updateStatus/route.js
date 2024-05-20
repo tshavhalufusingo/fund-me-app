@@ -4,7 +4,7 @@ const config = require("../../database/dbconnection");
 
 export async function PUT(req) {
   const date = new Date();
-  const formattedDate = date.toISOString().split("T")[0]; 
+  const formattedDate = date.toISOString().split("T")[0]; // Format to 'YYYY-MM-DD'
 
   try {
     // Parse the request body to get the input data
@@ -20,7 +20,7 @@ export async function PUT(req) {
 
     // Connect to the database
     let poolConnection = await sql.connect(config);
-
+    console.log(req);
     // Perform the update query
     const query = `
     UPDATE [dbo].[postApplication]
