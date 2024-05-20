@@ -16,8 +16,15 @@ export async function GET(req) {
     const res = await poolConnection
       .request()
       .input('userId', sql.Int, userId)
-      .query(`SELECT * FROM [dbo].[post] WHERE userId = @userId;
-  
+      .query(`SELECT 
+      postApplication.*, 
+	  post.*
+  FROM 
+      [dbo].[post] AS post
+  INNER JOIN 
+      [dbo].[postApplication] AS postApplication ON post.postId = postApplication.postId
+WHERE post.userId = @userId;
+    
   `);
     poolConnection.close();
     const user = res.recordset;

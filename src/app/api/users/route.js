@@ -35,6 +35,7 @@ export async function POST(req) {
   }
 }
 
+
 export async function PUT(req) {
   const data = await req.json();
 

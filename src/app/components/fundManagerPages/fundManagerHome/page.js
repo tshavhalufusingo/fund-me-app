@@ -2,9 +2,21 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { useState, useEffect } from "react";
+import { FaBell } from "react-icons/fa";
 
 export default function Dashboard_home() {
   //const { data: session, status } = useSession();
+  const [notifications, setNotifications] = useState([]); 
+
+  useEffect(() => {
+    // Simulate fetching notifications from an API
+    const fetchedNotifications = [
+      { id: 1, message: "New funding request submitted" },
+      { id: 2, message: "Your post has been approved" }
+    ];
+    setNotifications(fetchedNotifications);
+  }, []);
 
   const router = useRouter();
 
@@ -26,6 +38,7 @@ export default function Dashboard_home() {
     router.push(".//../components/fundManagerPages/reviewopp");
   }
 
+// <<<<<<< singoV2
   return (
     <div className="dashboard">
       <div className="option">
@@ -53,5 +66,31 @@ export default function Dashboard_home() {
         </a>
       </div>
     </div>
+// =======
+  
+
+
+//   return(
+
+//       <div className="dashboard">
+//           <div className="option">
+//               <a href="#" onClick={gotoUpload}>Submit a New Post</a>
+//           </div>
+//           <div className="option">
+//               <a href="/profile">Profile</a>
+//           </div>
+//           <div className="option">
+//               <a href="#" onClick={goReviewPost}>Review Posts</a>
+//           </div>
+       
+//           <div className="option">
+//               <a href="#" onClick={gotoBudget}>Budget and Report</a>
+//           </div>
+
+
+//          </div>
+          
+
+// >>>>>>> master
   );
 }

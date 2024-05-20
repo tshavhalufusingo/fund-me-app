@@ -45,13 +45,13 @@ export default function ReviewUser() {
       userAccess: blockAccount.checked == true ? blockAccount.value : "0",
     };
 
-    // const resp = await fetch(`/api/users/`, {
-    //   method: "PUT",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(inputData),
-    // });
+    const resp = await fetch(`/api/users/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(inputData),
+    });
 
     if (!resp.error) {
       router.push("/home");
