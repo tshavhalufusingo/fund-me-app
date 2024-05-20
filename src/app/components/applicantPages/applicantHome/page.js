@@ -18,6 +18,10 @@ export default function Dashboard_home(){
     router.push(".//../components/applicantPages/review"); // Use router.push() to navigate to the desired page
   }
 
+  function openProfile(event) {
+    event.preventDefault(); // Prevent the default behavior of the anchor tag
+    router.push(".//../components/profile"); // Use router.push() to navigate to the desired page
+  }
 
   
 
@@ -28,7 +32,7 @@ export default function Dashboard_home(){
 
 
               <button className="submit" onClick={opnePosts}>Check available opportunies</button>
-              <button className="submit" onClick={opnePosts}>Profile</button>
+              <button className="submit" onClick={openProfile}>Profile</button>
               <button className="submit" onClick={rev}>Track Application</button>
 
 
