@@ -42,6 +42,10 @@ export default function OpenPosts() {
               >
                 Apply
               </button>
+
+
+
+              
             </div>
           );
         })}

@@ -62,13 +62,15 @@ export default function Dashboard_home(){
           </div>
        
           <div className="option">
-              <a href="#" onClick={gotoBudget}>Report</a>
+              <a href="#" onClick={gotoBudget}>Budget and Report</a>
           </div>
+
 
           <div className="option">
               <a href="#" onClick={gotoBudget}>Budget</a>
           </div>
          </div>
           
+
   );
 }

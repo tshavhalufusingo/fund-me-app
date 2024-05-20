@@ -38,3 +38,11 @@ CREATE TABLE postApplication(
     userId int foreign key references [dbo].[user](userId),
     statusId int foreign key references [dbo].[ApprovalStatus](statusId),
 )
+
+-- for attachment
+CREATE TABLE ApplicationAttachments (
+    AttachmentId int primary key identity(1,1),
+    applicationId int foreign key references [dbo].[postApplication](applicationId),
+    type varchar(50),
+    attachment text not null,
+) 

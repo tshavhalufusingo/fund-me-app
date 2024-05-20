@@ -1,39 +1,170 @@
+// pages/report-and-budget.js
 'use client'
-import React, { useEffect, useState } from 'react'; // Import useEffect and useState
-import styles from "./../../../page.module.css"
+import { useState, useEffect, useRef } from "react";
+import Chart from "chart.js/auto";
 import { useSession } from "next-auth/react";
+import styles from "../../../page.module.css"
 
-export default function getAmountUsed() {
-  const { data: session } = useSession(); // Destructure the data property from useSession
+export default function ReportAndBudget() {
+  const [balance, setBalance] = useState(0);
+  const [amountUsed, setAmountUsed] = useState(20000);
+  const [successfulRecipients, setSuccessfulRecipients] = useState(0);
+  const [pending, setPending] = useState(0);
+  const [rejected, setRejected] = useState(0);
+  const [company , setCompany] = useState("");
 
-  // State to hold the fetched data
-  const [jsonData, setJsonData] = useState(null);
+  const months = ["January","February","March","April","May","June","July"];
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await fetch("../../api/graphdata/graphcompanies");
-        if (!response.ok) {
-          throw new Error("Failed to fetch data");
-        }
-        const jsonData = await response.json();
-        setJsonData(jsonData); // Set fetched data to state
-      } catch (error) {
-        console.error("Error fetching data:", error);
+  const [approvalDates, setapprovaldate] = useState([]);
+  const [totalApplication, settotalApplications] = useState(0);
+
+  const { data: session } = useSession();  // Destructuring session data
+  const chartRef = useRef(null);
+  const myChartRef = useRef(null);
+
+  const userID = session?.user?.id;
+
+  const arrageByMonth =  (jsonData) => {
+
+    let data = [];
+
+
+
+
+  }
+  const getAllData = (jsonData) =>{
+
+    settotalApplications(jsonData.length);
+
+
+    for(let i =0; i < jsonData.length; i++){
+
+      if(jsonData[i].approvalDate==null){
+        console.log("xt");
+        setCompany(jsonData[i].companyName);
       }
+      else{
+
+        setSuccessfulRecipients(successfulRecipients + 1);
+      }
+
     }
 
+  }
+
+  useEffect(() => {
+    const fetchData = async () => { 
+      if (!session) return;
+
+      try {
+        const response = await fetch(`/api/generatereport?userId=${session?.user?.id}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error(`Failed to fetch data: ${response.status}`);
+        }
+
+        const data = await response.json();
+        getAllData(data);
+        console.log("approvalDates are", approvalDates);
+        console.log(data);
+
+        setBalance(data[0].fundingAmount - data[0].fundingused || balance)  ;
+        console.log("balance is :", balance);
+        setAmountUsed(data[0].fundingused || amountUsed);
+        setSuccessfulRecipients(data.successfulRecipients || successfulRecipients);
+        console.log("funding amount :", data[0].fundingAmount);
+        console.log(" amount used:", data[0].fundingused);
+        console.log("funding amount :", data[0].fundingAmount);
+
+      } catch (error) {
+        console.error("Error fetching data:", error.message);
+      }
+    };
+
     fetchData();
-  }, [session]); // Include session in the dependency array
 
 
-  console.log(jsonData);
+
+    
+
+
+    const ctx = chartRef.current.getContext("2d");
+
+    if (myChartRef.current) {
+      myChartRef.current.destroy();
+    }
+
+    myChartRef.current = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ["January", "February", "March", "April", "May", "June"],
+        datasets: [
+          {
+            label: 'Amount Spent',
+            data: [5000, 5000, 2500, 2000, 2500, 4000],
+            backgroundColor: 'rgba(75, 192, 192, 0.6)',
+          },
+        ],
+      },
+      options: {
+        scales: {
+          y: {
+            beginAtZero: true,
+          },
+        },
+      },
+    });
+
+    return () => {
+      if (myChartRef.current) {
+        myChartRef.current.destroy();
+      }
+    };
+  }, [session]);  // Depend on session to fetch data
+
+  function download() {
+    const downloadUrl = cvs.toDataURL();
+    const a = document.createElement("a");
+    a.href = downloadUrl;
+    a.setAttribute("download", "SketchDownload");
+    a.click();
+  }
+
   return (
-    <main className={styles.main}>
-      <h1>
-        Budget
-      </h1>
-     
-    </main>
+    <div className={styles.main}>
+      <h1 className="txt">Budget and Report</h1>
+      <div className={styles.balanceContainer}>
+        <h2 className="txt">Available Balance: R{balance}</h2>
+      </div>
+      <div className={styles.amountUsedContainer}>
+        <h2>Amount Given: R{amountUsed}</h2>
+      </div>
+      <div className={styles.barGraphContainer}>
+        <h2 className="txt">Spending in the Last 6 Months</h2>
+        <canvas className="barGraph" ref={chartRef}></canvas>
+      </div>
+      <div className={styles.recipientsContainer}>
+        <h2>Number of application Recipients: {totalApplication}</h2>
+      </div>
+      <div className={styles.recipientsContainer}>
+        <h2>Number of Successful Recipients: {successfulRecipients}</h2>
+      </div>
+      <div className={styles.recipientsContainer}>
+        <h2>Number of pending application: {successfulRecipients}</h2>
+      </div>
+      <div className={styles.recipientsContainer}>
+        <h2>Number of rejected applications: {rejected}</h2>
+      </div>
+      
+
+      <button className={styles.button}>
+        Download report as a pdf 
+      </button>
+    </div>
   );
 }

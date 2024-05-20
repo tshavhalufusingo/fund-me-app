@@ -18,7 +18,7 @@ export async function POST(req) {
     //   .input('attachment', sql.text, data.attachment)
     //   .input('type', sql.VarChar(50), data.type)
       .query(
-        `INSERT INTO [dbo].[attachments] (userId, postId, type, attachment) VALUES ('${data.userId}', ${data.postId}, '${data.type}', '${data.attachment}');`
+        `INSERT INTO [dbo].[ApplicationAttachments] (applicationId, type, attachment) VALUES (${data.applicationId}, '${data.type}', '${data.attachment}');`
       );
     poolConnection.close(); 
 
