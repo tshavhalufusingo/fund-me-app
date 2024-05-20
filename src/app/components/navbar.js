@@ -43,7 +43,7 @@ export default function Navbar() {
   };
 
   useEffect(() => {
-    if (session?.user) {
+    if (session?.user && session?.user.role !== 'Admin') {
       fetchNotifications();
     }
   }, [session]);
@@ -104,29 +104,29 @@ export default function Navbar() {
             </header>
           </div>
           <ul>
-            {session?.user.role == "Admin" ? (
-              <>
-                <li>
-                  <Link href="{return (
-                      <Graph/>
-                  );}">Dashboard</Link>
-                </li>
-              </>
-            ) : null}
-
-            <div className="notification" onClick={toggleNotifications}>
-              <FaBell size={20} />
-              {unreadCount > 0 && <span className="badge">{unreadCount}</span>}
-              {showNotifications && (
-                <div className="dropdownn">
-                  {notifications.map((notification) => (
-                    <div key={notification.id} className="notification-item">
-                      {notification.message}
-                    </div>
-                  ))}
-                </div>
-              )}
+          {session?.user.role === "Admin" ? (
+  <li>
+    <Link href="/dashboard">Dashboard</Link>
+  </li>
+) : (
+  <>
+    <div className="notification" onClick={toggleNotifications}>
+      <FaBell size={20} />
+      {unreadCount > 0 && <span className="badge">{unreadCount}</span>}
+      {showNotifications && (
+        <div className="dropdownn">
+          {notifications.map((notification) => (
+            <div key={notification.id} className="notification-item">
+              {notification.message}
             </div>
+          ))}
+        </div>
+      )}
+    </div>
+  </>
+)}
+
+        
 
           
             <li>
@@ -170,3 +170,4 @@ export default function Navbar() {
     </nav>
   );
 }
+
