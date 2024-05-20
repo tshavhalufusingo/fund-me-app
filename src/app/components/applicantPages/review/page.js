@@ -55,10 +55,10 @@ export default function Review() {
                     application.userId == userID ? (
                         <li key={application.applicationId}>
                             <div className='applicantsreview'>
-                                <p>Application ID: {application.applicationId}</p>
-                                <p>Post ID: {application.postId}</p>
-                                <p>User ID: {application.userId}</p>
+                                <p>Application title: {application.companyName}</p>
+                                <p>App;ication date: {application.applicationDate}</p>
                                 <p>Status: {getStatusText(application.statusId)}</p>
+                                <button id={application.postId}>View the post</button>
                             </div>
                         </li>
                     ) : null
