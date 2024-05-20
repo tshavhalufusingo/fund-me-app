@@ -106,8 +106,6 @@ export default function submit_post() {
         <div className="newpostbody">
           <h1 className="homeheader">Funding Manager Home</h1>
 
-          {/* {isReviewing && <h2>Application Review</h2>} */}
-
           {session?.user.userPermission ? (
             <>
               <h2>Submit a New Post</h2>
@@ -174,81 +172,6 @@ export default function submit_post() {
           ) : 
           (
             <>
-              {/* <table>
-                <thead>
-                  <tr>
-                    <th>Funding opportunity</th>
-                    <th>Applicant name</th>
-                    <th>Latest status</th>
-                    <th>Action </th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  {userPosts.map((post) => {
-                    return (
-                      <tr key={post.postId}>
-                        <td>{post.postname}</td>
-                        <td>{post.username}</td>
-                        <td>
-                          {post.statusId == "1"
-                            ? "Pending"
-                            : post.statusId == "2"
-                            ? "Approved"
-                            : "Rejected"}
-                        </td>
-                        <Link href={`/user/${post.userId}/review`}>
-                      <button id={post.userId} key={post.userId}>
-                        Review
-                      </button>
-                    </Link>
-
-                        <td>
-                          <button
-                            onClick={() => {
-                              fetch(
-                                `/api/applications/${post.postId}/${post.userId}`,
-                                {
-                                  method: "PUT",
-                                  headers: {
-                                    "Content-Type": "application/json",
-                                  },
-                                  body: JSON.stringify({ status: 3 }),
-                                }
-                              );
-                            }}
-                          >
-                            Reject
-                          </button>
-                        </td>
-                        <td>
-                          <button
-                            onClick={() => {
-                              fetch(
-                                `/api/applications/${post.postId}/${post.userId}`,
-                                {
-                                  method: "PUT",
-                                  headers: {
-                                    "Content-Type": "application/json",
-                                  },
-                                  body: JSON.stringify({ status: 2 }),
-                                }
-                              );
-                            }}
-                          >
-                            Approve
-                          </button>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table> */}
-{/* 
-              <Link href="/" passHref>
-                <button>Back to Home</button>
-              </Link> */}
-
               <h1>This account is not permited to creat new opportunities</h1>
             </>
           )}

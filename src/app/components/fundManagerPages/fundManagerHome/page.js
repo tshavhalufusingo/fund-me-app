@@ -1,60 +1,57 @@
-'use client'
+"use client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 
-
-
-
-
-export default function Dashboard_home(){ 
+export default function Dashboard_home() {
   //const { data: session, status } = useSession();
 
   const router = useRouter();
-
 
   function gotoUpload(event) {
     event.preventDefault(); // Prevent the default behavior of the anchor tag
     router.push(".//../components/fundManagerPages/submitPost"); // Use router.push() to navigate to the desired page
   }
 
-  function goReviewPost(event){
-
+  function goReviewPost(event) {
     event.preventDefault(); // Prevent the default behavior of the anchor tag
-    router.push(".//../components/fundManagerPages/reviewPosts"); 
-    
-
+    router.push(".//../components/fundManagerPages/reviewPosts");
   }
-  function gotoBudget(event){
-
+  function gotoBudget(event) {
     event.preventDefault(); // Prevent the default behavior of the anchor tag
-    router.push(".//../components/fundManagerPages/budgetReport"); 
-    
-
+    router.push(".//../components/fundManagerPages/budgetReport");
+  }
+  function goReviewOpp(event) {
+    event.preventDefault(); // Prevent the default behavior of the anchor tag
+    router.push(".//../components/fundManagerPages/reviewopp");
   }
 
-  
-
-
-  return(
-
-      <div className="dashboard">
-          <div className="option">
-              <a href="#" onClick={gotoUpload}>Submit a New Post</a>
-          </div>
-          <div className="option">
-              <a href="/profile">Profile</a>
-          </div>
-          <div className="option">
-              <a href="#" onClick={goReviewPost}>Review Applications</a>
-          </div>
-       
-          <div className="option">
-              <a href="#" onClick={gotoBudget}>Budget and Report</a>
-          </div>
-
-      
-
+  return (
+    <div className="dashboard">
+      <div className="option">
+        <a href="#" onClick={gotoUpload}>
+          Create opportunity
+        </a>
       </div>
+      <div className="option">
+        <a href="/profile">Profile</a>
+      </div>
+      <div className="option">
+        <a href="#" onClick={goReviewOpp}>
+          Review existing opportunities
+        </a>
+      </div>
+      <div className="option">
+        <a href="#" onClick={goReviewPost}>
+          Review Applications
+        </a>
+      </div>
+
+      <div className="option">
+        <a href="#" onClick={gotoBudget}>
+          Budget and Report
+        </a>
+      </div>
+    </div>
   );
 }

@@ -4,13 +4,7 @@ import styles from "./../../../page.module.css";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
-// =======
-// 'use client'
-// import styles from './../../../page.module.css';
-// import { useSession } from "next-auth/react";
-// import { useEffect, useState } from "react";
-// import "../../../styles.css";
-// >>>>>>> master
+
 
 export default function ReviewP() {
   const { data: session } = useSession();
@@ -26,7 +20,7 @@ export default function ReviewP() {
     setStatusMap(updatedStatusMap);
 
     const inputData = {
-      applicationId: appid, 
+      applicationId: appid,
       status: status,
     };
 
@@ -96,11 +90,6 @@ export default function ReviewP() {
 
           const data = await response.json();
           setApplications(data);
-//<<<<<<< singoV2
-          console.log("appication data", data); // Log the fetched data instead of applications
-// =======
-//           console.log("Fetched applications:", data);
-// >>>>>>> master
         }
       } catch (error) {
         console.error("Error fetching applications:", error);
@@ -124,13 +113,13 @@ export default function ReviewP() {
   };
 
   const createBlobUrl = (base64Data) => {
-    const byteCharacters = atob(base64Data.split(',')[1]);
+    const byteCharacters = atob(base64Data.split(",")[1]);
     const byteNumbers = new Array(byteCharacters.length);
     for (let i = 0; i < byteCharacters.length; i++) {
       byteNumbers[i] = byteCharacters.charCodeAt(i);
     }
     const byteArray = new Uint8Array(byteNumbers);
-    const blob = new Blob([byteArray], { type: 'application/pdf' });
+    const blob = new Blob([byteArray], { type: "application/pdf" });
     return URL.createObjectURL(blob);
   };
 
@@ -139,59 +128,47 @@ export default function ReviewP() {
       <h1 className={styles.heading}>Review Applications</h1>
       {applications.map((application, index) => (
         <div className={styles.application} key={application.applicationId}>
-// <<<<<<< singoV2
-//           <p className={styles.detail}>
-//             Funding opportunity: {application.postContent}
-//           </p>
-//           <p className={styles.detail}>
-//             Applicant Name: {application.firstname}
-//           </p>
-//           <p className={styles.detail}>
-//             Current Status: {getStatusLabel(application.statusId)}
-//           </p>
-//           <p className={styles.detail}>
-//             Application Date: {application.applicationDate}
-//           </p>
-// =======
-          <p className={styles.detail}>Funding opportunity: {application.postContent}</p>
-          <p className={styles.detail}>Applicant Name: {application.firstname}</p>
-          <p className={styles.detail}>Current Status: {getStatusLabel(application.statusId)}</p>
-          <p className={styles.detail}>Application Date: {application.applicationDate}</p>
-        
-          <div className='Documents'>
+          <p className={styles.detail}>
+            Funding opportunity: {application.postContent}
+          </p>
+          <p className={styles.detail}>
+            Applicant Name: {application.firstname}
+          </p>
+          <p className={styles.detail}>
+            Current Status: {getStatusLabel(application.statusId)}
+          </p>
+          <p className={styles.detail}>
+            Application Date: {application.applicationDate}
+          </p>
+
+          <div className="Documents">
             <p>Document Type : {application.type}</p>
             {application.attachment && (
-              <div className='DocumentBorder'>
-              <a className='documentAnchor' href={createBlobUrl(application.attachment)} target="_blank" rel="noopener noreferrer">
-                Download {application.type}
-
-              
-
-
-              </a>
+              <div className="DocumentBorder">
+                <a
+                  className="documentAnchor"
+                  href={createBlobUrl(application.attachment)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Download {application.type}
+                </a>
               </div>
-
             )}
           </div>
-// //>>>>>>> master
 
           <select
             className={styles.select}
             value={statusMap[index] || application.statusId}
-// <<<<<<< singoV2
-//             onChange={(e) =>
-//               handleStatusChange(
-//                 index,
-//                 e.target.value,
-//                 application.applicationId,
-//                 application.postId
-//               )
-//             }
-//             disabled={updatedStatus[application.applicationId]} // Disable if status updated
-// =======
-            onChange={(e) => handleStatusChange(index, e.target.value, application.applicationId, application.postId)}
+            onChange={(e) =>
+              handleStatusChange(
+                index,
+                e.target.value,
+                application.applicationId,
+                application.postId
+              )
+            }
             disabled={updatedStatus[application.applicationId]}
-// // >>>>>>> master
           >
             <option value="">Select Status</option>
             <option value="1">Pending</option>
@@ -201,20 +178,15 @@ export default function ReviewP() {
 
           <button
             className={styles.button}
-// <<<<<<< singoV2
-//             onClick={() =>
-//               handleStatusChange(
-//                 index,
-//                 statusMap[index] || application.statusId,
-//                 application.applicationId,
-//                 application.postId
-//               )
-//             }
-//             disabled={updatedStatus[application.applicationId]} // Disable if status updated
-// =======
-            onClick={() => handleStatusChange(index, statusMap[index] || application.statusId, application.applicationId, application.postId)}
+            onClick={() =>
+              handleStatusChange(
+                index,
+                statusMap[index] || application.statusId,
+                application.applicationId,
+                application.postId
+              )
+            }
             disabled={updatedStatus[application.applicationId]}
-//>>>>>>> master
           >
             Change Status
           </button>

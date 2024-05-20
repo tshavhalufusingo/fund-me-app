@@ -39,3 +39,24 @@ export async function POST(req) {
     console.error("error is: ", error.message);
   }
 }
+
+export async function PUT(req) {
+  const data = await req.json();
+
+  console.log("data on api: ", data);
+
+  try {
+    let poolConnection = await sql.connect(config);
+
+    const res = await poolConnection
+      .request()
+      .query(
+        `UPDATE [dbo].[post]  SET companyName = '${data.companyName}', fundingAmount = ${data.fundingAmount}, opportunityType = '${data.opportunityType}' ,applicationDeadline = '${data.applicationDeadline}', postContent = '${data.postContent}'WHERE postId = ${data.id};`
+      );
+    poolConnection.close();
+
+    return NextResponse.json(res);
+  } catch (error) {
+    console.error("error is: ", error.message);
+  }
+}

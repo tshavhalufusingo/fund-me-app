@@ -21,8 +21,6 @@ export async function GET(req, context) {
 export async function POST(req) {
   const data = await req.json();
 
-  console.log("data on api: ", data);
-
   try {
     let poolConnection = await sql.connect(config);
 
@@ -43,7 +41,6 @@ export async function PUT(req, context) {
   const { params } = context;
 
   const data = await req.json();
-  console.log(params);
 
   try {
     let poolConnection = await sql.connect(config);
