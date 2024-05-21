@@ -28,7 +28,7 @@ export default function ReviewUser() {
   }
 
   const updateUser = async (event) => {
-    event.preventDefault;
+    event.preventDefault();
 
     let approvalStatus = document.getElementById("approvalStatus").value;
     let permission = document.getElementById("permission");

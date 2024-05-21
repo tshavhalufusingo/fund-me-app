@@ -18,7 +18,7 @@ export default function Home() {
   }
 
   const Login = async (e) => {
-    e.preventDefault;
+    e.preventDefault();
 
     //users
     let useremail = document.getElementById("useremail").value;
@@ -47,7 +47,7 @@ export default function Home() {
   };
 
   const goToRegisterPage = async (e) => {
-    e.preventDefault;
+    e.preventDefault();
     router.push("/register");
   };
   return (

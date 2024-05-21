@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 export default function Home() {
   const router = useRouter();
   const handleRegister = async (event) => {
-    event.preventDefault;
+    event.preventDefault();
 
     let userFirstName = document.getElementById("firstname").value;
     let userLastName = document.getElementById("lastname").value;
@@ -41,7 +41,7 @@ export default function Home() {
   };
 
   const goToLoginPage = async (e) => {
-    e.preventDefault;
+    e.preventDefault();
       router.push("/");
   };
   return (

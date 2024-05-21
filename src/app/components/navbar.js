@@ -22,12 +22,12 @@ export default function Navbar() {
   };
 
   const gotoSendMessage = async (e) => {
-    e.preventDefault;
+    e.preventDefault();
     router.push("/components/contactUs");
   };
 
   const gotoInsights = async (e) => {
-    e.preventDefault;
+    e.preventDefault();
     router.push("/components/fundManagerPages/report");
   };
 
