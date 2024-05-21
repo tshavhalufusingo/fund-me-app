@@ -1,6 +1,7 @@
 "use client";
 import styles from "../page.module.css";
 import { useSession } from "next-auth/react";
+
 export default function Profile() {
   const { data: session, status } = useSession();
   if (session?.user) {
