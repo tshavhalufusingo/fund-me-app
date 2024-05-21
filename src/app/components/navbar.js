@@ -2,7 +2,6 @@
 import Link from "next/link";
 import "../styles.css";
 import { signOut, useSession } from "next-auth/react";
-import Graph from "./graphs/page";
 import { useRouter } from "next/navigation";
 import { FaBell } from "react-icons/fa";
 import { useState, useEffect } from "react";
@@ -43,7 +42,7 @@ export default function Navbar() {
   };
 
   useEffect(() => {
-    if (session?.user && session?.user.role !== 'Admin') {
+    if (session?.user && session?.user.role !== "Admin") {
       fetchNotifications();
     }
   }, [session]);
@@ -55,7 +54,7 @@ export default function Navbar() {
       setNotifications(data.notifications);
       setUnreadCount(data.unreadCount);
     } catch (error) {
-      console.error('Failed to fetch notifications:', error);
+      console.error("Failed to fetch notifications:", error);
     }
   };
 
@@ -69,19 +68,19 @@ export default function Navbar() {
 
   const markNotificationsAsRead = async () => {
     try {
-      const unreadNotifications = notifications.filter(n => !n.isRead);
+      const unreadNotifications = notifications.filter((n) => !n.isRead);
       for (const notification of unreadNotifications) {
         await fetch(`/api/admin`, {
-          method: 'PATCH',
+          method: "PATCH",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({ notificationId: notification.id }),
         });
       }
       setUnreadCount(0); // Reset unread count after marking all as read
     } catch (error) {
-      console.error('Failed to mark notifications as read:', error);
+      console.error("Failed to mark notifications as read:", error);
     }
   };
 
@@ -104,31 +103,33 @@ export default function Navbar() {
             </header>
           </div>
           <ul>
-          {session?.user.role === "Admin" ? (
-  <li>
-    <Link href="/dashboard">Dashboard</Link>
-  </li>
-) : (
-  <>
-    <div className="notification" onClick={toggleNotifications}>
-      <FaBell size={20} />
-      {unreadCount > 0 && <span className="badge">{unreadCount}</span>}
-      {showNotifications && (
-        <div className="dropdownn">
-          {notifications.map((notification) => (
-            <div key={notification.id} className="notification-item">
-              {notification.message}
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  </>
-)}
+            {session?.user.role === "Admin" ? (
+              <li>
+                <p> hi {session?.user.email}</p>
+              </li>
+            ) : (
+              <>
+                <div className="notification" onClick={toggleNotifications}>
+                  <FaBell size={20} />
+                  {unreadCount > 0 && (
+                    <span className="badge">{unreadCount}</span>
+                  )}
+                  {showNotifications && (
+                    <div className="dropdownn">
+                      {notifications.map((notification) => (
+                        <div
+                          key={notification.id}
+                          className="notification-item"
+                        >
+                          {notification.message}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </>
+            )}
 
-        
-
-          
             <li>
               <button onClick={LogOut}> Sign out </button>
             </li>
@@ -156,8 +157,6 @@ export default function Navbar() {
         <button className="contactUsButton" onClick={gotoSendMessage}>
           Contact Us
         </button>
-
-   
         <div className="dropdown">
           <div className="default">Learn About ▼</div>
           <div className="dropdown-content">
@@ -165,9 +164,9 @@ export default function Navbar() {
             <a href="#">Our Services</a>
             <a href="#">Company Profile</a>
           </div>
-        </div>.
+        </div>
+        .
       </div>
     </nav>
   );
 }
-

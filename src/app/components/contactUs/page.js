@@ -1,53 +1,34 @@
-import { Fragment } from "react";
-import styles from "../../page.module.css"
+import { Fragment } from "react"; // Import Fragment component from React
+import styles from "../../page.module.css"; // Import CSS module for styling
 
-export default function(){
-
-
-
+// Define the Contact component
+export default function Contact() {
     return (
-
-        <Fragment>
-
-
-<main>
-
-
-
-<div className="container">
-        <h1>Contact Us</h1>
-        <div className="contact-form">
-            <form action="submit_form.php" method="POST">
-                <div className="form-group">
-                    <label for="name">Name:</label>
-                    <input type="text" id="name" name="name" required/>
+        <Fragment> {/* Fragment wrapper */}
+            <main> {/* Main content section */}
+                <div className="container"> {/* Container for contact form */}
+                    <h1>Contact Us</h1> {/* Heading */}
+                    <div className="contact-form"> {/* Contact form container */}
+                        <form action="submit_form.php" method="POST"> {/* Form for submitting contact details */}
+                            <div className="form-group"> {/* Form group for name */}
+                                <label htmlFor="name">Name:</label> {/* Label for name input */}
+                                <input type="text" id="name" name="name" required/> {/* Name input */}
+                            </div>
+                            <div className="form-group"> {/* Form group for email */}
+                                <label htmlFor="email">Email:</label> {/* Label for email input */}
+                                <input type="email" id="email" name="email" required/> {/* Email input */}
+                            </div>
+                            <div className="form-group"> {/* Form group for message */}
+                                <label htmlFor="message">Message:</label> {/* Label for message textarea */}
+                                <textarea id="message" name="message" required></textarea> {/* Message textarea */}
+                            </div>
+                            <div className="form-group"> {/* Form group for submit button */}
+                                <button type="submit">Submit</button> {/* Submit button */}
+                            </div>
+                        </form>
+                    </div>
                 </div>
-                <div className="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required/>
-                </div>
-                <div className="form-group">
-                    <label for="message">Message:</label>
-                    <textarea id="message" name="message" required></textarea>
-                </div>
-                <div className="form-group">
-                    <button type="submit">Submit</button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-
-
-
-</main>
-
-
-        </Fragment>
-
-        
-
-
-
+            </main>
+        </Fragment> 
     );
 }

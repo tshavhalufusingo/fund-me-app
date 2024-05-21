@@ -134,7 +134,7 @@ export default function ReviewP() {
   return (
     <main className={styles.main}>
       <h1 className={styles.heading}>Review Applications</h1>
-      {applications.map((application, index) => (
+      {applications.length > 0 ? applications.map((application, index) => (
         <div className={styles.application} key={application.applicationId}>
           <p className={styles.detail}>Funding opportunity: {application.postContent}</p>
           <p className={styles.detail}>Applicant Name: {application.firstname}</p>
@@ -170,7 +170,7 @@ export default function ReviewP() {
             Change Status
           </button>
         </div>
-      ))}
+      )): <p>You have no applications</p>}
     </main>
   );
 }

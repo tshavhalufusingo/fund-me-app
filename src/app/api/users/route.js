@@ -19,13 +19,15 @@ export async function GET() {
 export async function POST(req) {
   const data = await req.json();
 
+  console.log('reg data',data);
+
   try {
     let poolConnection = await sql.connect(config);
 
     const res = await poolConnection
       .request()
       .query(
-        `INSERT INTO [dbo].[user]  VALUES ('${data.email}','${data.password}','${data.firstname}','${data.lastname}','${data.role}',0,1,${data.role == 'Applicant'? 2: 1 });`
+        `INSERT INTO [dbo].[user]  VALUES ('${data.email}','${data.password}','${data.firstname}','${data.lastname}','${data.role}',0,1,${data.role == 'Applicant'? 2: 1 },0);`
       );
     poolConnection.close();
 
