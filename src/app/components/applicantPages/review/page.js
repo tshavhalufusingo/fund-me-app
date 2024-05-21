@@ -9,13 +9,7 @@ export default function Review() {
     const [applications, setApplications] = useState([]);
     const [userID, setuserID] = useState(null);
 
-    const router = useRouter();
-
-    const openApplicationForm = (e) =>{
-        e.preventDefault();
-        const postId = e.target.id;
-        router.push(`/apply/${postId}`)
-    }
+    
 
     useEffect(() => {
         const fetchApplications = async () => {
