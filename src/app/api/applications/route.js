@@ -5,8 +5,7 @@ import config from "../../database/dbconnection";
 export async function GET() {
   try {
     const poolConnection = await sql.connect(config);
-    const res = await poolConnection.request().query("SELECT * FROM [dbo].[postApplication];");
-    poolConnection.close();
+    const res = await poolConnection.request().query("SELECT a.applicationId,a.postId,a.userId,a.statusId,a.applicationDate,a.approvalDate,p.companyName FROM [dbo].[postApplication] a ,  [dbo].[post] p where p.postId = a.postId;");    poolConnection.close();
     return NextResponse.json(res.recordset);
   } catch (error) {
     console.error("Error fetching data: ", error.message);

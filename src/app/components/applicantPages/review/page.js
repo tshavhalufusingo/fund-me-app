@@ -3,7 +3,7 @@ import styles from './../../../page.module.css';
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
-import './../../../styles.css'
+import '../../../styles.css'
 export default function Review() {
     const { data: session } = useSession();
     const [applications, setApplications] = useState([]);
