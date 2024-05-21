@@ -66,31 +66,6 @@ export default function Dashboard_home() {
         </a>
       </div>
     </div>
-// =======
-  
 
-
-//   return(
-
-//       <div className="dashboard">
-//           <div className="option">
-//               <a href="#" onClick={gotoUpload}>Submit a New Post</a>
-//           </div>
-//           <div className="option">
-//               <a href="/profile">Profile</a>
-//           </div>
-//           <div className="option">
-//               <a href="#" onClick={goReviewPost}>Review Posts</a>
-//           </div>
-       
-//           <div className="option">
-//               <a href="#" onClick={gotoBudget}>Budget and Report</a>
-//           </div>
-
-
-//          </div>
-          
-
-// >>>>>>> master
   );
 }

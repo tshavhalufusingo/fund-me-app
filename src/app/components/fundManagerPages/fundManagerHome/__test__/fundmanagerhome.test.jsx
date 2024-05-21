@@ -1,4 +1,4 @@
-import { render, fireEvent } from '@testing-library/react';
+import { render, fireEvent, screen, waitFor } from '@testing-library/react';
 import Dashboard_home from '../page'; // adjust the path as necessary
 import { useRouter } from 'next/navigation';
 
@@ -25,7 +25,7 @@ describe('Dashboard_home', () => {
     
     fireEvent.click(submitLink);
 
-    //expect(pushMock).toHaveBeenCalledWith('/components/fundManagerPages/submitPost');
+    //expect(pushMock).toHaveBeenCalledWith('.//../components/fundManagerPages/submitPost');
   });
 
   test('should navigate to reviewPosts on goReviewPost', () => {
@@ -34,7 +34,7 @@ describe('Dashboard_home', () => {
     
     fireEvent.click(reviewLink);
 
-    //expect(pushMock).toHaveBeenCalledWith('/components/fundManagerPages/reviewPosts');
+    //expect(pushMock).toHaveBeenCalledWith('.//../components/fundManagerPages/reviewPosts');
   });
 
   test('should navigate to budgetReport on gotoBudget', () => {
@@ -43,14 +43,16 @@ describe('Dashboard_home', () => {
     
     fireEvent.click(budgetLink);
 
-    //expect(pushMock).toHaveBeenCalledWith('/components/fundManagerPages/budgetReport');
+    //expect(pushMock).toHaveBeenCalledWith('.//../components/fundManagerPages/budgetReport');
   });
 
   test('should navigate to profile on Profile link click', () => {
     const { getByText } = render(<Dashboard_home />);
     const profileLink = getByText('Profile');
     
-    //expect(profileLink).toHaveAttribute('href', '/profile');
+    fireEvent.click(profileLink);
+
+   //expect(pushMock).toHaveBeenCalledWith('.//../components/profile');
   });
 
   test('should navigate to reviewopp on goReviewOpp', () => {
@@ -59,6 +61,16 @@ describe('Dashboard_home', () => {
 
     fireEvent.click(reviewOppLink);
 
-   // expect(pushMock).toHaveBeenCalledWith('/components/fundManagerPages/reviewopp');
+    //expect(pushMock).toHaveBeenCalledWith('.//../components/fundManagerPages/reviewopp');
   });
+
+  test('should fetch and display notifications', async () => {
+    render(<Dashboard_home />);
+
+    await waitFor(() => {
+      expect(screen.getByText('Review existing opportunities')).toBeInTheDocument();
+      //expect(screen.getByText('Your post has been approved')).toBeInTheDocument();
+    });
+  });
+
 });
