@@ -32,6 +32,7 @@ export default function page() {
               <th>Title</th>
               <th>Deadline</th>
               <th>Total</th>
+              <th>Allocated</th>
               
             </tr>
           </thead>
@@ -43,6 +44,7 @@ export default function page() {
                   <td>{data.companyName}</td>
                   <td>{data.applicationDeadline.split("T")[0]}</td>
                   <td>{data.fundingAmount}</td>
+                  <td>{data.fundingused}</td>
                   <td>
                     <Link href={`/components/fundManagerPages/reviewopp/${data.postId}`}>
                       <button id={data.postId} key={data.postId}>
