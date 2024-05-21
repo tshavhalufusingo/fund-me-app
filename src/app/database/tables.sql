@@ -18,7 +18,6 @@ CREATE TABLE ApprovalStatus(
 )
 
 INSERT INTO [dbo].[ApprovalStatus] values('Pending','Approved','Rejected')
-
 /* creating post*/
 CREATE TABLE post(
     postId int primary key identity(1,1),
