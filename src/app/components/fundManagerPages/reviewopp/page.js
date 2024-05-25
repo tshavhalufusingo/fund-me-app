@@ -16,11 +16,8 @@ export default function page() {
       });
   }, []);
 
-  console.log("u s", opportunities)
-
   return (
     <main className={styles.main}>
-    
       <header>
         <h2>Users awaiting approval</h2>
       </header>
@@ -33,7 +30,6 @@ export default function page() {
               <th>Deadline</th>
               <th>Total</th>
               <th>Allocated</th>
-              
             </tr>
           </thead>
           <tbody>
@@ -46,7 +42,9 @@ export default function page() {
                   <td>{data.fundingAmount}</td>
                   <td>{data.fundingused}</td>
                   <td>
-                    <Link href={`/components/fundManagerPages/reviewopp/${data.postId}`}>
+                    <Link
+                      href={`/components/fundManagerPages/reviewopp/${data.postId}`}
+                    >
                       <button id={data.postId} key={data.postId}>
                         Review
                       </button>
@@ -58,7 +56,6 @@ export default function page() {
           </tbody>
         </table>
       ) : (
-
         <p>no existing opportunity </p>
       )}
     </main>

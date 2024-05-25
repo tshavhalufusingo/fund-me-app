@@ -17,15 +17,6 @@ export default function submit_post() {
     indivisualFund: "",
     applicationDeadline: "",
   });
-  const [isReviewing, setIsReviewing] = useState(false);
-  const [userPosts, setUserPosts] = useState([]);
-
-  useEffect(() => {
-    if (isReviewing) {
-      // Fetch user posts when isReviewing becomes true
-      fetchUserPosts();
-    }
-  }, [isReviewing]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -67,54 +58,12 @@ export default function submit_post() {
     }
   };
 
-  const [data, setData] = useState(null);
-
-  // useEffect(() => {
-  //   fetch(`/api/applications/${session?.user.id}`)
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       setUserPosts(...currentUserPosts);
-  //     });
-  // }, []);
-
-  const handleReviewClick = () => {
-    setIsReviewing(true);
-  };
-  const fetchUserPosts = async () => {
-    try {
-      // const response = await fetch(`/api/posts?userId=${session?.user.id}`);
-      const response = await fetch(`/api/applications/${session?.user.id}`);
-      if (!response.ok) {
-        throw new Error("Failed to fetch user posts");
-      }
-      const currentUserPosts = await response.json();
-      // Filter posts based on the current user ID
-      // const currentUserPosts = postData.filter(
-      //   (post) => post.userId === session?.user.id
-      // );
-      console.log(currentUserPosts);
-      setUserPosts(currentUserPosts);
-    } catch (error) {
-      console.error("Error fetching user posts:", error);
-    }
-  };
-
-  useEffect(() => {
-    fetchUserPosts();
-  }, [session]);
-
   return (
     <>
 
-    <main className="{styles.main}">
+    <main className={styles.main}>
 
-    <div className="newpostbody">
-
-      <h1 className="homeheader">Funding Manager Home</h1>
-
-      {isReviewing && <h2>Application Review</h2>}
-
-      {!isReviewing && session?.user.userPermission ? (
+      {session?.user.userPermission &&
         <>
           <h2>Submit a New Post</h2>
           <form onSubmit={handleSubmit} className={styles.formContainer}>
@@ -183,86 +132,7 @@ export default function submit_post() {
             <button type="submit">Submit</button>
           </form>
 
-        </>
-      ) : (
-        <>
-          <table>
-            <thead>
-              <tr>
-                <th>Funding opportunity</th>
-                <th>Applicant name</th>
-                <th>Latest status</th>
-                <th>Action </th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {userPosts.map((post) => {
-                return (
-                  <tr key={post.postId}>
-                    <td>{post.postname}</td>
-                    <td>{post.username}</td>
-                    <td>
-                      {post.statusId == '1'
-                        ? "Pending"
-                        : post.statusId == '2'
-                        ? "Approved"
-                        : "Rejected"}
-                    </td>
-                    <Link href={`/user/${post.userId}/review`}>
-                      <button id={post.userId} key={post.userId}>
-                        Review
-                      </button>
-                    </Link>
-
-                    <td>
-                      <button
-                        onClick={() => {
-                          fetch(
-                            `/api/applications/${post.postId}/${post.userId}`,
-                            {
-                              method: "PUT",
-                              headers: {
-                                "Content-Type": "application/json",
-                              },
-                              body: JSON.stringify({ status: 3 }),
-                            }
-                          );
-                        }}
-                      >
-                        Reject
-                      </button>
-                    </td>
-                    <td>
-                      <button
-                        onClick={() => {
-                          fetch(
-                            `/api/applications/${post.postId}/${post.userId}`,
-                            {
-                              method: "PUT",
-                              headers: {
-                                "Content-Type": "application/json",
-                              },
-                              body: JSON.stringify({ status: 2 }),
-                            }
-                          );
-                        }}
-                      >
-                        Approve
-                      </button>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-
-          <Link href="/" passHref>
-            <button>Back to Home</button>
-          </Link>
-        </>
-      )}
-          </div>
+        </>}
 
           </main>
     </>

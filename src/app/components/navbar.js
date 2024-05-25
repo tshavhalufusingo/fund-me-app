@@ -21,16 +21,6 @@ export default function Navbar() {
     signOut({ callbackUrl: "/" }); // Use signOut from next-auth/react
   };
 
-  const gotoSendMessage = async (e) => {
-    e.preventDefault();
-    router.push("/components/contactUs");
-  };
-
-  const gotoInsights = async (e) => {
-    e.preventDefault();
-    router.push("/components/fundManagerPages/report");
-  };
-
   const gotoHome = async (e) => {
     if (session?.user) {
       e.preventDefault();
@@ -151,21 +141,6 @@ export default function Navbar() {
         <header>
           <h1>Fund ME</h1>
         </header>
-      </div>
-
-      <div className="navRight">
-        <button className="contactUsButton" onClick={gotoSendMessage}>
-          Contact Us
-        </button>
-        <div className="dropdown">
-          <div className="default">Learn About ▼</div>
-          <div className="dropdown-content">
-            <a href="#">Our Staff</a>
-            <a href="#">Our Services</a>
-            <a href="#">Company Profile</a>
-          </div>
-        </div>
-        .
       </div>
     </nav>
   );

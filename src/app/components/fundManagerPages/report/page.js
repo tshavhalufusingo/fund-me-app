@@ -1,28 +1,24 @@
-'use client'
+"use client";
 import React, { Fragment, useEffect, useState } from "react";
 import GeneratePiChart from "./../../graphs/generateGraph";
-import { useSession } from "next-auth/react";
-import styles from ".//..//..//../page.module.css"
+import styles from ".//..//..//../page.module.css";
 
 function Graph() {
   const [companyNames, setCompanyNames] = useState([]);
   const [fundingAmounts, setFundingAmounts] = useState([]);
 
-  
-  const status =  generateAprovedStudentsGraph()[0];
-  const statusFlag =  generateAprovedStudentsGraph()[1];
-  
-  let dist = [0,0,0];
+  const status = generateAprovedStudentsGraph()[0];
+  const statusFlag = generateAprovedStudentsGraph()[1];
 
-  for(let x = 0; x < status.length; x++){
-    console.log("x = ",status[x]);  
-    if( status[x]=== 1){
+  let dist = [0, 0, 0];
+
+  for (let x = 0; x < status.length; x++) {
+    console.log("x = ", status[x]);
+    if (status[x] === 1) {
       dist[0] += 1;
-    }
-    else if(status[x] === 2){
+    } else if (status[x] === 2) {
       dist[1] += 1;
-    }
-    else{
+    } else {
       dist[2] += 1;
     }
   }
@@ -57,48 +53,30 @@ function Graph() {
   }, []);
 
   return (
-      <main className={styles.main}>
-
+    <main className={styles.main}>
       <div>
+        <h2 className="graphH">Amount used</h2>
 
-        <h2 className="graphH">
-          Amount used 
-        </h2>
-
-      <GeneratePiChart labels={companyNames} data={fundingAmounts} />
-
-
-
+        <GeneratePiChart labels={companyNames} data={fundingAmounts} />
       </div>
 
+      <div>
+        <h1>Applications</h1>
+        <GeneratePiChart labels={statusFlag} data={dist} />
 
-    <div>
+        <p>Pending : {dist[0]} </p>
 
-    <h1>
-        Applications 
-      </h1>
-      <GeneratePiChart labels={statusFlag} data={dist} />
-
-      <p>
-        Pending : {dist[0]}      </p> 
-
-
-       <p> Approved : {dist[1]} </p> 
-      <p>  Rejected : {dist[2]} </p>
-
-
-    </div>
-     
+        <p> Approved : {dist[1]} </p>
+        <p> Rejected : {dist[2]} </p>
+      </div>
     </main>
   );
 }
 
-function generateAprovedStudentsGraph(){
-
-
-  const [status, setStatus] = useState([0,0,0]);
+function generateAprovedStudentsGraph() {
+  const [status, setStatus] = useState([0, 0, 0]);
   const statusFlag = ["pending", "Approved", "Rejected"];
-  
+
   useEffect(() => {
     async function fetchData() {
       try {
@@ -108,12 +86,9 @@ function generateAprovedStudentsGraph(){
         }
         const jsonData = await response.json();
 
-
         for (let key in jsonData) {
           status.push(jsonData[key].statusId);
         }
-
-    
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -122,11 +97,7 @@ function generateAprovedStudentsGraph(){
     fetchData();
   }, []);
 
-
   return [status, statusFlag];
-   
 }
 
-
 export default Graph;
-

@@ -7,8 +7,6 @@ export async function PUT(req) {
     // Parse the request body to get the input data
     const { postId, fundingused } = await req.json();
 
-    console.log('Received data:', { postId, fundingused });
-
     // Connect to the database
     let poolConnection = await sql.connect(config);
 
@@ -26,14 +24,11 @@ export async function PUT(req) {
       .query(query);
 
     // Check if any rows were affected
-  
 
     // Return a success response
     return NextResponse.json({ message: "Funds updated successfully" });
-
   } catch (error) {
     // Handle any errors
-    console.error("Error updating application funds:", error);
     return NextResponse.json(
       { error: error.message || "Internal Server Error" },
       { status: 500 }

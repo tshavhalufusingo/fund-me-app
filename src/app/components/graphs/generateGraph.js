@@ -1,8 +1,7 @@
-'use client'
+"use client";
 import React, { Fragment, useEffect, useRef } from "react";
 import Chart from "chart.js/auto";
 import "../../styles.css";
-
 
 function GeneratePiChart({ labels, data }) {
   const chartRef = useRef(null);
@@ -18,27 +17,29 @@ function GeneratePiChart({ labels, data }) {
 
         const ctx = chartRef.current.getContext("2d");
         chartInstanceRef.current = new Chart(ctx, {
-          type: 'pie',
+          type: "pie",
           data: {
             labels: labels,
-            datasets: [{
-              data: data,
-              backgroundColor: [
-                'red',
-                'blue',
-                'yellow',
-                'green',
-                'purple',
-                'orange'
-              ],
-              borderColor: 'white',
-              borderWidth: 2
-            }]
+            datasets: [
+              {
+                data: data,
+                backgroundColor: [
+                  "red",
+                  "blue",
+                  "yellow",
+                  "green",
+                  "purple",
+                  "orange",
+                ],
+                borderColor: "white",
+                borderWidth: 2,
+              },
+            ],
           },
           options: {
             responsive: false,
-            maintainAspectRatio: false
-          }
+            maintainAspectRatio: false,
+          },
         });
       }
     };
@@ -55,7 +56,12 @@ function GeneratePiChart({ labels, data }) {
 
   return (
     <Fragment>
-      <canvas className="pichart" ref={chartRef} width="400" height="400"></canvas>
+      <canvas
+        className="pichart"
+        ref={chartRef}
+        width="400"
+        height="400"
+      ></canvas>
     </Fragment>
   );
 }

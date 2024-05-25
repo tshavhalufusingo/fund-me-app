@@ -1,5 +1,5 @@
-'use client';
-import styles from './../../../page.module.css';
+"use client";
+import styles from "./../../../page.module.css";
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import "../../../styles.css";
@@ -10,14 +10,13 @@ export default function ReviewP() {
   const [statusMap, setStatusMap] = useState({});
   const [updatedStatus, setUpdatedStatus] = useState({});
   const [myData, setData] = useState([]);
-  const [indivisualAMT, setindivisualAmt] = useState(0);
 
   const userId = session?.user?.id;
 
   const checkingMultipleUpload = (myjson) => {
     const postMap = new Map();
 
-    myjson.forEach(post => {
+    myjson.forEach((post) => {
       const postId = post.postId[0];
       const attachment = post.attachment || "";
 
@@ -25,14 +24,14 @@ export default function ReviewP() {
         const existingPost = postMap.get(postId);
         const combinedAttachments = [
           ...existingPost.arrayAttachments,
-          attachment
+          attachment,
         ];
         const uniqueAttachments = Array.from(new Set(combinedAttachments));
         existingPost.arrayAttachments = uniqueAttachments;
       } else {
-        postMap.set(postId, { 
-          ...post, 
-          arrayAttachments: [attachment] 
+        postMap.set(postId, {
+          ...post,
+          arrayAttachments: [attachment],
         });
       }
     });
@@ -44,10 +43,10 @@ export default function ReviewP() {
     const updatedStatusMap = { ...statusMap, [index]: status };
     setStatusMap(updatedStatusMap);
 
-    const inputData = { 
+    const inputData = {
       applicationId: appid,
-       status: status };
-       
+      status: status,
+    };
 
     try {
       const resp = await fetch("/api/updateStatus", {
@@ -84,10 +83,13 @@ export default function ReviewP() {
     const fetchData = async () => {
       try {
         if (userId) {
-          const response = await fetch(`/api/applicationform?userId=${userId}`, {
-            method: "GET",
-            headers: { "Content-Type": "application/json" },
-          });
+          const response = await fetch(
+            `/api/applicationform?userId=${userId}`,
+            {
+              method: "GET",
+              headers: { "Content-Type": "application/json" },
+            }
+          );
 
           if (!response.ok) {
             throw new Error("Failed to fetch applications");
@@ -113,64 +115,100 @@ export default function ReviewP() {
 
   const getStatusLabel = (statusId) => {
     switch (statusId) {
-      case 1: return "Pending";
-      case 2: return "Approved";
-      case 3: return "Rejected";
-      default: return "Unknown";
+      case 1:
+        return "Pending";
+      case 2:
+        return "Approved";
+      case 3:
+        return "Rejected";
+      default:
+        return "Unknown";
     }
   };
 
   const createBlobUrl = (base64Data) => {
-    const byteCharacters = atob(base64Data.split(',')[1]);
+    const byteCharacters = atob(base64Data.split(",")[1]);
     const byteNumbers = new Array(byteCharacters.length);
     for (let i = 0; i < byteCharacters.length; i++) {
       byteNumbers[i] = byteCharacters.charCodeAt(i);
     }
     const byteArray = new Uint8Array(byteNumbers);
-    const blob = new Blob([byteArray], { type: 'application/pdf' });
+    const blob = new Blob([byteArray], { type: "application/pdf" });
     return URL.createObjectURL(blob);
   };
 
   return (
     <main className={styles.main}>
       <h1 className={styles.heading}>Review Applications</h1>
-      {applications.length > 0 ? applications.map((application, index) => (
-        <div className={styles.application} key={application.applicationId}>
-          <p className={styles.detail}>Funding opportunity: {application.postContent}</p>
-          <p className={styles.detail}>Applicant Name: {application.firstname}</p>
-          <p className={styles.detail}>Current Status: {getStatusLabel(application.statusId[1])}</p>
-          <p className={styles.detail}>Application Date: {application.applicationDate}</p>
-        
-          <div className='Documents'>
-            {application.arrayAttachments && application.arrayAttachments.map((attachment, i) => (
-              <div className='DocumentBorder' key={i}>
-                <a className='documentAnchor' href={createBlobUrl(attachment)} target="_blank" rel="noopener noreferrer">
-                  Download {application.type} {i + 1}
-                </a>
-              </div>
-            ))}
-          </div>
+      {applications.length > 0 ? (
+        applications.map((application, index) => (
+          <div className={styles.application} key={application.applicationId}>
+            <p className={styles.detail}>
+              Funding opportunity: {application.postContent}
+            </p>
+            <p className={styles.detail}>
+              Applicant Name: {application.firstname}
+            </p>
+            <p className={styles.detail}>
+              Current Status: {getStatusLabel(application.statusId[1])}
+            </p>
+            <p className={styles.detail}>
+              Application Date: {application.applicationDate}
+            </p>
 
-          <select
-            className={styles.select}
-            value={statusMap[index] || application.statusId}
-            onChange={(e) => handleStatusChange(index, e.target.value, application.applicationId[0], application.postId[0])}
-            disabled={updatedStatus[myData.applicationId]}
-          >
-            <option value="">Select Status</option>
-            <option value="1">Pending</option>
-            <option value="2">Approved</option>
-            <option value="3">Rejected</option>
-          </select>
-          <button
-            className={styles.button}
-            onClick={() => handleStatusChange(index, statusMap[index] || application.statusId, application.applicationId[0], application.postId[0])}
-            disabled={updatedStatus[application.applicationId]}
-          >
-            Change Status
-          </button>
-        </div>
-      )): <p>You have no applications</p>}
+            <div className="Documents">
+              {application.arrayAttachments &&
+                application.arrayAttachments.map((attachment, i) => (
+                  <div className="DocumentBorder" key={i}>
+                    <a
+                      className="documentAnchor"
+                      href={createBlobUrl(attachment)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      Download {application.type} {i + 1}
+                    </a>
+                  </div>
+                ))}
+            </div>
+
+            <select
+              className={styles.select}
+              value={statusMap[index] || application.statusId}
+              onChange={(e) =>
+                handleStatusChange(
+                  index,
+                  e.target.value,
+                  application.applicationId[0],
+                  application.postId[0]
+                )
+              }
+              disabled={updatedStatus[myData.applicationId]}
+            >
+              <option value="">Select Status</option>
+              <option value="1">Pending</option>
+              <option value="2">Approved</option>
+              <option value="3">Rejected</option>
+            </select>
+            <button
+              className={styles.button}
+              onClick={() =>
+                handleStatusChange(
+                  index,
+                  statusMap[index] || application.statusId,
+                  application.applicationId[0],
+                  application.postId[0]
+                )
+              }
+              disabled={updatedStatus[application.applicationId]}
+            >
+              Change Status
+            </button>
+          </div>
+        ))
+      ) : (
+        <p>You have no applications</p>
+      )}
     </main>
   );
 }

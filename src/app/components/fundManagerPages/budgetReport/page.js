@@ -44,7 +44,7 @@ export default function ReportAndBudget() {
         const month = approvalDate.getMonth();
         const year = approvalDate.getFullYear();
         const key = `${year}-${month}`;
-        approvals[key] = (approvals[key] || jsonData[0].individualAmount) ;
+        approvals[key] = approvals[key] || jsonData[0].individualAmount;
       }
 
       switch (statusId) {

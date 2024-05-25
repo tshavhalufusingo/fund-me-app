@@ -1,11 +1,10 @@
 "use client";
 import styles from "./page.module.css";
 import "./styles.css";
-//import Link from "next/link";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react"; 
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 
 export default function Home() {
   const { data: session } = useSession();

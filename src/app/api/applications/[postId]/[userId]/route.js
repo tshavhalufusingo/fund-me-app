@@ -35,7 +35,6 @@ export async function POST(req) {
 
     return NextResponse.json(res);
   } catch (error) {
-    console.error("error is: ", error.message);
   }
 }
 
@@ -43,7 +42,6 @@ export async function PUT(req, context) {
   const { params } = context;
 
   const data = await req.json();
-  console.log(params);
 
   try {
     let poolConnection = await sql.connect(config);
@@ -57,6 +55,6 @@ export async function PUT(req, context) {
 
     return NextResponse.json(res);
   } catch (error) {
-    console.error("error is: ", error.message);
+    
   }
 }

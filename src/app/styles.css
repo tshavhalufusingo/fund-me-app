@@ -60,6 +60,7 @@ button:hover {
   flex-direction: row;
   justify-content: space-between;
   padding: 0 3rem 0 3rem;
+  z-index: 10;
 }
 
 .headerx {
@@ -73,7 +74,9 @@ button:hover {
 }
 
 .mylogo {
-  margin: 20px;
+  /* margin: 15px; */
+  margin: 5px 5px 5px 0;
+  
   width: 20px;
   height: 20px;
 }
@@ -317,10 +320,11 @@ canvas {
   align-items: center;
 }
 
-.newpostbody {
+/* .newpostbody {
   background: linear-gradient(to bottom, var(--secondary-color), var(--primary-color));
+  width: 30%;
   height: 100%;
-}
+} */
 
 .profileheader {
   margin-top: 100px;

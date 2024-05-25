@@ -2,9 +2,6 @@ import { NextResponse } from "next/server";
 const sql = require("mssql");
 const config = require("../../../database/dbconnection");
 
-
-
-
 export async function GET() {
   let poolConnection = await sql.connect(config);
 
@@ -15,7 +12,3 @@ export async function GET() {
   const user = res.recordset;
   return NextResponse.json(user);
 }
-
-
-
-

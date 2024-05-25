@@ -20,7 +20,6 @@ export async function PUT(req) {
 
     // Connect to the database
     let poolConnection = await sql.connect(config);
-    console.log(req);
     // Perform the update query
     const query = `
     UPDATE [dbo].[postApplication]
@@ -48,7 +47,6 @@ export async function PUT(req) {
     return NextResponse.json({ message: "Status updated successfully" });
   } catch (error) {
     // Handle any errors
-    console.error("Error updating application status:", error);
     return NextResponse.json(
       { error: "Internal Server Error" },
       { status: 500 }

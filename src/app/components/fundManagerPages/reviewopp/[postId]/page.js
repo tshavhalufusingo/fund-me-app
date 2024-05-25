@@ -1,11 +1,9 @@
-
 "use client";
 
 import { useState, useEffect, Fragment } from "react";
 import styles from "../../../../page.module.css";
 import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
-
 import "../../../../styles.css";
 
 export default function submit_post() {
@@ -17,49 +15,32 @@ export default function submit_post() {
     fetch(`/api/posts/byid/${params.postId}`)
       .then((res) => res.json())
       .then((data) => {
-        console.log('single post for review',data)
+        console.log("single post for review", data);
         setUserPost(...data);
       });
   }, []);
 
-
-//   const [formData, setFormData] = useState({
-    // companyName: "",
-    // postContent: "",
-    // id: session?.user.id,
-    // opportunityType: "",
-    // fundingAmount: "",
-    // applicationDeadline: "",
-//   });
-
-
-//   const handleChange = (e) => {
-//     const { name, value } = e.target;
-//     setFormData((prevState) => ({
-//       ...prevState,
-//       [name]: value,
-//     }));
-//   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    let companyName = document.getElementById('companyName').value;
-    let postContent = document.getElementById('postContent').value;
-    let opportunityType = document.getElementById('opportunityType').value;
-    let fundingAmount = document.getElementById('fundingAmount').value;
-    let applicationDeadline = document.getElementById('applicationDeadline').value;
+    let companyName = document.getElementById("companyName").value;
+    let postContent = document.getElementById("postContent").value;
+    let opportunityType = document.getElementById("opportunityType").value;
+    let fundingAmount = document.getElementById("fundingAmount").value;
+    let applicationDeadline = document.getElementById(
+      "applicationDeadline"
+    ).value;
 
-    const formData ={
-        companyName: companyName,
-        postContent: postContent,
-        id: params.postId,
-        opportunityType: opportunityType,
-        fundingAmount: fundingAmount,
-        applicationDeadline:applicationDeadline,
-    }
+    const formData = {
+      companyName: companyName,
+      postContent: postContent,
+      id: params.postId,
+      opportunityType: opportunityType,
+      fundingAmount: fundingAmount,
+      applicationDeadline: applicationDeadline,
+    };
 
-    console.log(formData)
+    console.log(formData);
 
     try {
       const response = await fetch("/api/posts", {
@@ -98,9 +79,7 @@ export default function submit_post() {
                   id="companyName"
                   name="companyName"
                   defaultValue={userPost.companyName}
-
                   className={styles.inputField}
-                  
                 />
 
                 <label htmlFor="opportunityType">Opportunity Type:</label>
@@ -109,16 +88,31 @@ export default function submit_post() {
                   name="opportunityType"
                   className={styles.selectField}
                 >
-                  <option value="educational" selected={userPost.opportunityType == 'educational'}>Educational</option>
-                  <option value="business" selected={userPost.opportunityType == 'business'}>Business</option>
-                  <option value="events" selected={userPost.opportunityType == 'events'}>Events</option>
+                  <option
+                    value="educational"
+                    selected={userPost.opportunityType == "educational"}
+                  >
+                    Educational
+                  </option>
+                  <option
+                    value="business"
+                    selected={userPost.opportunityType == "business"}
+                  >
+                    Business
+                  </option>
+                  <option
+                    value="events"
+                    selected={userPost.opportunityType == "events"}
+                  >
+                    Events
+                  </option>
                 </select>
 
                 <label htmlFor="postContent">Description:</label>
                 <textarea
                   id="postContent"
                   name="postContent"
-                  defaultValue ={userPost.postContent}
+                  defaultValue={userPost.postContent}
                   className={styles.textareaField}
                 ></textarea>
 
@@ -144,8 +138,7 @@ export default function submit_post() {
                 <button type="submit">Update</button>
               </form>
             </>
-          ) : 
-          (
+          ) : (
             <>
               <h1>This post no longer exist</h1>
             </>

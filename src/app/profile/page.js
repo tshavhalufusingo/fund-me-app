@@ -3,9 +3,8 @@ import styles from "../page.module.css";
 import { useSession } from "next-auth/react";
 
 export default function Profile() {
-  const { data: session, status } = useSession();
+  const { data: session } = useSession();
   if (session?.user) {
-
     const id = session?.user.id;
 
     const handleRegister = async (event) => {
@@ -17,17 +16,17 @@ export default function Profile() {
       let userRole = document.getElementById("role").value;
       let status = 0;
 
-      if(userRole  === "Applicant"){
+      if (userRole === "Applicant") {
         status = 2;
-      }
-      else{
-        if(session?.user?.role == "FundManager" && userRole === "FundManager"){
-          status = 2
+      } else {
+        if (
+          session?.user?.role == "FundManager" &&
+          userRole === "FundManager"
+        ) {
+          status = 2;
+        } else {
+          status = 1;
         }
-        else{
-          status = 1
-        }
-        
       }
 
       const inputData = {
@@ -68,15 +67,20 @@ export default function Profile() {
                 className="input"
                 type="text"
                 defaultValue={session?.user.lastName}
-                
                 required
               />
               <span>Lastname</span>
             </label>
           </div>
           <label>
-            <input id="email" className="input" type="email" defaultValue={session?.user?.email} required />
-            <span >Email</span>
+            <input
+              id="email"
+              className="input"
+              type="email"
+              defaultValue={session?.user?.email}
+              required
+            />
+            <span>Email</span>
           </label>
           <label>
             <select id="role" className="input" name="role" required>
@@ -101,10 +105,11 @@ export default function Profile() {
         </form>
       </main>
     );
-r
+    r;
   }
   return (
-    <main className={styles.main} ><div>Please login</div></main>
-    
-  )
+    <main className={styles.main}>
+      <div>Please login</div>
+    </main>
+  );
 }

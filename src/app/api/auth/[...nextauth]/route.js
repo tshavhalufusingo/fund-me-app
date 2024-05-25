@@ -18,7 +18,6 @@ const authOptions = {
       },
       async authorize(credentials, req) {
         // Add logic here to look up the user from the credentials supplied
-        // const user = { id: "1", name: "J Smith", email: "jsmith@example.com" };
 
         console.log("credentials", credentials);
 
@@ -56,9 +55,9 @@ const authOptions = {
         token.email = user.userEmail;
         token.lastName = user.lastname;
         token.role = user.userRole;
-        token.statusId= user.statusId;
-        token.userPermission=user.userPermission;
-        token.userBlock =user.userBlock;
+        token.statusId = user.statusId;
+        token.userPermission = user.userPermission;
+        token.userBlock = user.userBlock;
       }
       return token;
     },
@@ -80,4 +79,4 @@ const authOptions = {
 
 const handler = NextAuth(authOptions);
 
-export { handler as GET, handler as POST ,handler as PUT ,handler as DELETE };
+export { handler as GET, handler as POST, handler as PUT, handler as DELETE };

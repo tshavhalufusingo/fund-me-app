@@ -7,13 +7,13 @@ import { FaBell } from "react-icons/fa";
 
 export default function Dashboard_home() {
   //const { data: session, status } = useSession();
-  const [notifications, setNotifications] = useState([]); 
+  const [notifications, setNotifications] = useState([]);
 
   useEffect(() => {
     // Simulate fetching notifications from an API
     const fetchedNotifications = [
       { id: 1, message: "New funding request submitted" },
-      { id: 2, message: "Your post has been approved" }
+      { id: 2, message: "Your post has been approved" },
     ];
     setNotifications(fetchedNotifications);
   }, []);
@@ -38,34 +38,18 @@ export default function Dashboard_home() {
     router.push(".//../components/fundManagerPages/reviewopp");
   }
 
-// <<<<<<< singoV2
+  function goToProfile(event) {
+    event.preventDefault(); // Prevent the default behavior of the anchor tag
+    router.push("/profile");
+  }
   return (
     <div className="dashboard">
-      <div className="option">
-        <a href="#" onClick={gotoUpload}>
-          Create opportunity
-        </a>
-      </div>
-      <div className="option">
-        <a href="/profile">Profile</a>
-      </div>
-      <div className="option">
-        <a href="#" onClick={goReviewOpp}>
-          Review existing opportunities
-        </a>
-      </div>
-      <div className="option">
-        <a href="#" onClick={goReviewPost}>
-          Review Applications
-        </a>
-      </div>
+      <button onClick={gotoUpload}>Create opportunity</button>
 
-      <div className="option">
-        <a href="#" onClick={gotoBudget}>
-          Budget and Report
-        </a>
-      </div>
+      <button onClick={goToProfile}>Profile</button>
+      <button onClick={goReviewOpp}>Review existing opportunities</button>
+      <button onClick={goReviewPost}>Review Applications</button>
+      <button onClick={gotoBudget}>Budget and Report</button>
     </div>
-
   );
 }

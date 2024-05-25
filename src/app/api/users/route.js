@@ -2,10 +2,7 @@ import { NextResponse } from "next/server";
 const sql = require("mssql");
 const config = require("../../database/dbconnection");
 
-
 export async function GET() {
-
-  
   let poolConnection = await sql.connect(config);
 
   const res = await poolConnection
@@ -18,16 +15,17 @@ export async function GET() {
 
 export async function POST(req) {
   const data = await req.json();
-
-  console.log('reg data',data);
-
   try {
     let poolConnection = await sql.connect(config);
 
     const res = await poolConnection
       .request()
       .query(
-        `INSERT INTO [dbo].[user]  VALUES ('${data.email}','${data.password}','${data.firstname}','${data.lastname}','${data.role}',0,1,${data.role == 'Applicant'? 2: 1 });`
+        `INSERT INTO [dbo].[user]  VALUES ('${data.email}','${
+          data.password
+        }','${data.firstname}','${data.lastname}','${data.role}',0,1,${
+          data.role == "Applicant" ? 2 : 1
+        });`
       );
     poolConnection.close();
 
@@ -36,8 +34,6 @@ export async function POST(req) {
     console.error("error is: ", error.message);
   }
 }
-
-
 
 export async function PUT(req) {
   const data = await req.json();
@@ -56,4 +52,4 @@ export async function PUT(req) {
   } catch (error) {
     console.error("error is: ", error.message);
   }
-} 
+}
