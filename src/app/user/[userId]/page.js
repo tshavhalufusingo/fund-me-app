@@ -1,105 +1,109 @@
 "use client";
 import styles from "../../page.module.css";
-import { useParams, useRouter } from "next/navigation"; // Import both hooks from 'next/navigation'
+import { useParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
+// ReviewUser component responsible for fetching and updating user data
 export default function ReviewUser() {
   const params = useParams();
   const router = useRouter();
 
   const id = params.userId;
-
   const [data, setData] = useState(null);
 
+  // useEffect hook to fetch user data when the component mounts
   useEffect(() => {
-    // Fetch user data when component mounts
     fetch(`/api/users/${id}`)
       .then((res) => res.json())
       .then((data) => {
-        setData(data); // Update state with fetched data
+        setData(...data);
       });
-  }, [id]); // Include 'id' in the dependency array to re-fetch data when 'id' changes
+  }, []);
 
-  // Use optional chaining (?.) to avoid errors if 'document.getElementById' returns null
-  useEffect(() => {
-    if (data) {
-      document.getElementById("permission")?.checked = !data.userPermission;
-      document.getElementById("blockAccount")?.checked = data.userBlock;
-    }
-  }, [data]); // Re-run this effect when 'data' changes
+  if(document.getElementById("permission") != null){
+    document.getElementById("permission").checked = !data?.userPermission;
+  }
+  if(document.getElementById("blockAccount") != null){
+    document.getElementById("blockAccount").checked = data?.userBlock;
+  }
 
+  // Function to handle updating the user data
   const updateUser = async (event) => {
     event.preventDefault();
 
-    // Get values from form inputs
-    const approvalStatus = document.getElementById("approvalStatus").value;
-    const permission = document.getElementById("permission").checked;
-    const blockAccount = document.getElementById("blockAccount").checked;
+    let approvalStatus = document.getElementById("approvalStatus").value;
+    let permission = document.getElementById("permission");
+    let blockAccount = document.getElementById("blockAccount");
 
-    // Prepare input data for API request
+
     const inputData = {
       userId: id,
       userApproval: approvalStatus,
-      userPermited: permission ? "0" : "1", // Use ternary operator to convert boolean to string
-      userAccess: blockAccount ? "1" : "0", // Use ternary operator to convert boolean to string
+      userPermited: permission.checked == true ? permission.value : "1",
+      userAccess: blockAccount.checked == true ? blockAccount.value : "0",
     };
 
-    try {
-      const resp = await fetch(`/api/users/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(inputData),
-      });
+    const resp = await fetch(`/api/users/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(inputData),
+    });
 
-      if (resp.ok) {
-        router.push("/home");
-      } else {
-        const errorData = await resp.json();
-        throw new Error(errorData.message || "Failed to update user");
-      }
-    } catch (error) {
-      console.error("Error updating user:", error);
-      alert("Failed to update user. Please try again.");
+    if (!resp.error) {
+      router.push("/home");
     }
   };
 
   return (
-    <main className={styles.main}>
-      <section id="UserProfile">
-        <p>First name: {data?.firstname}</p>
-        <p>
-          Current status:{" "}
-          {data?.statusId === 1
-            ? "Pending"
-            : data?.statusId === 2
-            ? "Approved"
-            : "Rejected"}
-        </p>
-        <div>
-          <p>Account status:</p>
-          <select name="approvalStatus" id="approvalStatus" defaultValue={data?.statusId}>
-            <option value="1">Pending</option>
-            <option value="2">Approve</option>
-            <option value="3">Reject</option>
-          </select>
-        </div>
+    <>
+      <main className={styles.main}>
+        <section id="UserProfile">
+          <p>First name: {data?.firstname}</p>
+          <p>
+            Current status:{" "}
+            {data?.statusId == 1
+              ? "Pending"
+              : data?.statusId == 2
+              ? "Approved"
+              : "Rejected"}
+          </p>
+          <div>
+            <p>Account status:</p>
+            <select name="approvalStatus" id="approvalStatus">
+              <option value="1" selected={data?.statusId === 1}>Pending</option>
+              <option value="2" selected={data?.statusId === 2}>Approve</option>
+              <option value="3" selected={data?.statusId === 3}>Reject</option>
+            </select>
+          </div>
 
-        <div>
-          <input type="checkbox" id="permission" name="permission" defaultChecked={!data?.userPermission} />
-          <label htmlFor="permission">
-            {data?.userRole === "FundManager"
-              ? "Disable fund manager from creating fund advertisement"
-              : "Disable applicant from applying for opportunity"}
-          </label>
-        </div>
-        <div>
-          <input type="checkbox" id="blockAccount" name="blockAccount" defaultChecked={data?.userBlock} />
-          <label htmlFor="blockAccount">Block account</label>
-        </div>
-        <button onClick={updateUser}>Save changes</button>
-      </section>
-    </main>
+          <div>
+            <input
+              type="checkbox"
+              id="permission"
+              name="permission"
+              value="0"
+            />
+            <label htmlFor="permission">
+              {data?.userRole == "FundManager"
+                ? "Disable fund manager from creating fund advertisement"
+                : "Disable applicant from applying for opportunity"}
+            </label>
+          </div>
+          <div>
+            <input
+              type="checkbox"
+              id="blockAccount"
+              name="blockAccount"
+              value="1"
+            />
+            <label htmlFor="blockAccount">Block account</label>
+          </div>
+          <button onClick={updateUser}>Save changes</button>
+        </section>
+      </main>
+    </>
   );
 }
