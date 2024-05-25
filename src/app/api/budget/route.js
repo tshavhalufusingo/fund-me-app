@@ -3,6 +3,7 @@ const sql = require("mssql");
 const config = require("../../database/dbconnection");
 import { useSession } from "next-auth/react";
 
+// Fetches all records from the post table and returns the result as JSON
 export async function GET() {
   let poolConnection = await sql.connect(config);
 

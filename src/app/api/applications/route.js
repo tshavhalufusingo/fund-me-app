@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import sql from "mssql";
 import config from "../../database/dbconnection";
 
+// Fetches application data by joining postApplication and post tables, returning the result as JSON
 export async function GET() {
   try {
     const poolConnection = await sql.connect(config);
@@ -13,13 +14,13 @@ export async function GET() {
   }
 }
 
+// Inserts a new application record into the postApplication table and returns the new application ID as JSON
 export async function POST(req) {
   const date = new Date();
   const formattedDate = date.toISOString().split("T")[0]; 
   try {
     const data = await req.json();
     const { postId, userId, statusId, applicationDate } = data;
-
 
     console.log("application dats is ", applicationDate);
     const poolConnection = await sql.connect(config);

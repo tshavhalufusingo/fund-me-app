@@ -1,10 +1,11 @@
+
 import { NextResponse } from "next/server";
 const sql = require("mssql");
 const config = require("../../../database/dbconnection");
 
+// Fetches distinct post applications and user details for a specific postId, returning the result as JSON
 export async function GET(req, context) {
-
-    const { params } = context;
+  const { params } = context;
   const id = params.postId;
   let poolConnection = await sql.connect(config);
 
@@ -16,11 +17,12 @@ export async function GET(req, context) {
   return NextResponse.json(post);
 }
 
+// Inserts a new application record into the postApplication table and returns the new application ID as JSON
 export async function POST(req) {
   const data = await req.json();
   const date = new Date();
   const formattedDate = date.toISOString().split("T")[0]; 
-  console.log('date',formattedDate)
+  console.log('date', formattedDate);
 
   try {
     let poolConnection = await sql.connect(config);
@@ -32,8 +34,8 @@ export async function POST(req) {
       );
     poolConnection.close();
 
-    console.log("response of creating application",res)
-    console.log(res.recordset[0])
+    console.log("response of creating application", res);
+    console.log(res.recordset[0]);
 
     return NextResponse.json(res.recordset[0]);
   } catch (error) {
@@ -41,6 +43,7 @@ export async function POST(req) {
   }
 }
 
+// Updates the statusId of a post application based on the provided userId, returning the result as JSON
 export async function PUT(req) {
   const data = await req.json();
   console.log(data);
@@ -51,7 +54,7 @@ export async function PUT(req) {
     const res = await poolConnection
       .request()
       .query(
-        `UPDATE [dbo].[postApplication]  SET  statusId = '${data.userApproval}' WHERE userId='${data.userId}';`
+        `UPDATE [dbo].[postApplication] SET statusId = '${data.userApproval}' WHERE userId='${data.userId}';`
       );
     poolConnection.close();
 
@@ -60,5 +63,3 @@ export async function PUT(req) {
     console.error("error is: ", error.message);
   }
 }
-
-

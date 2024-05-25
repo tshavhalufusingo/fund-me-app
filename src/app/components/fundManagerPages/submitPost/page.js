@@ -2,10 +2,11 @@
 
 import { useState, useEffect, Fragment } from "react";
 import Link from "next/link";
-import styles from "../../../page.module.css"
+import styles from "../../../page.module.css";
 import { useSession } from "next-auth/react";
 import "../../../styles.css";
 
+// Component for submitting a new post
 export default function submit_post() {
   const { data: session } = useSession();
   const [formData, setFormData] = useState({
@@ -18,6 +19,7 @@ export default function submit_post() {
     applicationDeadline: "",
   });
 
+  // Handle form input changes
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevState) => ({
@@ -26,6 +28,7 @@ export default function submit_post() {
     }));
   };
 
+  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -59,11 +62,8 @@ export default function submit_post() {
   };
 
   return (
-    <>
-
     <main className={styles.main}>
-
-      {session?.user.userPermission &&
+      {session?.user.userPermission && (
         <>
           <h2>Submit a New Post</h2>
           <form onSubmit={handleSubmit} className={styles.formContainer}>
@@ -109,7 +109,7 @@ export default function submit_post() {
               className={styles.inputField}
             />
 
-              <label htmlFor="fundingAmount">Funding for each indivisual:</label>
+            <label htmlFor="indivisualFund">Funding for each individual:</label>
             <input
               type="number"
               id="indivisualFund"
@@ -129,12 +129,10 @@ export default function submit_post() {
               className={styles.inputField}
             />
 
-            <button type="submit">Submit</button>
+            <button type="submit" className={styles.submitButton}>Submit</button>
           </form>
-
-        </>}
-
-          </main>
-    </>
+        </>
+      )}
+    </main>
   );
 }

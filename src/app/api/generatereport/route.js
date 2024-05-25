@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 const sql = require("mssql");
 const config = require("../../database/dbconnection");
 
+// Fetches all post applications for a specific userId, returning the result as JSON
 export async function GET(req) {
   const { searchParams } = new URL(req.url);
   const userId = searchParams.get("userId");
@@ -14,15 +15,15 @@ export async function GET(req) {
     let poolConnection = await sql.connect(config);
     const res = await poolConnection.request().input("userId", sql.Int, userId)
       .query(`SELECT 
-      postApplication.*, 
-	  post.*
-  FROM 
-      [dbo].[post] AS post
-  INNER JOIN 
-      [dbo].[postApplication] AS postApplication ON post.postId = postApplication.postId
-WHERE post.userId = @userId;
-    
-  `);
+                postApplication.*, 
+                post.*
+              FROM 
+                [dbo].[post] AS post
+              INNER JOIN 
+                [dbo].[postApplication] AS postApplication 
+              ON post.postId = postApplication.postId
+              WHERE post.userId = @userId;
+            `);
     poolConnection.close();
     const user = res.recordset;
     return NextResponse.json(user);

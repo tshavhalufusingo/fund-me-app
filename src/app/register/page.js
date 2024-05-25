@@ -5,15 +5,26 @@ import { useRouter } from "next/navigation";
 
 export default function Home() {
   const router = useRouter();
+
+  // Handle form submission for user registration
   const handleRegister = async (event) => {
     event.preventDefault();
 
-    let userFirstName = document.getElementById("firstname").value;
-    let userLastName = document.getElementById("lastname").value;
-    let useremail = document.getElementById("email").value;
-    let userRole = document.getElementById("role").value;
-    let userpassword = document.getElementById("password").value;
+    // Get form values
+    const userFirstName = document.getElementById("firstname").value;
+    const userLastName = document.getElementById("lastname").value;
+    const useremail = document.getElementById("email").value;
+    const userRole = document.getElementById("role").value;
+    const userpassword = document.getElementById("password").value;
+    const confirmPassword = document.getElementById("confirmPassword").value;
 
+    // Validate password and confirm password
+    if (userpassword !== confirmPassword) {
+      alert("Passwords do not match");
+      return;
+    }
+
+    // Prepare input data for API request
     const inputData = {
       email: useremail,
       password: userpassword,
@@ -22,29 +33,41 @@ export default function Home() {
       role: userRole,
     };
 
-    const resp = await fetch("api/users", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(inputData),
-    });
+    try {
+      // Send API request to register the user
+      const resp = await fetch("api/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(inputData),
+      });
 
-    if (!resp.error) {
-      router.push("/");
+      if (resp.ok) {
+        // Navigate to the home page on successful registration
+        router.push("/");
+      } else {
+        const errorData = await resp.json();
+        throw new Error(errorData.message || "Failed to register user");
+      }
+    } catch (error) {
+      console.error("Error registering user:", error);
+      alert("Failed to register user. Please try again.");
     }
   };
 
-  const goToLoginPage = async (e) => {
+  // Navigate to login page
+  const goToLoginPage = (e) => {
     e.preventDefault();
     router.push("/");
   };
+
   return (
     <main className={styles.main}>
       <form id="registerForm" className="form" onSubmit={handleRegister}>
-        <p class="title">Register</p>
-        <p class="message">Signup now and get full access to our app.</p>
-        <div class="flex">
+        <p className="title">Register</p>
+        <p className="message">Signup now and get full access to our app.</p>
+        <div className="flex">
           <label>
             <input id="firstname" className="input" type="text" required />
             <span>Firstname</span>
@@ -70,23 +93,18 @@ export default function Home() {
           <span>Password</span>
         </label>
         <label>
-          <input
-            id="confirmPassword"
-            className="input"
-            type="password"
-            required
-          />
+          <input id="confirmPassword" className="input" type="password" required />
           <span>Confirm password</span>
         </label>
-        <button class="submit" type="submit">
+        <button className="submit" type="submit">
           Register
         </button>
 
-        <p class="signin">
-          Already have an acount ?{" "}
+        <p className="signin">
+          Already have an account?{" "}
           <a href="#" onClick={goToLoginPage}>
-            Signin
-          </a>{" "}
+            Sign in
+          </a>
         </p>
       </form>
     </main>

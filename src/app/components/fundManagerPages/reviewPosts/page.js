@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import "../../../styles.css";
 
+// Main component for reviewing applications
 export default function ReviewP() {
   const { data: session } = useSession();
   const [applications, setApplications] = useState([]);
@@ -13,6 +14,7 @@ export default function ReviewP() {
 
   const userId = session?.user?.id;
 
+  // Function to check for multiple uploads and combine attachments
   const checkingMultipleUpload = (myjson) => {
     const postMap = new Map();
 
@@ -39,6 +41,7 @@ export default function ReviewP() {
     return Array.from(postMap.values());
   };
 
+  // Function to handle status change for an application
   const handleStatusChange = async (index, status, appid, postId) => {
     const updatedStatusMap = { ...statusMap, [index]: status };
     setStatusMap(updatedStatusMap);
@@ -79,6 +82,7 @@ export default function ReviewP() {
     }
   };
 
+  // Effect to fetch application data when the component mounts
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -113,6 +117,7 @@ export default function ReviewP() {
     fetchData();
   }, [userId]);
 
+  // Function to get status label from status ID
   const getStatusLabel = (statusId) => {
     switch (statusId) {
       case 1:
@@ -126,6 +131,7 @@ export default function ReviewP() {
     }
   };
 
+  // Function to create a blob URL from base64 data
   const createBlobUrl = (base64Data) => {
     const byteCharacters = atob(base64Data.split(",")[1]);
     const byteNumbers = new Array(byteCharacters.length);

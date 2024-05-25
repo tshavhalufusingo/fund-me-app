@@ -1,7 +1,9 @@
+
 import { NextResponse } from "next/server";
 const sql = require("mssql");
 const config = require("../../../../database/dbconnection");
 
+// Fetches distinct post applications and user details for a specific postId, returning the result as JSON
 export async function GET(req, context) {
   const { params } = context;
 
@@ -18,6 +20,7 @@ export async function GET(req, context) {
   return NextResponse.json(post);
 }
 
+// Inserts a new application record into the postApplication table and returns the result as JSON
 export async function POST(req) {
   const data = await req.json();
 
@@ -35,9 +38,11 @@ export async function POST(req) {
 
     return NextResponse.json(res);
   } catch (error) {
+    console.error("error is: ", error.message);
   }
 }
 
+// Updates the statusId of a post application based on the provided userId and postId, returning the result as JSON
 export async function PUT(req, context) {
   const { params } = context;
 
@@ -55,6 +60,6 @@ export async function PUT(req, context) {
 
     return NextResponse.json(res);
   } catch (error) {
-    
+    console.error("error is: ", error.message);
   }
 }
