@@ -23,7 +23,7 @@ CREATE TABLE post(
     postId int primary key identity(1,1),
     userId int foreign key references [dbo].[user](userId),
     companyName varchar(50),
-    postContent text(1000),
+    postContent text,
     statusId int foreign key references [dbo].[ApprovalStatus](statusId),
     activeStatus bit default 1,
     fundingAmount money,

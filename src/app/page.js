@@ -53,7 +53,7 @@ export default function Home() {
   return (
     <main className={styles.main}>
       <form action={Login} className="form">
-      <p class="title">Signin</p>
+      <p className="title">Signin</p>
 
     <label>
 
