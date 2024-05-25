@@ -3,7 +3,7 @@ import React from "react";
 import styles from "../../page.module.css";
 
 // Component for printing content
-const PrintButton = ({ htmlContent }) => {
+const PrintButton = ( htmlContent ) => {
   const handlePrint = (e) => {
     e.preventDefault();
     const printWindow = window.open("", "_blank");
