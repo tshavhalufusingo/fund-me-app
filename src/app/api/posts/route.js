@@ -39,7 +39,7 @@ export async function POST(req) {
           data.postContent
         }',${1},${1},${data.fundingAmount},'${data.opportunityType}','${
           data.applicationDeadline
-        }', 0, ${data.indivisualFund});`
+        }',${data.indivisualFund}, 0);`
       );
     poolConnection.close();
 

@@ -85,6 +85,7 @@ export default function submit_post() {
               onChange={handleChange}
               className={styles.selectField}
             >
+              <option value="">Select Funding Type↓	  </option>
               <option value="educational">Educational</option>
               <option value="business">Business</option>
               <option value="events">Events</option>

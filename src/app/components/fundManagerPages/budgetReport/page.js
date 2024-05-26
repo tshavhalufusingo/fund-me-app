@@ -15,6 +15,7 @@ export default function ReportAndBudget() {
   const [rejected, setRejected] = useState(0);
   const [totalApplications, setTotalApplications] = useState(0);
   const [monthlyApprovals, setMonthlyApprovals] = useState([]);
+  const [indivisualAmnt, setindivisualAmt] = useState(0);
 
   const labels = ["pending", "approved", "rejected"];
   const { data: session } = useSession(); // Destructuring session data
@@ -23,17 +24,51 @@ export default function ReportAndBudget() {
   const reportRef = useRef(null); // Reference for the report div
   const buttonRef = useRef(null); // Reference for the download button
 
+  const myId = session?.user?.id;
+
+  useEffect(() => {
+    // Define an async function to fetch the report
+    const fetchReport1 = async () => {
+      try {
+        const response = await fetch(`/api/getAmount`);
+        if (!response.ok) {
+          throw new Error(`Error: ${response.statusText}`);
+        }
+        const res = await response.json();
+
+        console.log("the ind amt ",res);
+
+        for(let i= 0; i < res.length; i++){
+            if(res[i].userId == myId){
+              setindivisualAmt(res[i].indivisualFund);
+              console.log("success");
+              console.log(res[i].indivisualFund);
+              break;
+            }
+        }
+
+      } catch (err) {
+        console.log(err);
+      }
+    };
+
+    // Call the async function
+    fetchReport1();
+  }, );
+
+ 
+
+
   const userID = session?.user?.id;
 
-  const getAllData = (jsonData) => {
+    const getAllData = (jsonData) => {
     setTotalApplications(jsonData.length);
 
-    console.log(jsonData);
     let pendingCount = 0;
     let successfulCount = 0;
     let rejectedCount = 0;
     const approvals = {};
-    console.log(jsonData.individualAmount);
+
     jsonData.forEach((item) => {
       const statusId = item.statusId["0"]; // Extracting the numeric status ID
       const approvalDate = item.approvalDate
@@ -44,7 +79,7 @@ export default function ReportAndBudget() {
         const month = approvalDate.getMonth();
         const year = approvalDate.getFullYear();
         const key = `${year}-${month}`;
-        approvals[key] = approvals[key] || jsonData[0].individualAmount;
+        approvals[key] = (approvals[key] || 0) + indivisualAmnt;
       }
 
       switch (statusId) {
@@ -65,6 +100,8 @@ export default function ReportAndBudget() {
     setPending(pendingCount);
     setSuccessfulRecipients(successfulCount);
     setRejected(rejectedCount);
+    console.log("test x ",successfulCount * indivisualAmnt);
+    setAmountUsed(successfulCount * indivisualAmnt);
 
     const approvalArray = Object.keys(approvals)
       .map((key) => ({
@@ -101,10 +138,11 @@ export default function ReportAndBudget() {
           getAllData(data);
 
           const firstItem = data[0];
+          console.log("first item", firstItem);
           setBalance(
             firstItem.fundingAmount - firstItem.fundingused || balance
           );
-          setAmountUsed(firstItem.fundingused || amountUsed);
+          setAmountUsed(firstItem.indivisualFund  || amountUsed);
         } else {
           console.warn("No data received or data is empty");
         }
