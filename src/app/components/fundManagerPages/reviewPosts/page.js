@@ -10,7 +10,7 @@ export default function ReviewP() {
   const [statusMap, setStatusMap] = useState({});
   const [updatedStatus, setUpdatedStatus] = useState({});
   const [myData, setData] = useState([]);
-
+  const [indivisualAmnt, setindivisualAmt] = useState(0);
   const userId = session?.user?.id;
 
   const checkingMultipleUpload = (myjson) => {
@@ -66,7 +66,7 @@ export default function ReviewP() {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(inputData2),
-      });
+      }); 
 
       if (!resp2.ok) {
         const errorData = await resp2.json();
@@ -96,7 +96,8 @@ export default function ReviewP() {
           }
 
           const data = await response.json();
-          setindivisualAmt(data[0].allocatedFunds);
+          console.log(data);
+          setindivisualAmt(data[0].indivisualFund);
           setData(data);
           console.log(data);
           console.log(data);
