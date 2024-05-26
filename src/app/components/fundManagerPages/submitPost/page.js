@@ -35,7 +35,8 @@ export default function SubmitPost() {
     e.preventDefault();
 
     if (!formData.opportunityType) {
-      setValidationMessage("Please choose the opportunity type.");
+      setValidationMessage("Please choose the opportunity type");
+      alert("Please make sure that all the input fields are filled.")
       return;
     }
 
