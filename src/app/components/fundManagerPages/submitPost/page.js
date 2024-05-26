@@ -7,7 +7,7 @@ import { useSession } from "next-auth/react";
 import "../../../styles.css";
 
 // Component for submitting a new post
-export default function submit_post() {
+export default function SubmitPost() {
   const { data: session } = useSession();
   const [formData, setFormData] = useState({
     companyName: "",
@@ -18,6 +18,8 @@ export default function submit_post() {
     indivisualFund: "",
     applicationDeadline: "",
   });
+
+  const [validationMessage, setValidationMessage] = useState("");
 
   // Handle form input changes
   const handleChange = (e) => {
@@ -31,6 +33,12 @@ export default function submit_post() {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!formData.opportunityType) {
+      setValidationMessage("Please choose the opportunity type");
+      alert("Please make sure that all the input fields are filled.")
+      return;
+    }
 
     try {
       const response = await fetch("/api/posts", {
@@ -54,6 +62,7 @@ export default function submit_post() {
         indivisualFund: "",
         applicationDeadline: "",
       });
+      setValidationMessage("");
       alert("Post submitted successfully!");
     } catch (error) {
       console.error("Error submitting post:", error);
@@ -85,7 +94,7 @@ export default function submit_post() {
               onChange={handleChange}
               className={styles.selectField}
             >
-              <option value="">Select Funding Type↓	  </option>
+              <option value="">Select an opportunity type</option>
               <option value="educational">Educational</option>
               <option value="business">Business</option>
               <option value="events">Events</option>
@@ -129,6 +138,10 @@ export default function submit_post() {
               onChange={handleChange}
               className={styles.inputField}
             />
+
+            {validationMessage && (
+              <p className={styles.validationMessage}>{validationMessage}</p>
+            )}
 
             <button type="submit" className={styles.submitButton}>Submit</button>
           </form>
