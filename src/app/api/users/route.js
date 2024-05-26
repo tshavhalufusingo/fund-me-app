@@ -2,17 +2,24 @@ import { NextResponse } from "next/server";
 const sql = require("mssql");
 const config = require("../../database/dbconnection");
 
+// Fetches all records from the user table and returns the result as JSON
 export async function GET() {
-  let poolConnection = await sql.connect(config);
+  try {
+    let poolConnection = await sql.connect(config);
 
-  const res = await poolConnection
-    .request()
-    .query(`SELECT * FROM [dbo].[user];`);
-  poolConnection.close();
-  const user = res.recordset;
-  return NextResponse.json(user);
+    const res = await poolConnection
+      .request()
+      .query(`SELECT * FROM [dbo].[user];`);
+    poolConnection.close();
+    const users = res.recordset;
+    return NextResponse.json(users);
+  } catch (error) {
+    console.error("Error fetching users: ", error.message);
+    return NextResponse.error();
+  }
 }
 
+// Inserts a new user record into the user table and returns the result as JSON
 export async function POST(req) {
   const data = await req.json();
   try {
@@ -31,10 +38,12 @@ export async function POST(req) {
 
     return NextResponse.json(res);
   } catch (error) {
-    console.error("error is: ", error.message);
+    console.error("Error inserting user: ", error.message);
+    return NextResponse.error();
   }
 }
 
+// Updates a user record in the user table and returns the result as JSON
 export async function PUT(req) {
   const data = await req.json();
 
@@ -50,6 +59,7 @@ export async function PUT(req) {
 
     return NextResponse.json(res);
   } catch (error) {
-    console.error("error is: ", error.message);
+    console.error("Error updating user: ", error.message);
+    return NextResponse.error();
   }
 }

@@ -1,18 +1,18 @@
 "use client";
 import styles from "../../page.module.css";
-import { useParams, } from "next/navigation";
+import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
+// ReviewUser component responsible for fetching and updating user data
 export default function ReviewUser() {
   const params = useParams();
   const router = useRouter();
 
-
   const id = params.userId;
-
   const [data, setData] = useState(null);
 
+  // useEffect hook to fetch user data when the component mounts
   useEffect(() => {
     fetch(`/api/users/${id}`)
       .then((res) => res.json())
@@ -20,6 +20,7 @@ export default function ReviewUser() {
         setData(...data);
       });
   }, []);
+
   if(document.getElementById("permission") != null){
     document.getElementById("permission").checked = !data?.userPermission;
   }
@@ -27,6 +28,7 @@ export default function ReviewUser() {
     document.getElementById("blockAccount").checked = data?.userBlock;
   }
 
+  // Function to handle updating the user data
   const updateUser = async (event) => {
     event.preventDefault();
 
@@ -34,9 +36,6 @@ export default function ReviewUser() {
     let permission = document.getElementById("permission");
     let blockAccount = document.getElementById("blockAccount");
 
-    if (permission.checked) {
-      console.log(permission.checked);
-    }
 
     const inputData = {
       userId: id,

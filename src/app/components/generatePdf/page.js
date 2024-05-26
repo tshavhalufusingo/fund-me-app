@@ -2,7 +2,8 @@
 import React from "react";
 import styles from "../../page.module.css";
 
-const PrintButton = (htmlContent) => {
+// Component for printing content
+const PrintButton = ( htmlContent ) => {
   const handlePrint = (e) => {
     e.preventDefault();
     const printWindow = window.open("", "_blank");
@@ -13,9 +14,8 @@ const PrintButton = (htmlContent) => {
 
   return (
     <main className={styles.main}>
-      <h1>x</h1>
-
-      <button onClick={handlePrint}>Press</button>
+      <h1>Print Preview</h1>
+      <button onClick={handlePrint} className={styles.button}>Print</button>
     </main>
   );
 };

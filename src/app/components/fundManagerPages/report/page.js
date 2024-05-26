@@ -3,12 +3,13 @@ import React, { Fragment, useEffect, useState } from "react";
 import GeneratePiChart from "./../../graphs/generateGraph";
 import styles from ".//..//..//../page.module.css";
 
+// Function component to display graphs
 function Graph() {
   const [companyNames, setCompanyNames] = useState([]);
   const [fundingAmounts, setFundingAmounts] = useState([]);
 
-  const status = generateAprovedStudentsGraph()[0];
-  const statusFlag = generateAprovedStudentsGraph()[1];
+  // Function to generate the distribution of approved, pending, and rejected applications
+  const [status, statusFlag] = generateAprovedStudentsGraph();
 
   let dist = [0, 0, 0];
 
@@ -25,6 +26,7 @@ function Graph() {
 
   console.log(status);
 
+  // Fetch data for company names and funding amounts
   useEffect(() => {
     async function fetchData() {
       try {
@@ -73,6 +75,7 @@ function Graph() {
   );
 }
 
+// Function to fetch and return the status of applicants
 function generateAprovedStudentsGraph() {
   const [status, setStatus] = useState([0, 0, 0]);
   const statusFlag = ["pending", "Approved", "Rejected"];

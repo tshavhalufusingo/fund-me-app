@@ -314,4 +314,167 @@
 .hidden {
   display: none;
 }
+
+/* Mobile */
+@media (max-width: 600px) {
+  .formContainer, .register, .application {
+    width: 90%;
+    margin: 10px auto;
+  }
+
+  .dashboard {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .option {
+    padding: 10px;
+  }
+
+  .container {
+    padding: 10px;
+  }
+
+  .navbar ul {
+    flex-direction: column;
+  }
+
+  .navbar ul li {
+    margin-bottom: 1rem;
+  }
+
+  .navbar ul li button {
+    width: 100%;
+  }
+
+  .form {
+    max-width: 100%;
+  }
+
+  .description p {
+    padding: 1rem;
+    font-size: 0.8rem;
+  }
+
+  .card {
+    padding: 1rem;
+  }
+
+  .center::before {
+    height: 200px;
+  }
+
+  .center {
+    padding: 4rem 0;
+  }
+}
+
+/* Tablet */
+@media (min-width: 601px) and (max-width: 900px) {
+  .formContainer, .register, .application {
+    width: 60%;
+    margin: 10px auto;
+  }
+
+  .dashboard {
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+  }
+
+  .option {
+    padding: 15px;
+  }
+
+  .container {
+    padding: 15px;
+  }
+
+  .navbar ul {
+    flex-direction: column;
+  }
+
+  .navbar ul li {
+    margin-bottom: 1rem;
+  }
+
+  .navbar ul li button {
+    width: 100%;
+  }
+
+  .form {
+    max-width: 100%;
+  }
+
+  .description p {
+    padding: 1rem;
+    font-size: 0.85rem;
+  }
+
+  .card {
+    padding: 1rem;
+  }
+
+  .center::before {
+    height: 250px;
+  }
+
+  .center {
+    padding: 6rem 0;
+  }
+}
+
+/* Small Desktop */
+@media (min-width: 901px) and (max-width: 1200px) {
+  .formContainer, .register, .application {
+    width: 45%;
+    margin: 10px auto;
+  }
+
+  .dashboard {
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 20px;
+  }
+
+  .option {
+    padding: 20px;
+  }
+
+  .container {
+    padding: 20px;
+  }
+
+  .navbar ul {
+    flex-direction: row;
+  }
+
+  .navbar ul li {
+    margin-right: 1rem;
+  }
+
+  .navbar ul li button {
+    width: auto;
+  }
+
+  .form {
+    max-width: 100%;
+  }
+
+  .description p {
+    padding: 1rem;
+    font-size: 0.9rem;
+  }
+
+  .card {
+    padding: 1.2rem;
+  }
+
+  .center::before {
+    height: 300px;
+  }
+
+  .center {
+    padding: 8rem 0;
+  }
+}
+
   

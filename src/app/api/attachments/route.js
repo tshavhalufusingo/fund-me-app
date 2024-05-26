@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 const sql = require("mssql");
 const config = require("../../database/dbconnection");
 
+// Inserts a new attachment record into the ApplicationAttachments table and returns the result as JSON
 export async function POST(req) {
   const data = await req.json();
 

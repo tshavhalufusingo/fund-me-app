@@ -8,13 +8,26 @@ export default function page() {
   const { data: session } = useSession();
   const [opportunities, setOpportunities] = useState(null);
 
+  // Fetch opportunities data on component mount
   useEffect(() => {
-    fetch(`/api/posts/${session?.user.id}`)
-      .then((res) => res.json())
-      .then((data) => {
+    // Fetch opportunities data for the logged-in user
+    const fetchOpportunities = async () => {
+      try {
+        const response = await fetch(`/api/posts/${session?.user.id}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch opportunities data");
+        }
+        const data = await response.json();
         setOpportunities(data);
-      });
-  }, []);
+      } catch (error) {
+        console.error("Error fetching opportunities:", error.message);
+      }
+    };
+
+    if (session) {
+      fetchOpportunities();
+    }
+  }, [session]);
 
   return (
     <main className={styles.main}>
@@ -25,7 +38,7 @@ export default function page() {
         <table>
           <thead>
             <tr>
-              <th>post id</th>
+              <th>Post ID</th>
               <th>Title</th>
               <th>Deadline</th>
               <th>Total</th>
@@ -33,30 +46,26 @@ export default function page() {
             </tr>
           </thead>
           <tbody>
-            {opportunities?.map((data) => {
-              return (
-                <tr key={data.postId}>
-                  <td>{data.postId}</td>
-                  <td>{data.companyName}</td>
-                  <td>{data.applicationDeadline.split("T")[0]}</td>
-                  <td>{data.fundingAmount}</td>
-                  <td>{data.fundingused}</td>
-                  <td>
-                    <Link
-                      href={`/components/fundManagerPages/reviewopp/${data.postId}`}
-                    >
-                      <button id={data.postId} key={data.postId}>
-                        Review
-                      </button>
-                    </Link>
-                  </td>
-                </tr>
-              );
-            })}
+            {opportunities.map((data) => (
+              <tr key={data.postId}>
+                <td>{data.postId}</td>
+                <td>{data.companyName}</td>
+                <td>{data.applicationDeadline.split("T")[0]}</td>
+                <td>{data.fundingAmount}</td>
+                <td>{data.fundingused}</td>
+                <td>
+                  <Link href={`/components/fundManagerPages/reviewopp/${data.postId}`}>
+                    <button id={data.postId} key={data.postId}>
+                      Review
+                    </button>
+                  </Link>
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       ) : (
-        <p>no existing opportunity </p>
+        <p>No existing opportunities</p>
       )}
     </main>
   );

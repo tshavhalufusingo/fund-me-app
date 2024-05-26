@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { FaBell } from "react-icons/fa";
 import { useState, useEffect } from "react";
 
+// Navbar component for displaying the navigation bar
 export default function Navbar() {
   const { data: session } = useSession();
   const router = useRouter();
@@ -13,30 +14,32 @@ export default function Navbar() {
   const [unreadCount, setUnreadCount] = useState(0);
   const [showNotifications, setShowNotifications] = useState(false);
 
-  const logosource =
-    "https://scontent.xx.fbcdn.net/v/t1.15752-9/440589588_1416138286453095_6091461302783876786_n.jpg?stp=dst-jpg_p403x403&_nc_cat=111&ccb=1-7&_nc_sid=5f2048&_nc_ohc=kgKvlL23V2QQ7kNvgGGhxLo&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_Q7cD1QEhAF5fEM4BOLJJ1JzTk6lmN2rNL_M7yw-Ho885MyDcqA&oe=66558C68";
+  const logosource = "https://scontent.xx.fbcdn.net/v/t1.15752-9/440589588_1416138286453095_6091461302783876786_n.jpg?stp=dst-jpg_p403x403&_nc_cat=111&ccb=1-7&_nc_sid=5f2048&_nc_ohc=kgKvlL23V2QQ7kNvgGGhxLo&_nc_ad=z-m&_nc_cid=0&_nc_ht=scontent.xx&oh=03_Q7cD1QEhAF5fEM4BOLJJ1JzTk6lmN2rNL_M7yw-Ho885MyDcqA&oe=66558C68";
 
+  // Function to handle user logout
   const LogOut = (e) => {
     e.preventDefault();
-    signOut({ callbackUrl: "/" }); // Use signOut from next-auth/react
+    signOut({ callbackUrl: "/" });
   };
 
+  // Function to navigate to the home page based on user session
   const gotoHome = async (e) => {
+    e.preventDefault();
     if (session?.user) {
-      e.preventDefault();
       router.push("/home");
     } else {
-      e.preventDefault();
       router.push("/");
     }
   };
 
+  // Fetch notifications if the user is logged in and not an admin
   useEffect(() => {
     if (session?.user && session?.user.role !== "Admin") {
       fetchNotifications();
     }
   }, [session]);
 
+  // Function to fetch notifications from the server
   const fetchNotifications = async () => {
     try {
       const response = await fetch(`/api/admin?userId=${session.user.id}`);
@@ -48,6 +51,7 @@ export default function Navbar() {
     }
   };
 
+  // Function to toggle the display of notifications
   const toggleNotifications = async () => {
     setShowNotifications(!showNotifications);
     if (!showNotifications) {
@@ -56,6 +60,7 @@ export default function Navbar() {
     }
   };
 
+  // Function to mark notifications as read
   const markNotificationsAsRead = async () => {
     try {
       const unreadNotifications = notifications.filter((n) => !n.isRead);
@@ -68,12 +73,13 @@ export default function Navbar() {
           body: JSON.stringify({ notificationId: notification.id }),
         });
       }
-      setUnreadCount(0); // Reset unread count after marking all as read
+      setUnreadCount(0);
     } catch (error) {
       console.error("Failed to mark notifications as read:", error);
     }
   };
 
+  // Render the navbar based on user session
   if (session?.user) {
     return (
       <>
@@ -128,6 +134,8 @@ export default function Navbar() {
       </>
     );
   }
+
+  // Render the navbar for non-logged-in users
   return (
     <nav className="navbar">
       <div className="headerx">

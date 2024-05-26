@@ -2,19 +2,28 @@ import { NextResponse } from "next/server";
 const sql = require("mssql");
 const config = require("../../database/dbconnection");
 
+// Fetches active posts from the post table and returns the result as JSON
 export async function GET() {
-  let poolConnection = await sql.connect(config);
+  try {
+    let poolConnection = await sql.connect(config);
 
-  const res = await poolConnection
-    .request()
-    .query(`SELECT * FROM [dbo].[post] WHERE activeStatus = '1';`);
-  poolConnection.close();
+    const res = await poolConnection
+      .request()
+      .query(`SELECT * FROM [dbo].[post] WHERE activeStatus = '1';`);
+    poolConnection.close();
 
-  const post = res.recordset;
-  console.table(post);
-  return NextResponse.json(post);
+    const posts = res.recordset;
+    console.table(posts);
+    return NextResponse.json(posts);
+  } catch (error) {
+    return NextResponse.json(
+      { error: "Failed to retrieve data" },
+      { status: 500 }
+    );
+  }
 }
 
+// Inserts a new post record into the post table and returns the result as JSON
 export async function POST(req) {
   const data = await req.json();
 
@@ -40,8 +49,7 @@ export async function POST(req) {
   }
 }
 
-
-
+// Updates a post record in the post table and returns the result as JSON
 export async function PUT(req) {
   const data = await req.json();
 

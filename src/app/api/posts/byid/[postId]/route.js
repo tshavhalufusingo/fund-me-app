@@ -2,9 +2,10 @@ import { NextResponse } from "next/server";
 const sql = require("mssql");
 const config = require("../../../../database/dbconnection");
 
-export async function GET(req,context) {
+// Fetches post details for a specific postId from the post table and returns the result as JSON
+export async function GET(req, context) {
   const { params } = context;
-  console.log(params)
+  console.log(params);
 
   const id = params.postId;
   let poolConnection = await sql.connect(config);

@@ -27,7 +27,7 @@ export default function UserWaitingApproval() {
         ); // Filter and store approved users
       });
 
-    console.log(unapprovedData);
+ 
   }, []);
 
   return (
