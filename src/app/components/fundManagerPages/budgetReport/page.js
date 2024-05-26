@@ -9,13 +9,14 @@ import GeneratePiChart from "../../graphs/generateGraph";
 
 export default function ReportAndBudget() {
   const [balance, setBalance] = useState(0);
-  const [amountUsed, setAmountUsed] = useState(0);
+  const [amountUsed, setAmountUsed] = useState(20000);
   const [successfulRecipients, setSuccessfulRecipients] = useState(0);
   const [pending, setPending] = useState(0);
   const [rejected, setRejected] = useState(0);
   const [totalApplications, setTotalApplications] = useState(0);
   const [monthlyApprovals, setMonthlyApprovals] = useState([]);
-  const [indivisualAmnt, setindivisualAmt] = useState(0);
+  const [indAmt, setindAmt] = useState(10000);
+  
 
   const labels = ["pending", "approved", "rejected"];
   const { data: session } = useSession(); // Destructuring session data
@@ -24,44 +25,9 @@ export default function ReportAndBudget() {
   const reportRef = useRef(null); // Reference for the report div
   const buttonRef = useRef(null); // Reference for the download button
 
-  const myId = session?.user?.id;
-
-  useEffect(() => {
-    // Define an async function to fetch the report
-    const fetchReport1 = async () => {
-      try {
-        const response = await fetch(`/api/getAmount`);
-        if (!response.ok) {
-          throw new Error(`Error: ${response.statusText}`);
-        }
-        const res = await response.json();
-
-        console.log("the ind amt ",res);
-
-        for(let i= 0; i < res.length; i++){
-            if(res[i].userId == myId){
-              setindivisualAmt(res[i].indivisualFund);
-              console.log("success");
-              console.log(res[i].indivisualFund);
-              break;
-            }
-        }
-
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
-    // Call the async function
-    fetchReport1();
-  }, );
-
- 
-
-
   const userID = session?.user?.id;
 
-    const getAllData = (jsonData) => {
+  const getAllData = (jsonData) => {
     setTotalApplications(jsonData.length);
 
     let pendingCount = 0;
@@ -79,7 +45,7 @@ export default function ReportAndBudget() {
         const month = approvalDate.getMonth();
         const year = approvalDate.getFullYear();
         const key = `${year}-${month}`;
-        approvals[key] = (approvals[key] || 0) + indivisualAmnt;
+        approvals[key] = (approvals[key] || 0) + indAmt;
       }
 
       switch (statusId) {
@@ -100,8 +66,6 @@ export default function ReportAndBudget() {
     setPending(pendingCount);
     setSuccessfulRecipients(successfulCount);
     setRejected(rejectedCount);
-    console.log("test x ",successfulCount * indivisualAmnt);
-    setAmountUsed(successfulCount * indivisualAmnt);
 
     const approvalArray = Object.keys(approvals)
       .map((key) => ({
@@ -133,16 +97,15 @@ export default function ReportAndBudget() {
         }
 
         const data = await response.json();
-
+        setindAmt(data[0].indivisualFund);
         if (data && data.length > 0) {
           getAllData(data);
 
           const firstItem = data[0];
-          console.log("first item", firstItem);
           setBalance(
             firstItem.fundingAmount - firstItem.fundingused || balance
           );
-          setAmountUsed(firstItem.indivisualFund  || amountUsed);
+          setAmountUsed(firstItem.fundingused || amountUsed);
         } else {
           console.warn("No data received or data is empty");
         }
@@ -217,7 +180,7 @@ export default function ReportAndBudget() {
         <h2 className="txt">Available Balance: R{balance}</h2>
       </div>
       <div className={styles.amountUsedContainer}>
-        <h2>Amount Given: R{amountUsed}</h2>
+        <h2>Amount Given: R{indAmt * successfulRecipients}</h2>
       </div>
       <div className={styles.barGraphContainer}>
         <h2 className="txt">Spending in the Last 6 Months</h2>
